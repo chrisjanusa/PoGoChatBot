@@ -13,8 +13,9 @@ def main():
     for row in df.itertuples():
         temp = {}
         for i, col in enumerate(cols, start=1):
+            if col.startswith("against"):
+                col = col[8:]
             temp[col] = row[i]
-        print(temp)
         pokedex[row.name] = temp
     pickle.dump(pokedex, open("../pokedex.pickle", "wb"))
 
