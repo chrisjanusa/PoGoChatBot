@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e1952e9e-332e-42ad-a811-a9394ca6f848" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BadWords.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ChatBot.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shiny.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trainer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GatherInfo/Shinies.py" beforeDir="false" afterPath="$PROJECT_DIR$/GatherInfo/Shinies.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pickles/shiny.p" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChatBot.py" beforeDir="false" afterPath="$PROJECT_DIR$/ChatBot.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -55,24 +50,25 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="8" />
+          <entry key="py" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="8" />
+          <entry key="Python" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="12" />
-          <entry key="py" value="844" />
+          <entry key="py" value="1000" />
+          <entry key="txt" value="33" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="12" />
-          <entry key="Python" value="844" />
+          <entry key="PLAIN_TEXT" value="45" />
+          <entry key="Python" value="1000" />
         </counts>
       </usages-collector>
     </session>
@@ -82,12 +78,21 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ChatBot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3021">
-              <caret line="65" column="32" lean-forward="true" selection-start-line="65" selection-start-column="32" selection-end-line="65" selection-end-column="32" />
+            <state relative-caret-position="-3628">
+              <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
               <folding>
                 <element signature="e#108#163#0" expanded="true" />
-                <marker date="1542595653000" expanded="true" signature="367:10305" ph="..." />
+                <marker date="1542664813000" expanded="true" signature="395:10333" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Trainer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="195">
+              <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
             </state>
           </provider>
         </entry>
@@ -127,6 +132,7 @@
       <find>tier</find>
       <find>&gt;Tier</find>
       <find>bro</find>
+      <find>logger</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -140,6 +146,7 @@
         <option value="$PROJECT_DIR$/GatherInfo/RaidBosses.py" />
         <option value="$PROJECT_DIR$/BadWords.py" />
         <option value="$PROJECT_DIR$/GatherInfo/Shinies.py" />
+        <option value="$PROJECT_DIR$/Trainer.py" />
         <option value="$PROJECT_DIR$/ChatBot.py" />
       </list>
     </option>
@@ -318,17 +325,26 @@
       <option name="presentableId" value="Default" />
       <updated>1542575756980</updated>
     </task>
+    <task id="LOCAL-00001" summary="Basis of chatbot based on brobot">
+      <created>1542595749528</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1542595749528</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="19" y="28" width="1400" height="870" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24945612" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24945612" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32904884" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.41002572" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.16838047" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39974293" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -344,6 +360,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Basis of chatbot based on brobot" />
+    <option name="LAST_COMMIT_MESSAGE" value="Basis of chatbot based on brobot" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Research.py">
@@ -389,13 +409,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Trainer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ChatBot.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3021">
-          <caret line="65" column="32" lean-forward="true" selection-start-line="65" selection-start-column="32" selection-end-line="65" selection-end-column="32" />
+        <state relative-caret-position="-3628">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
           <folding>
             <element signature="e#108#163#0" expanded="true" />
-            <marker date="1542595653000" expanded="true" signature="367:10305" ph="..." />
+            <marker date="1542664813000" expanded="true" signature="395:10333" ph="..." />
           </folding>
         </state>
       </provider>
