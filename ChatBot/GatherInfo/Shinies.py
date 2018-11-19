@@ -13,29 +13,28 @@ def main():
     webpage = urlopen(req).read()
     soup = BeautifulSoup(webpage, features="html.parser")
     data = soup.findAll()
-    list = [cleanLine(str(line)) for line in data if str(line).startswith("<li>Shiny")
+    list = [clean_line(str(line)) for line in data if str(line).startswith("<li>Shiny")
             and "Legendaries" not in str(line) and "versions" not in str(line)]
 
-    pickle.dump(list, open("../Pickles/shiny.p", "wb"))
+    with open("../shiny.py", "w") as shinies:
+        shinies.write("SHINY_POKEMON = {\n")
+        first = True
+        for shiny in list:
+            if first:
+                shinies.write("    \"" + str(shiny) + "\"")
+                first = False
+            else:
+                shinies.write(",\n    \"" + str(shiny) + "\"")
+        shinies.write("}\n")
 
-    # for line in data:
-    #     if str(line).startswith("<li>Shiny"):
-    #         printNext = False
-    #         for word in re.split('[ ><]', str(line)):
-    #             if printNext:
-    #                 print(word)
-    #                 printNext = False
-    #             if word == "Shiny":
-    #                 printNext = True
 
-
-def cleanLine(line):
-    printNext = False
+def clean_line(line):
+    print_next = False
     for word in re.split('[ ><]', str(line)):
-        if printNext:
+        if print_next:
             return word
         if word == "Shiny":
-            printNext = True
+            print_next = True
 
 
 if __name__ == "__main__":
