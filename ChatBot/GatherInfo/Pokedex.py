@@ -16,7 +16,8 @@ def main():
             if col.startswith("against"):
                 col = col[8:]
             temp[col] = row[i]
-        pokedex[row.name] = temp
+        pokedex[row.name.lower()] = temp
+
     pickle.dump(pokedex, open("../pokedex.pickle", "wb"))
 
 
