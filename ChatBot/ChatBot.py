@@ -7,6 +7,8 @@ import os
 from textblob import TextBlob
 from BadWords import FILTER_WORDS
 from Trainer import Trainer
+from nltk.tag import StanfordNERTagger
+from nltk.tokenize import word_tokenize
 
 os.environ['NLTK_DATA'] = os.getcwd() + '/nltk_data'
 
@@ -96,17 +98,17 @@ def main():
 
     def find_propernoun(sent):
         """Given a sentence, find the best candidate noun."""
-        ppnoun = None
+        st = StanfordNERTagger('english.all.3class.distsim.crf.ser.gz',
+                               'stanford-ner.jar',
+                               encoding='utf-8')
+        tokenized_text = word_tokenize(sent)
+        classified_text = st.tag(tokenized_text)
 
-        if not ppnoun:
-            for w, p in sent.pos_tags:
-                if p == 'NNP':  # This is a noun
-                    ppnoun = w
-                    break
-        if ppnoun:
-            logger.info("Found propernoun: %s", ppnoun)
+        for word in classified_text:
+            if word[1] == 'PERSON':
+                return word[0]
 
-        return ppnoun
+        return None
 
     def find_noun(sent):
         """Given a sentence, find the best candidate noun."""
@@ -258,11 +260,10 @@ def main():
         verb = None
         for sent in parsed.sentences:
             pronoun = find_pronoun(sent)
-            ppnoun = find_propernoun(sent)
             noun = find_noun(sent)
             adjective = find_adjective(sent)
             verb = find_verb(sent)
-        logger.info("Pronoun=%s, Proper Noun=%s noun=%s, adjective=%s, verb=%s", pronoun, ppnoun, noun, adjective, verb)
+        logger.info("Pronoun=%s, noun=%s, adjective=%s, verb=%s", pronoun, noun, adjective, verb)
         return pronoun, noun, adjective, verb
 
     # end
@@ -286,11 +287,13 @@ def main():
 
         saying = input("Hi, my name is Pogo. What is your name? ")
         pickle_path = Path("dict.pickle")
+        find_propernoun(saying)
         if pickle_path.is_file():
             pickle_in = open(pickle_path, "rb")
             person_dict = pickle.load(pickle_in)
         else:
             person_dict = []
+        print("Proper Noun: " + str(find_propernoun(saying)))
         while "bye" not in saying.lower():
             saying = input(broback(saying, person_dict))
         pickle_out = open(pickle_path, "wb")
