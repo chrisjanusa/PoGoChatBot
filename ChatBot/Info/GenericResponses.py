@@ -41,3 +41,7 @@ BYE = [
     "Leaving already ... Onix-ceptable",
     "Good Eevee-ning"
 ]
+
+NEW_CONVO = [
+    ""
+]

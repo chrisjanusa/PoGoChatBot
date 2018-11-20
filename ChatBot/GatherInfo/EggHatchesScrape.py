@@ -1,5 +1,3 @@
-import re
-from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 import requests
 
@@ -51,7 +49,7 @@ def main():
 
         linecount +=1
 
-    with open("../egghatches.py", "w") as pokemon_file:
+    with open("../Info/EggHatches.py", "w") as pokemon_file:
         pokemon_file.write("HATCHES_2K = {\n")
         first = True
         for pokemon in set(eggs_2k):
@@ -91,6 +89,7 @@ def main():
             else:
                 pokemon_file.write(",\n    \"" + pokemon + "\"")
         pokemon_file.write("}\n")
+
 
 if __name__ == "__main__":
     main()

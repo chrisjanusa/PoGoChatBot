@@ -320,6 +320,8 @@ def main():
 
         if name in trainers:
             trainer = trainers[name]
+            if trainer.team != "":
+                print("Go " + trainer.team + "!!!!!!")
             user_statement = input(random.choice(RETURN_TRAINER).format(**{'name': name}) + "\n> ")
         else:
             trainer = Trainer(name)
