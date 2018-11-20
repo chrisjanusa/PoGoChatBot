@@ -13,7 +13,7 @@ def main():
     eggs_5k = []
     eggs_7k = []
     eggs_10k = []
-    linecount = 0;
+    linecount = 0
 
     cur_egg = 0
 
