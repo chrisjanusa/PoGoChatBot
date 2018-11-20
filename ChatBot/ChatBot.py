@@ -9,7 +9,10 @@ from Info.BadWords import FILTER_WORDS
 import spacy
 from Info.GenericResponses import INRODUCTION
 from Info.GenericResponses import NO_NAME_SASSY
+from Info.GenericResponses import NEW_TRAINER
+from Info.GenericResponses import RETURN_TRAINER
 from Info.GenericResponses import NO_NAME
+from Info.GenericResponses import BYE
 from Trainer import Trainer
 
 nlp = spacy.load('en_core_web_sm')
@@ -307,22 +310,27 @@ def main():
             else:
                 user_statement = input(random.choice(NO_NAME) + "\n> ")
             name = str(find_propernoun(user_statement))
-            print(name)
+
         pickle_path = Path("dict.pickle")
         if pickle_path.is_file():
             pickle_in = open(pickle_path, "rb")
-            person_dict = pickle.load(pickle_in)
+            trainers = pickle.load(pickle_in)
         else:
-            person_dict = {}
-        if name in person_dict:
-            trainer = person_dict[name]
+            trainers = {}
+
+        if name in trainers:
+            trainer = trainers[name]
+            user_statement = input(random.choice(RETURN_TRAINER).format(**{'name': name}) + "\n> ")
         else:
-            trainer = Trainer()
-            person_dict[name] = trainer
+            trainer = Trainer(name)
+            trainers[name] = trainer
+            user_statement = input(random.choice(NEW_TRAINER).format(**{'name': name}) + "\n> ")
+
         while "bye" not in user_statement.lower():
-            user_statement = input(broback(user_statement, person_dict) + "\n>")
-        pickle_out = open(pickle_path, "wb")
-        pickle.dump(pickle_out, person_dict)
+            user_statement = input(broback(user_statement, trainers) + "\n>")
+
+        print(random.choice(BYE))
+        pickle.dump(trainers, open(pickle_path, "wb"))
 
 
 if __name__ == "__main__":

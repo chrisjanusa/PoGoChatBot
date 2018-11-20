@@ -17,3 +17,27 @@ NO_NAME_SASSY = [
     "Name?",
     "Bro was that even a name? Tell it to me slowly"
 ]
+
+RETURN_TRAINER =[
+    "Oh yea I remember you {name}",
+    "Welcome back {name}",
+    "I missed you {name}",
+    "Ready to catch some more pokemon {name}",
+    "Must've thrown a master ball at you last time {name}, cause I clearly caught you"
+]
+
+NEW_TRAINER = [
+    "Nice to meet you {name}",
+    "{name} we are gonna have so much fun!!!!!",
+    "{name} here's a golden razz berry so you don't run away",
+    "I better use an ultra ball on you {name} cause I def wanna catch ya"
+]
+
+BYE = [
+    "Team Rocket is blasting off again!!!!!!!!!",
+    "Catch you next time",
+    "See you later Feraligatr",
+    "I guess even a Max revive can't bring this conversation back to life, later",
+    "Leaving already ... Onix-ceptable",
+    "Good Eevee-ning"
+]
