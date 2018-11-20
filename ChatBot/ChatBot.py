@@ -6,7 +6,6 @@ import logging
 import os
 from textblob import TextBlob
 from BadWords import FILTER_WORDS
-from shiny import SHINY_POKEMON
 from Trainer import Trainer
 
 os.environ['NLTK_DATA'] = os.getcwd() + '/nltk_data'

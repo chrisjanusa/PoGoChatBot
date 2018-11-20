@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e1952e9e-332e-42ad-a811-a9394ca6f848" name="Default Changelist" comment="Clean up pokedex">
+    <list default="true" id="e1952e9e-332e-42ad-a811-a9394ca6f848" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GatherInfo/Pokedex.py" beforeDir="false" afterPath="$PROJECT_DIR$/GatherInfo/Pokedex.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pokedex.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/pokedex.pickle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChatBot.py" beforeDir="false" afterPath="$PROJECT_DIR$/ChatBot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trainer.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -51,32 +51,32 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="15" />
+          <entry key="py" value="19" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="15" />
+          <entry key="Python" value="19" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="12" />
-          <entry key="py" value="2002" />
-          <entry key="txt" value="131" />
+          <entry key="py" value="2010" />
+          <entry key="txt" value="164" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="143" />
-          <entry key="Python" value="2002" />
+          <entry key="PLAIN_TEXT" value="176" />
+          <entry key="Python" value="2010" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GatherInfo/Pokedex.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="285">
@@ -93,10 +93,50 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GatherInfo/Pokemon.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1635">
-              <caret line="109" column="10" selection-start-line="108" selection-end-line="109" selection-end-column="10" />
+            <state relative-caret-position="1515">
+              <caret line="101" column="37" selection-start-line="101" selection-start-column="37" selection-end-line="101" selection-end-column="37" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pokemon.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="10" column="15" lean-forward="true" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="15" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Trainer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="9" column="22" lean-forward="true" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/BadWords.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="407">
+              <caret line="28" column="11" selection-start-line="28" selection-start-column="11" selection-end-line="28" selection-end-column="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ChatBot.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="741">
+              <caret line="277" column="28" selection-start-line="277" selection-start-column="28" selection-end-line="277" selection-end-column="28" />
+              <folding>
+                <element signature="e#108#163#0" expanded="true" />
+                <marker date="1542671997000" expanded="true" signature="363:10301" ph="..." />
               </folding>
             </state>
           </provider>
@@ -139,11 +179,11 @@
         <option value="$PROJECT_DIR$/Research.py" />
         <option value="$PROJECT_DIR$/GatherInfo/RaidBosses.py" />
         <option value="$PROJECT_DIR$/BadWords.py" />
-        <option value="$PROJECT_DIR$/Trainer.py" />
-        <option value="$PROJECT_DIR$/ChatBot.py" />
         <option value="$PROJECT_DIR$/GatherInfo/Shinies.py" />
         <option value="$PROJECT_DIR$/GatherInfo/Pokemon.py" />
         <option value="$PROJECT_DIR$/GatherInfo/Pokedex.py" />
+        <option value="$PROJECT_DIR$/Trainer.py" />
+        <option value="$PROJECT_DIR$/ChatBot.py" />
       </list>
     </option>
   </component>
@@ -215,7 +255,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Pokedex">
+  <component name="RunManager" selected="Python.ChatBot">
     <configuration name="ChatBot" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ChatBot" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -330,9 +370,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.ChatBot" />
         <item itemvalue="Python.Pokedex" />
         <item itemvalue="Python.Pokemon" />
-        <item itemvalue="Python.ChatBot" />
         <item itemvalue="Python.Shinies" />
         <item itemvalue="Python.Research (1)" />
       </list>
@@ -384,12 +424,18 @@
       <option name="project" value="LOCAL" />
       <updated>1542670785207</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Store lower case pokemon name">
+      <created>1542671557896</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1542671557896</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="17" y="23" width="1400" height="870" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24945612" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -400,8 +446,8 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39974293" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32904884" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32904884" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32904884" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" />
@@ -419,45 +465,14 @@
     <MESSAGE value="Gathered more info about the pokemon" />
     <MESSAGE value="Added pokedex info" />
     <MESSAGE value="Clean up pokedex" />
-    <option name="LAST_COMMIT_MESSAGE" value="Clean up pokedex" />
+    <MESSAGE value="Store lower case pokemon name" />
+    <option name="LAST_COMMIT_MESSAGE" value="Store lower case pokemon name" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Research.py" />
     <entry file="file://$PROJECT_DIR$/GatherInfo/RaidBosses.py" />
-    <entry file="file://$PROJECT_DIR$/BadWords.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="11" selection-start-line="28" selection-start-column="11" selection-end-line="28" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/GatherInfo/Shinies.py" />
     <entry file="file://$PROJECT_DIR$/shiny.py" />
-    <entry file="file://$PROJECT_DIR$/pokemon.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2382">
-          <caret line="430" selection-start-line="430" selection-end-line="430" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Trainer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ChatBot.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3628">
-          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
-          <folding>
-            <element signature="e#108#163#0" expanded="true" />
-            <marker date="1542664813000" expanded="true" signature="395:10333" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/GatherInfo/Pokedex.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -472,10 +487,42 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/GatherInfo/Pokemon.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1635">
-          <caret line="109" column="10" selection-start-line="108" selection-end-line="109" selection-end-column="10" />
+        <state relative-caret-position="1515">
+          <caret line="101" column="37" selection-start-line="101" selection-start-column="37" selection-end-line="101" selection-end-column="37" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pokemon.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="15" lean-forward="true" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Trainer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="22" lean-forward="true" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BadWords.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="407">
+          <caret line="28" column="11" selection-start-line="28" selection-start-column="11" selection-end-line="28" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ChatBot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="741">
+          <caret line="277" column="28" selection-start-line="277" selection-start-column="28" selection-end-line="277" selection-end-column="28" />
+          <folding>
+            <element signature="e#108#163#0" expanded="true" />
+            <marker date="1542671997000" expanded="true" signature="363:10301" ph="..." />
           </folding>
         </state>
       </provider>

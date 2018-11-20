@@ -1,4 +1,4 @@
-from shiny import SHINY_POKEMON
+from pokemon import SHINY_POKEMON
 
 
 class Trainer(object):
