@@ -18,7 +18,7 @@ NO_NAME_SASSY = [
     "Bro was that even a name? Tell it to me slowly"
 ]
 
-RETURN_TRAINER =[
+RETURN_TRAINER = [
     "Oh yea I remember you {name}",
     "Welcome back {name}",
     "I missed you {name}",
@@ -69,4 +69,25 @@ CONVO_CARRIER_REG = [
     "Do you wanna know anything about pokemon Go?",
     "I don't know about that but I can answer questions about the basics of the game!",
     "You can ask me about stardust, gyms, pokeballs, berries, different pokemon, you name it!"
+]
+
+GREETING_KEYWORDS = ("hello", "hi", "greetings", "sup", "what's up",)
+
+GREETING_RESPONSES = ["'sup bro", "hey", "*nods*", "hey you get my snap?"]
+
+SELF_VERBS_WITH_NOUN_CAPS_PLURAL = [
+    "My last startup totally crushed the {noun} vertical",
+    "Were you aware I was a serial entrepreneur in the {noun} sector?",
+    "My startup is Uber for {noun}",
+    "I really consider myself an expert on {noun}"
+]
+
+SELF_VERBS_WITH_NOUN_LOWER = [
+    "Yeah but I know a lot about {noun}",
+    "My bros always ask me about {noun}"
+]
+
+SELF_VERBS_WITH_ADJECTIVE = [
+    "I'm personally building the {adjective} Economy",
+    "I consider myself to be a {adjective}preneur"
 ]
