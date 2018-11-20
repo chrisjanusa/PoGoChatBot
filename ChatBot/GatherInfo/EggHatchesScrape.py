@@ -38,16 +38,16 @@ def main():
             start = len("<li>")
             end = line.find("<", start)
             pokemon = line[start:end]
-            if(cur_egg == 2):
+            if cur_egg == 2:
                 eggs_2k.append(pokemon)
-            elif (cur_egg == 5):
+            elif cur_egg == 5:
                 eggs_5k.append(pokemon)
-            elif(cur_egg == 7):
+            elif cur_egg == 7:
                 eggs_7k.append(pokemon)
-            elif(cur_egg == 10):
+            elif cur_egg == 10:
                 eggs_10k.append(pokemon)
 
-        linecount +=1
+        linecount += 1
 
     with open("../Info/EggHatches.py", "w") as pokemon_file:
         pokemon_file.write("HATCHES_2K = {\n")
