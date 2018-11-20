@@ -94,6 +94,20 @@ def main():
                 break
         return verb, pos
 
+    def find_propernoun(sent):
+        """Given a sentence, find the best candidate noun."""
+        ppnoun = None
+
+        if not ppnoun:
+            for w, p in sent.pos_tags:
+                if p == 'NNP':  # This is a noun
+                    ppnoun = w
+                    break
+        if ppnoun:
+            logger.info("Found propernoun: %s", ppnoun)
+
+        return ppnoun
+
     def find_noun(sent):
         """Given a sentence, find the best candidate noun."""
         noun = None
