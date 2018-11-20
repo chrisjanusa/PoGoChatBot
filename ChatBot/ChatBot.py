@@ -6,9 +6,10 @@ import logging
 import os
 from textblob import TextBlob
 from BadWords import FILTER_WORDS
-from Trainer import Trainer
-from nltk.tag import StanfordNERTagger
-from nltk.tokenize import word_tokenize
+import spacy
+
+
+nlp = spacy.load('en_core_web_sm')
 
 os.environ['NLTK_DATA'] = os.getcwd() + '/nltk_data'
 
@@ -98,15 +99,20 @@ def main():
 
     def find_propernoun(sent):
         """Given a sentence, find the best candidate noun."""
-        st = StanfordNERTagger('english.all.3class.distsim.crf.ser.gz',
-                               'stanford-ner.jar',
-                               encoding='utf-8')
-        tokenized_text = word_tokenize(sent)
-        classified_text = st.tag(tokenized_text)
+        # st = StanfordNERTagger('english.all.3class.distsim.crf.ser.gz',
+        #                        'stanford-ner.jar',
+        #                        encoding='utf-8')
+        # tokenized_text = word_tokenize(sent)
+        # classified_text = st.tag(tokenized_text)
 
-        for word in classified_text:
-            if word[1] == 'PERSON':
-                return word[0]
+        # for word in classified_text:
+        #     if word[1] == 'PERSON':
+        #         return word[0]
+
+        tags = nlp(sent)
+        for token in tags:
+            if token.pos_ == 'PROPN' and token.text != 'Pogo':
+                return token
 
         return None
 
