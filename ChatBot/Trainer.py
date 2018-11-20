@@ -1,6 +1,3 @@
-from pokemon import SHINY_POKEMON
-
-
 class Trainer(object):
     name = ""
     age = 0
@@ -9,5 +6,6 @@ class Trainer(object):
     favorite_pokemon = ""
     caught_pokemon = []
 
-    def favorite_shiny(self):
-        return self.favorite_pokemon in SHINY_POKEMON
+    def __init__(self, name):
+        self.name = name
+
