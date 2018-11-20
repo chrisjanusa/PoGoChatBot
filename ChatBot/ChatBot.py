@@ -5,14 +5,21 @@ import random
 import logging
 import os
 from textblob import TextBlob
-from Info.BadWords import FILTER_WORDS
 import spacy
+
+from Info.BadWords import FILTER_WORDS
+
 from Info.GenericResponses import INRODUCTION
 from Info.GenericResponses import NO_NAME_SASSY
 from Info.GenericResponses import NEW_TRAINER
 from Info.GenericResponses import RETURN_TRAINER
 from Info.GenericResponses import NO_NAME
-from Info.GenericResponses import BYE
+from Info.GenericResponses import CONVO_CARRIER_CAUGHT
+from Info.GenericResponses import CONVO_CARRIER_FAV
+from Info.GenericResponses import CONVO_CARRIER_LEVEL
+from Info.GenericResponses import CONVO_CARRIER_REG
+from Info.GenericResponses import CONVO_CARRIER_TEAM
+
 from Trainer import Trainer
 
 nlp = spacy.load('en_core_web_sm')
@@ -38,28 +45,6 @@ def main():
         for word in sentence.words:
             if word.lower() in GREETING_KEYWORDS:
                 return random.choice(GREETING_RESPONSES)
-
-    # start:example-none.py
-    # Sentences we'll respond with if we have no idea what the user just said
-    NONE_RESPONSES = [
-        "uh whatever",
-        "meet me at the foosball table, bro?",
-        "code hard bro",
-        "want to bro down and crush code?",
-        "I'd like to add you to my professional network on LinkedIn",
-        "Have you closed your seed round, dog?",
-    ]
-    # end
-
-    # start:example-self.py
-    # If the user tries to tell us something about ourselves, use one of these responses
-    COMMENTS_ABOUT_SELF = [
-        "You're just jealous",
-        "I worked really hard on that",
-        "My Klout score is {}".format(random.randint(100, 500)),
-    ]
-
-    # end
 
     class UnacceptableUtteranceException(Exception):
         """Raise this (uncaught) exception if the response was going to trigger our blacklist"""
@@ -285,8 +270,32 @@ def main():
 
     # end
 
-    def test(trainer):
-        trainer.age = 20
+    def get_default_options(curr_trainer):
+        default_options = ["caught", "reg"]
+        if curr_trainer.team == "":
+            default_options.append("team")
+        if curr_trainer.favorite_pokemon == "":
+            default_options.append("fav")
+        if curr_trainer.level == -1:
+            default_options.append("level")
+        return default_options
+
+    def get_default_reply(curr_trainer):
+        default_options = get_default_options(curr_trainer)
+        topic = random.choice(default_options)
+        if topic == "team":
+            return random.choice(CONVO_CARRIER_TEAM), topic
+        if topic == "fav":
+            return random.choice(CONVO_CARRIER_FAV), topic
+        if topic == "level":
+            return random.choice(CONVO_CARRIER_LEVEL), topic
+        if topic == "caught":
+            return random.choice(CONVO_CARRIER_CAUGHT), topic
+        else:
+            return random.choice(CONVO_CARRIER_REG), topic
+
+    def get_reply(user_statement, curr_trainer, rep_type):
+        return get_default_reply(curr_trainer)
 
     if __name__ == '__main__':
         from pathlib import Path
@@ -294,7 +303,7 @@ def main():
 
         user_statement = input(random.choice(INRODUCTION) + "\n> ")
         name = find_name(user_statement)
-        print(name)
+
         while name is None:
             blob = TextBlob(user_statement)
             if blob.sentiment.polarity < 0.1:
@@ -320,8 +329,10 @@ def main():
             trainers[name] = trainer
             user_statement = input(random.choice(NEW_TRAINER).format(**{'name': name}) + "\n> ")
 
+        rep_type = ""
         while "bye" not in user_statement.lower():
-            user_statement = input(broback(user_statement, trainers) + "\n>")
+            reply, rep_type = get_reply(user_statement, trainer, rep_type)
+            user_statement = input(reply + "\n>")
 
         print(random.choice(BYE))
         pickle.dump(trainers, open(pickle_path, "wb"))

@@ -42,6 +42,31 @@ BYE = [
     "Good Eevee-ning"
 ]
 
-NEW_CONVO = [
-    ""
+CONVO_CARRIER_CAUGHT = [
+    "Sooooo, have you caught any new pokemon lately?",
+    "Caught anything cool lately?",
+    "I caught a Charmander yesterday! What have you caught?",
+]
+
+CONVO_CARRIER_FAV = [
+    "My favorite pokemon is Chimchar, What about you?",
+    "That's fun, do you have a favorite pokemon?",
+    "What's your favorite pokemon?"
+]
+
+CONVO_CARRIER_TEAM = [
+    "What team are you?",
+    "Wanna make sure I am not talking with the enemy. What team are you?",
+    "That's cool. "
+]
+
+CONVO_CARRIER_LEVEL = [
+    "BTW what level are you?",
+    "I'm level 36. What level are you?",
+]
+
+CONVO_CARRIER_REG = [
+    "Do you wanna know anything about pokemon Go?",
+    "I don't know about that but I can answer questions about the basics of the game!",
+    "You can ask me about stardust, gyms, pokeballs, berries, different pokemon, you name it!"
 ]
