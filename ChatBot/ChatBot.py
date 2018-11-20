@@ -5,7 +5,7 @@ import random
 import logging
 import os
 from textblob import TextBlob
-from BadWords import FILTER_WORDS
+from Info.BadWords import FILTER_WORDS
 import spacy
 
 
