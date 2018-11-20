@@ -57,12 +57,7 @@ CONVO_CARRIER_FAV = [
 CONVO_CARRIER_TEAM = [
     "What team are you?",
     "Wanna make sure I am not talking with the enemy. What team are you?",
-    "That's cool. "
-]
-
-CONVO_CARRIER_LEVEL = [
-    "BTW what level are you?",
-    "I'm level 36. What level are you?",
+    "That's cool. I bet you are a part of the cool team too. Which team is that?"
 ]
 
 CONVO_CARRIER_REG = [

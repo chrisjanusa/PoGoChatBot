@@ -662,3 +662,10 @@ SHINY_POKEMON = {
     "Quilava",
     "Graveler",
     "Kingler"}
+
+TEAMS = {
+    "Mystic",
+    "Instinct",
+    "Valor",
+    "Rocket"
+}

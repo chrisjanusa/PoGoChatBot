@@ -1,7 +1,6 @@
 class Trainer(object):
     name = ""
     team = ""
-    level = -1
     favorite_pokemon = ""
     caught_pokemon = []
 

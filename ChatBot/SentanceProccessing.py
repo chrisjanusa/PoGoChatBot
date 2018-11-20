@@ -16,7 +16,7 @@ from Exceptions import UnacceptableUtteranceException
 import random
 import logging
 
-logging.basicConfig()
+logging.basicConfig(filename='log_file.log')
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
