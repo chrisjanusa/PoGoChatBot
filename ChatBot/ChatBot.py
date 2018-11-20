@@ -258,10 +258,11 @@ def main():
         verb = None
         for sent in parsed.sentences:
             pronoun = find_pronoun(sent)
+            ppnoun = find_propernoun(sent)
             noun = find_noun(sent)
             adjective = find_adjective(sent)
             verb = find_verb(sent)
-        logger.info("Pronoun=%s, noun=%s, adjective=%s, verb=%s", pronoun, noun, adjective, verb)
+        logger.info("Pronoun=%s, Proper Noun=%s noun=%s, adjective=%s, verb=%s", pronoun, ppnoun, noun, adjective, verb)
         return pronoun, noun, adjective, verb
 
     # end
