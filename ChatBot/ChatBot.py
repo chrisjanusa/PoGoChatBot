@@ -7,7 +7,10 @@ import os
 from textblob import TextBlob
 from Info.BadWords import FILTER_WORDS
 import spacy
-
+from Info.GenericResponses import INRODUCTION
+from Info.GenericResponses import NO_NAME_SASSY
+from Info.GenericResponses import NO_NAME
+from Trainer import Trainer
 
 nlp = spacy.load('en_core_web_sm')
 
@@ -287,21 +290,37 @@ def main():
 
     # end
 
+    def test(trainer):
+        trainer.age = 20
+
     if __name__ == '__main__':
         from pathlib import Path
         import pickle
 
-        saying = input("Hi, my name is Pogo. What is your name? ")
+        user_statement = input(random.choice(INRODUCTION) + "\n> ")
+        name = str(find_propernoun(user_statement))
+        print(name)
+        while name is None:
+            blob = TextBlob(user_statement)
+            if blob.sentiment.polarity < 0.1:
+                user_statement = input(random.choice(NO_NAME_SASSY) + "\n> ")
+            else:
+                user_statement = input(random.choice(NO_NAME) + "\n> ")
+            name = str(find_propernoun(user_statement))
+            print(name)
         pickle_path = Path("dict.pickle")
-        find_propernoun(saying)
         if pickle_path.is_file():
             pickle_in = open(pickle_path, "rb")
             person_dict = pickle.load(pickle_in)
         else:
-            person_dict = []
-        print("Proper Noun: " + str(find_propernoun(saying)))
-        while "bye" not in saying.lower():
-            saying = input(broback(saying, person_dict))
+            person_dict = {}
+        if name in person_dict:
+            trainer = person_dict[name]
+        else:
+            trainer = Trainer()
+            person_dict[name] = trainer
+        while "bye" not in user_statement.lower():
+            user_statement = input(broback(user_statement, person_dict) + "\n>")
         pickle_out = open(pickle_path, "wb")
         pickle.dump(pickle_out, person_dict)
 

@@ -1,15 +1,12 @@
 import re
-from urllib.request import Request, urlopen
+import requests
 from bs4 import BeautifulSoup
 
 
 def main():
     u = "https://serebii.net/pokemongo/pokemon.shtml"
 
-    req = Request(
-        u,
-        headers={'User-Agent': 'Mozilla/5.0'})
-    webpage = urlopen(req).read()
+    webpage = requests.get(u).text
     soup = BeautifulSoup(webpage, features="html.parser")
     data = str(soup.findAll()).split("\n")
     pokemon_avail = []
@@ -86,10 +83,7 @@ def main():
 def get_shiny_list():
     u = "https://www.imore.com/pokemon-go-shiny"
 
-    req = Request(
-        u,
-        headers={'User-Agent': 'Mozilla/5.0'})
-    webpage = urlopen(req).read()
+    webpage = requests.get(u).text
     soup = BeautifulSoup(webpage, features="html.parser")
     data = soup.findAll()
     shiny_list = [clean_line(str(line)) for line in data if str(line).startswith("<li>Shiny")
