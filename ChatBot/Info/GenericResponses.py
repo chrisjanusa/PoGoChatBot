@@ -12,7 +12,7 @@ NO_NAME = [
 
 NO_NAME_SASSY = [
     "Was there a name in that message?",
-    "Either you did not put a name or you don't respect yourself enough to use good grammer and capitilize your own name",
+    "Either you did not put a name or you don't respect yourself enough to use good grammar and capitalize your own name",
     "Let's try that again, Hi, my name is Pogo. What is your name?",
     "Name?",
     "Bro was that even a name? Tell it to me slowly"
