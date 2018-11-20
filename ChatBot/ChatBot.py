@@ -103,22 +103,14 @@ def main():
                 break
         return verb, pos
 
-    def find_propernoun(sent):
-        """Given a sentence, find the best candidate noun."""
-        # st = StanfordNERTagger('english.all.3class.distsim.crf.ser.gz',
-        #                        'stanford-ner.jar',
-        #                        encoding='utf-8')
-        # tokenized_text = word_tokenize(sent)
-        # classified_text = st.tag(tokenized_text)
-
-        # for word in classified_text:
-        #     if word[1] == 'PERSON':
-        #         return word[0]
+    def find_name(sent):
+        # Given a sentence, find the best candidate Name. Uses Spacy ER
 
         tags = nlp(sent)
-        for token in tags:
-            if token.pos_ == 'PROPN' and token.text != 'Pogo':
-                return token
+        # Find all entities present and choose first one not referring to ourselves
+        for entity in tags.ents:
+            if str(entity) != "Pogo":
+                return str(entity)
 
         return None
 
@@ -301,7 +293,7 @@ def main():
         import pickle
 
         user_statement = input(random.choice(INRODUCTION) + "\n> ")
-        name = str(find_propernoun(user_statement))
+        name = find_name(user_statement)
         print(name)
         while name is None:
             blob = TextBlob(user_statement)
@@ -309,7 +301,7 @@ def main():
                 user_statement = input(random.choice(NO_NAME_SASSY) + "\n> ")
             else:
                 user_statement = input(random.choice(NO_NAME) + "\n> ")
-            name = str(find_propernoun(user_statement))
+            name = find_name(user_statement)
 
         pickle_path = Path("dict.pickle")
         if pickle_path.is_file():
