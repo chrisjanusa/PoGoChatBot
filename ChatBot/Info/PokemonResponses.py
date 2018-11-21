@@ -6,7 +6,6 @@ SHINY_RESPONSES = [
     "Did you know {pokemon} can be shiny?",
     "Have you found the shiny version of {pokemon}?",
     "The shiny version of {pokemon} looks so cool!"
-
 ]
 
 ALOLAN_RESPONSES =[
@@ -30,3 +29,4 @@ AGAINST_TYPE_RESPONSES = [
     "Did you know {pokemon} is strong against {strong_type} type(s)?",
     "Did you know {pokemon} is weak against {weak_type} type(s)?"
 ]
+

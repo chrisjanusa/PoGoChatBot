@@ -9,11 +9,7 @@ import spacy
 from pathlib import Path
 import pickle
 
-from Find import find_name
-from Find import find_team
-from Find import find_pokemon
-from Find import find_imp_term
-from Find import find_pokemon_fact
+from Find import *
 
 from Info.GenericResponses import INRODUCTION
 from Info.GenericResponses import NO_NAME_SASSY
@@ -47,16 +43,16 @@ logger.setLevel(logging.DEBUG)
 
 
 def main():
-    user_statement = input(random.choice(INRODUCTION) + "\n> ")
-    name = find_name(user_statement)
+    user_statement = proccess_sentance(input(random.choice(INRODUCTION) + "\n> "))
 
-    while name is None:
+    while user_statement.name == "":
         blob = TextBlob(user_statement)
         if blob.sentiment.polarity < 0.1:
-            user_statement = input(random.choice(NO_NAME_SASSY) + "\n> ")
+            user_statement = proccess_sentance(input(random.choice(NO_NAME_SASSY) + "\n> "))
         else:
-            user_statement = input(random.choice(NO_NAME) + "\n> ")
-        name = find_name(user_statement)
+            user_statement = proccess_sentance(input(random.choice(NO_NAME) + "\n> "))
+
+    name = user_statement.name
 
     pickle_path = Path("dict.pickle")
     if pickle_path.is_file():
@@ -68,32 +64,41 @@ def main():
     if name in trainers:
         trainer = trainers[name]
         if trainer.team != "":
-            print("Go " + trainer.team + "!!!!!!")
-        user_statement = input(random.choice(RETURN_TRAINER).format(**{'name': name}) + "\n> ")
+            user_statement = proccess_sentance(input(random.choice(RETURN_TRAINER).format(**{'name': name}) + " btw Go " + trainer.team + "!!!!!!" + "\n> "))
+        else:
+            user_statement = proccess_sentance(input(random.choice(RETURN_TRAINER).format(**{'name': name}) + "\n> "))
+
     else:
         trainer = Trainer(name)
         trainers[name] = trainer
-        user_statement = input(random.choice(NEW_TRAINER).format(**{'name': name}) + "\n> ")
+        user_statement = proccess_sentance(input(random.choice(NEW_TRAINER).format(**{'name': name}) + "\n> "))
 
     rep_type = ""
-    while "bye" not in user_statement.lower():
+    while not user_statement.isFarewell:
         reply, rep_type = get_reply(user_statement, trainer, rep_type)
-        user_statement = input(reply + "\n>")
+        user_statement = proccess_sentance(input(reply + "\n>"))
 
     print(random.choice(BYE))
     with open(str(pickle_path), "wb") as pickle_file:
         pickle.dump(trainers, pickle_file, protocol=pickle.HIGHEST_PROTOCOL)
 
 
-def get_reply(user_statement, curr_trainer, rep_type):
+def get_reply(parse_obj, curr_trainer, rep_type):
+    pronoun = parse_obj.pronoun
+    adj = parse_obj.adj
+    noun = parse_obj.noun
+    verb = parse_obj.verb
+    name = parse_obj.name
+    pokemon = parse_obj.pokemon
+    imp_terms = parse_obj.imp_terms
+    team = parse_obj.team
+
     if rep_type != "" and rep_type != "reg":
         if rep_type == "team":
-            team = find_team(user_statement)
             if team != "":
                 curr_trainer.team = team
                 return "NO WAY!!!! ... I am team " + team + " too!!!", ""
         if rep_type == "fav":
-            pokemon = find_pokemon(user_statement)
             if pokemon:
                 curr_trainer.fav = pokemon[0]
                 facts = find_pokemon_fact(pokemon[0])
@@ -101,7 +106,6 @@ def get_reply(user_statement, curr_trainer, rep_type):
             else:
                 return "Oh I've never heard of that one before..", ""
         if rep_type == "caught":
-            pokemon = find_pokemon(user_statement)
             if pokemon:
                 if curr_trainer.caught_pokemon != "":
                     curr_trainer.caught_pokemon += ","
@@ -111,7 +115,6 @@ def get_reply(user_statement, curr_trainer, rep_type):
             else:
                 return "Oh I've never heard of that one before..", ""
     else:
-        imp_terms = find_imp_term(user_statement)
         if imp_terms:
             term = imp_terms[0]
             return get_fact_reply(term)
