@@ -13,6 +13,7 @@ from SentanceProccessing import starts_with_vowel
 
 from Find import find_name
 from Find import find_team
+from Find import find_pokemon
 
 from Info.GenericResponses import INRODUCTION
 from Info.GenericResponses import NO_NAME_SASSY
@@ -107,6 +108,20 @@ def get_reply(user_statement, curr_trainer, rep_type):
             if team != "":
                 curr_trainer.team = team
                 return "NO WAY!!!! ... I am team " + team + " too!!!", ""
+        if rep_type == "fav":
+            pokemon = find_pokemon(user_statement)
+            if pokemon != []:
+                curr_trainer.fav = pokemon
+                return "NO WAY!!!! ... I love " + pokemon[1] + " too!!!", ""
+            else:
+                return "Oh I've never heard of that one before.."
+        if rep_type == "caught":
+            pokemon = find_pokemon(user_statement)
+            if pokemon != []:
+                curr_trainer.fav = pokemon
+                return "Oooh " + pokemon[1] + " is awesome!!", ""
+            else:
+                return "Oh I've never heard of that one before..", ""
     return get_default_reply(curr_trainer)
 
 
@@ -116,8 +131,7 @@ def get_default_options(curr_trainer):
         default_options.append("team")
     if curr_trainer.favorite_pokemon == "":
         default_options.append("fav")
-    # return default_options
-    return ["team"]
+    return default_options
 
 
 
