@@ -24,6 +24,7 @@ from Info.GenericResponses import CONVO_CARRIER_FAV
 from Info.GenericResponses import CONVO_CARRIER_LEVEL
 from Info.GenericResponses import CONVO_CARRIER_REG
 from Info.GenericResponses import CONVO_CARRIER_TEAM
+from Info.GenericResponses import BYE
 
 from Trainer import Trainer
 
@@ -48,7 +49,7 @@ def main():
 
     pickle_path = Path("dict.pickle")
     if pickle_path.is_file():
-        pickle_in = open(pickle_path, "rb")
+        pickle_in = open(str(pickle_path), "rb")
         trainers = pickle.load(pickle_in)
     else:
         trainers = {}
@@ -69,7 +70,7 @@ def main():
         user_statement = input(reply + "\n>")
 
     print(random.choice(BYE))
-    pickle.dump(trainers, open(pickle_path, "wb"))
+    pickle.dump(trainers, open(str(pickle_path), "wb"))
 
 
 def construct_response(pronoun, noun, verb):

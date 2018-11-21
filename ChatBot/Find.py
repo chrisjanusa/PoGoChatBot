@@ -70,3 +70,7 @@ def find_adjective(sent):
             adj = w
             break
     return adj
+
+def find_pokemon(sent):
+    """Given a sentence, find if a user mentioned a pokemon."""
+    pokemon = None
