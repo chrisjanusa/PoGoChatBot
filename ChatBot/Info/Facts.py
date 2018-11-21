@@ -1,3 +1,16 @@
+IMP_TERMS = {
+    "Berry",
+    "Raid",
+    "Candy",
+    "Gym",
+    "Ball",
+    "Stardust",
+    "Eggs",
+    "Research",
+    "Event",
+    "Type"
+}
+
 BERRY = [
     "There are currently 5 different types of berries: Razz Berry, Nanab Berry, Pinap Berry, Golden Razz Berry and Silver Pinap Berry.",
     "The berries are named after real fruits, namely the rasberry, banana and pineapple.",

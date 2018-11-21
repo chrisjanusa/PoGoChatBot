@@ -13,6 +13,9 @@ from SentanceProccessing import starts_with_vowel
 
 from Find import find_name
 from Find import find_team
+from Find import find_pokemon
+from Find import find_imp_term
+from Find import find_pokemon_fact
 
 from Info.GenericResponses import INRODUCTION
 from Info.GenericResponses import NO_NAME_SASSY
@@ -25,11 +28,22 @@ from Info.GenericResponses import CONVO_CARRIER_REG
 from Info.GenericResponses import CONVO_CARRIER_TEAM
 from Info.GenericResponses import BYE
 
+from Info.Facts import BERRY
+from Info.Facts import RAID
+from Info.Facts import CANDY
+from Info.Facts import GYM
+from Info.Facts import BALL
+from Info.Facts import STARDUST
+from Info.Facts import EGGS
+from Info.Facts import RESEARCH
+from Info.Facts import EVENT
+from Info.Facts import TYPE
+
 from Trainer import Trainer
 
 nlp = spacy.load('en_core_web_sm')
 os.environ['NLTK_DATA'] = os.getcwd() + '/nltk_data'
-logging.basicConfig()
+logging.basicConfig(filename='log_file.log')
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
@@ -48,7 +62,7 @@ def main():
 
     pickle_path = Path("dict.pickle")
     if pickle_path.is_file():
-        pickle_in = open(pickle_path, "rb")
+        pickle_in = open(str(pickle_path), "rb")
         trainers = pickle.load(pickle_in)
     else:
         trainers = {}
@@ -69,7 +83,7 @@ def main():
         user_statement = input(reply + "\n>")
 
     print(random.choice(BYE))
-    pickle.dump(trainers, open(pickle_path, "wb"))
+    pickle.dump(trainers, open(str(pickle_path), "wb"))
 
 
 def construct_response(pronoun, noun, verb):
@@ -107,8 +121,51 @@ def get_reply(user_statement, curr_trainer, rep_type):
             if team != "":
                 curr_trainer.team = team
                 return "NO WAY!!!! ... I am team " + team + " too!!!", ""
+        if rep_type == "fav":
+            pokemon = find_pokemon(user_statement)
+            if pokemon != []:
+                curr_trainer.fav = pokemon[0]
+                facts = find_pokemon_fact(pokemon[0])
+                return random.choice(facts), ""
+            else:
+                return "Oh I've never heard of that one before..", ""
+        if rep_type == "caught":
+            pokemon = find_pokemon(user_statement)
+            if pokemon != []:
+                curr_trainer.fav = pokemon[0]
+                facts = find_pokemon_fact(pokemon[0])
+                return random.choice(facts), ""
+            else:
+                return "Oh I've never heard of that one before..", ""
+    else:
+        imp_terms = find_imp_term(user_statement)
+        if imp_terms !=[]:
+            term = imp_terms[0]
+            return get_fact_reply(term)
+
     return get_default_reply(curr_trainer)
 
+def get_fact_reply(term):
+    if term == "Berry":
+        return random.choice(BERRY), ""
+    if term == "Raid":
+        return random.choice(RAID), ""
+    if term == "Candy":
+        return random.choice(CANDY), ""
+    if term == "Gym":
+        return random.choice(GYM), ""
+    if term == "Ball":
+        return random.choice(BALL), ""
+    if term == "Stardust":
+        return random.choice(STARDUST), ""
+    if term == "Eggs":
+        return random.choice(EGGS), ""
+    if term == "Research":
+        return random.choice(RESEARCH), ""
+    if term == "Event":
+        return random.choice(EVENT), ""
+    if term == "Type":
+        return random.choice(TYPE), ""
 
 def get_default_options(curr_trainer):
     default_options = ["caught", "reg"]
@@ -116,8 +173,9 @@ def get_default_options(curr_trainer):
         default_options.append("team")
     if curr_trainer.favorite_pokemon == "":
         default_options.append("fav")
-    # return default_options
-    return ["team"]
+    return default_options
+
+
 
 
 def get_default_reply(curr_trainer):
