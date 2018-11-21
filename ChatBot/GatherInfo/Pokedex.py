@@ -15,6 +15,10 @@ def main():
         for i, col in enumerate(cols, start=1):
             if col.startswith("against"):
                 col = col[8:]
+
+         #   if row[i] != row[i]:
+         #       temp[col] = ""
+         #   else:
             temp[col] = row[i]
         pokedex[row.name] = temp
 
