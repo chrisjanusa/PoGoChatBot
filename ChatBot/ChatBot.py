@@ -9,8 +9,6 @@ import spacy
 from pathlib import Path
 import pickle
 
-from SentanceProccessing import starts_with_vowel
-
 from Find import find_name
 from Find import find_team
 from Find import find_pokemon
@@ -123,7 +121,7 @@ def get_reply(user_statement, curr_trainer, rep_type):
                 return "NO WAY!!!! ... I am team " + team + " too!!!", ""
         if rep_type == "fav":
             pokemon = find_pokemon(user_statement)
-            if pokemon != []:
+            if pokemon:
                 curr_trainer.fav = pokemon[0]
                 facts = find_pokemon_fact(pokemon[0])
                 return random.choice(facts), ""
@@ -131,15 +129,15 @@ def get_reply(user_statement, curr_trainer, rep_type):
                 return "Oh I've never heard of that one before..", ""
         if rep_type == "caught":
             pokemon = find_pokemon(user_statement)
-            if pokemon != []:
-                curr_trainer.fav = pokemon[0]
-                facts = find_pokemon_fact(pokemon[0])
+            if pokemon:
+                curr_trainer.caught_pokemon.append(pokemon)
+                facts = find_pokemon_fact(random.choice(pokemon[0]))
                 return random.choice(facts), ""
             else:
                 return "Oh I've never heard of that one before..", ""
     else:
         imp_terms = find_imp_term(user_statement)
-        if imp_terms !=[]:
+        if imp_terms:
             term = imp_terms[0]
             return get_fact_reply(term)
 
