@@ -66,9 +66,9 @@ def find_name(sent):
 def find_noun(sent):
     """Given a sentence, find the best candidate noun."""
     for word in sent:
-            if word.pos_ == 'NN':  # This is a noun
-                logger.info("Found noun: %s", word.text)
-                return word.text
+        if word.pos_ == 'NN':  # This is a noun
+            logger.info("Found noun: %s", word.text)
+            return word.text
     return ""
 
 
@@ -86,11 +86,17 @@ def find_pokemon(sent):
     pokemons = []
     tokens = nlp(sent.lower())
     for token in tokens:
+        closest = ""
+        close_dist = 3
         for pokemon in POKEMON_AVAIL:
-            dist = Levenshtein.distance(token.text, pokemon.lower())
+            dist = Levenshtein.distance(token.text.lower(), pokemon.lower())
+            if dist < close_dist:
+                closest = pokemon
+                close_dist = dist
             # logger.info("Token %s has distance %d from %s", token, dist, pokemon)
-            if dist < 2:
-                pokemons.append(pokemon)
+        if close_dist < 3:
+            logger.info("Found pokemon: %s", closest)
+            pokemons.append(closest)
     return pokemons
 
 
@@ -119,18 +125,18 @@ def find_team(sent):
 
 
 def find_pokemon_fact(pokemon):
-    #egg hatch, shiny, regional, alola, legendary type, counters
+    # egg hatch, shiny, regional, alola, legendary type, counters
     facts = []
     egg_hatch = find_egg_hatch(pokemon)
     if egg_hatch > 0:
-        facts.append("Did you know " + pokemon + " hatch out of a " + str(egg_hatch) + "km egg?")
+        facts.append("Did you know " + pokemon + " can hatch out of a " + str(egg_hatch) + "km egg?")
     if pokemon in SHINY_POKEMON:
         facts.append("Did you know " + pokemon + " can be shiny?")
     if pokemon in REGIONAL_POKEMON:
         facts.append("Did you know " + pokemon + " is a regional?")
     if pokemon in ALOLA_POKEMON:
         facts.append("Did you know " + pokemon + " can be alolan as well?")
-    if facts:
+    if not facts:
         facts.append("Oh that's interesting..")
 
     return facts
@@ -138,11 +144,16 @@ def find_pokemon_fact(pokemon):
 
 def find_egg_hatch(pokemon):
     if pokemon in HATCHES_2K:
-            return 2
+        logger.info("Pokemon %s hatches from 2k egg", pokemon)
+        return 2
     elif pokemon in HATCHES_5K:
-            return 5
+        logger.info("Pokemon %s hatches from 5k egg", pokemon)
+        return 5
     elif pokemon in HATCHES_7K:
-            return 7
+        logger.info("Pokemon %s hatches from 7k egg", pokemon)
+        return 7
     elif pokemon in HATCHES_10K:
-            return 10
+        logger.info("Pokemon %s hatches from 10k egg", pokemon)
+        return 10
+    logger.info("Pokemon %s does not hatch from an egg", pokemon)
     return 0
