@@ -49,7 +49,7 @@ CONVO_CARRIER_CAUGHT = [
 ]
 
 CONVO_CARRIER_FAV = [
-    "My favorite pokemon is Chimchar, What about you?",
+    "My favorite pokemon is Chimchar, what about you?",
     "That's fun, do you have a favorite pokemon?",
     "What's your favorite pokemon?"
 ]
