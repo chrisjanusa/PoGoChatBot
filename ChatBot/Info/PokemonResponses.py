@@ -6,7 +6,6 @@ SHINY_RESPONSES = [
     "Did you know {pokemon} can be shiny?",
     "Have you found the shiny version of {pokemon}?",
     "The shiny version of {pokemon} looks so cool!"
-
 ]
 
 ALOLAN_RESPONSES =[
@@ -25,3 +24,4 @@ TYPE_RESPONSES = [
     "{type} types like {pokemon} are so cool!",
     "I love {type} types!"
 ]
+
