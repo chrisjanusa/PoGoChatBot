@@ -14,6 +14,8 @@ from SentanceProccessing import starts_with_vowel
 from Find import find_name
 from Find import find_team
 from Find import find_pokemon
+from Find import find_imp_term
+from Find import find_pokemon_fact
 
 from Info.GenericResponses import INRODUCTION
 from Info.GenericResponses import NO_NAME_SASSY
@@ -25,6 +27,17 @@ from Info.GenericResponses import CONVO_CARRIER_FAV
 from Info.GenericResponses import CONVO_CARRIER_REG
 from Info.GenericResponses import CONVO_CARRIER_TEAM
 from Info.GenericResponses import BYE
+
+from Info.Facts import BERRY
+from Info.Facts import RAID
+from Info.Facts import CANDY
+from Info.Facts import GYM
+from Info.Facts import BALL
+from Info.Facts import STARDUST
+from Info.Facts import EGGS
+from Info.Facts import RESEARCH
+from Info.Facts import EVENT
+from Info.Facts import TYPE
 
 from Trainer import Trainer
 
@@ -111,19 +124,48 @@ def get_reply(user_statement, curr_trainer, rep_type):
         if rep_type == "fav":
             pokemon = find_pokemon(user_statement)
             if pokemon != []:
-                curr_trainer.fav = pokemon
-                return "NO WAY!!!! ... I love " + pokemon[1] + " too!!!", ""
+                curr_trainer.fav = pokemon[0]
+                facts = find_pokemon_fact(pokemon[0])
+                return random.choice(facts), ""
             else:
-                return "Oh I've never heard of that one before.."
+                return "Oh I've never heard of that one before..", ""
         if rep_type == "caught":
             pokemon = find_pokemon(user_statement)
             if pokemon != []:
-                curr_trainer.fav = pokemon
-                return "Oooh " + pokemon[1] + " is awesome!!", ""
+                curr_trainer.fav = pokemon[0]
+                facts = find_pokemon_fact(pokemon[0])
+                return random.choice(facts), ""
             else:
                 return "Oh I've never heard of that one before..", ""
+    else:
+        imp_terms = find_imp_term(user_statement)
+        if imp_terms !=[]:
+            term = imp_terms[0]
+            return get_fact_reply(term)
+
     return get_default_reply(curr_trainer)
 
+def get_fact_reply(term):
+    if term == "Berry":
+        return random.choice(BERRY), ""
+    if term == "Raid":
+        return random.choice(RAID), ""
+    if term == "Candy":
+        return random.choice(CANDY), ""
+    if term == "Gym":
+        return random.choice(GYM), ""
+    if term == "Ball":
+        return random.choice(BALL), ""
+    if term == "Stardust":
+        return random.choice(STARDUST), ""
+    if term == "Eggs":
+        return random.choice(EGGS), ""
+    if term == "Research":
+        return random.choice(RESEARCH), ""
+    if term == "Event":
+        return random.choice(EVENT), ""
+    if term == "Type":
+        return random.choice(TYPE), ""
 
 def get_default_options(curr_trainer):
     default_options = ["caught", "reg"]
