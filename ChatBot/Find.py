@@ -12,6 +12,12 @@ from Info.EggHatches import HATCHES_5K
 from Info.EggHatches import HATCHES_7K
 from Info.EggHatches import HATCHES_10K
 
+from Info.PokemonResponses import *
+
+import random
+import pickle
+import math
+
 nlp = spacy.load('en_core_web_sm')
 logging.basicConfig(filename='log_file.log')
 logger = logging.getLogger()
@@ -129,15 +135,20 @@ def find_pokemon_fact(pokemon):
     facts = []
     egg_hatch = find_egg_hatch(pokemon)
     if egg_hatch > 0:
-        facts.append("Did you know " + pokemon + " can hatch out of a " + str(egg_hatch) + "km egg?")
+        facts.append(random.choice(EGG_RESPONSES).format(**{'pokemon': pokemon, 'egg_dist': egg_hatch}))
     if pokemon in SHINY_POKEMON:
-        facts.append("Did you know " + pokemon + " can be shiny?")
+        facts.append(random.choice(SHINY_RESPONSES).format(**{'pokemon': pokemon}))
     if pokemon in REGIONAL_POKEMON:
-        facts.append("Did you know " + pokemon + " is a regional?")
+        facts.append(random.choice(REGIONAL_RESPONSES).format(**{'pokemon': pokemon}))
     if pokemon in ALOLA_POKEMON:
-        facts.append("Did you know " + pokemon + " can be alolan as well?")
-    if not facts:
-        facts.append("Oh that's interesting..")
+        facts.append(random.choice(ALOLAN_RESPONSES).format(**{'pokemon': pokemon}))
+
+    with open("./Info/pokedex.pickle", "rb") as pokedex_file:
+        pokedex = pickle.load(pokedex_file)
+        pok_type = pokedex[pokemon]["type1"]
+        if isinstance(pokedex[pokemon]["type2"], str) :
+            pok_type += "/" + pokedex[pokemon]["type2"]
+        facts.append(random.choice(TYPE_RESPONSES).format(**{'pokemon': pokemon, 'type':pok_type}))
 
     return facts
 
