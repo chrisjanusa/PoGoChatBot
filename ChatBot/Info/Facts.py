@@ -15,7 +15,7 @@ BERRY = [
     "There are currently 5 different types of berries: Razz Berry, Nanab Berry, Pinap Berry, Golden Razz Berry and Silver Pinap Berry.",
     "The berries are named after real fruits, namely the rasberry, banana and pineapple.",
     "The Razz Berry increases a pokémon's catch rate.",
-    "The Nanab Berry makes a pokémon less erratic."
+    "The Nanab Berry makes a pokémon less erratic.",
     "Fun fact: Only the Razz Berry was available at launch. The other berries weren't added until later."
 ]
 
@@ -24,7 +24,7 @@ RAID = [
     "The reward for winning a raid is a chance to catch the pokémon as well as many other items.",
     "There are five levels of raids with level 5 being battles against legendary pokémon.",
     "Higher level raids give better rewards but require more people to defeat.",
-    "A level 1 raid can be defeated by any trainer alone, but a level 5 raid requires at least 5 players."
+    "A level 1 raid can be defeated by any trainer alone, but a level 5 raid requires at least 5 players.",
     "Raid bosses generally change about every month."
 ]
 
@@ -38,7 +38,7 @@ GYM = [
     "The Gym system has been reworked many times in attempt to make the game more fair.",
     "The gym can be controlled by any one of the three teams.",
     "If the gym is controlled by an opposing team, you can battle it to regain control.",
-    "The longer you are in control of the gym, the more in game currency you can get."
+    "The longer you are in control of the gym, the more in game currency you can get.",
     "Fun fact: The gyms used to allow 10 pokémon to defend it, but now only allow 6 to increase transitions."]
 
 BALL = [
@@ -56,7 +56,7 @@ STARDUST = [
 ]
 
 EGGS = [
-    "There are four types of eggs: 2km, 5km, 7km, 10km eggs."
+    "There are four types of eggs: 2km, 5km, 7km, 10km eggs.",
     "Each egg can be hatched after walking the associated distance.",
     "Rarer pokémon can be hatched from longer distance eggs.",
     "More candy and XP is obtained from longer distance eggs.",
@@ -80,6 +80,6 @@ TYPE = [
     "Every pokémon has one or two types associated with it.",
     "There are 18 different types, including Fire, Grass, Rock, and Fairy.",
     "When battling, certain types have advantages over other types, such as Water having an advantage over Fire.",
-    "After a certain number of pokémon of a type is caught, you get a catch-bonus for those types of pokémons."
+    "After a certain number of pokémon of a type is caught, you get a catch-bonus for those types of pokémons.",
     "Fun fact: Pokémon of certain types are boosted in strength depending on the weather."
 ]

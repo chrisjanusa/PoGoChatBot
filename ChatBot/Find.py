@@ -95,14 +95,15 @@ def find_pokemon(sent):
                 pokemons.append(pokemon)
     return pokemons
 
+
 def find_imp_term(sent):
     """Given a sentence, find if a user mentioned a important term."""
     imp_terms = []
     tokens = nlp(sent.lower())
     for token in tokens:
         for term in IMP_TERMS:
-            dist = Levenshtein.distance(token.text, term.lower())
-            logger.info("Token %s has distance %d from %s", token, dist, term)
+            dist = Levenshtein.distance(token.lemma_, nlp(term.lower())[0].lemma_)
+            logger.info("Token %s has distance %d from %s", token.lemma_, dist, nlp(term.lower())[0].lemma_)
             if dist < 2:
                 imp_terms.append(term)
     return imp_terms
@@ -118,12 +119,13 @@ def find_team(sent):
                 return team
     return ""
 
+
 def find_pokemon_fact(pokemon):
     #egg hatch, shiny, regional, alola, legendary type, counters
     facts = []
     egg_hatch = find_egg_hatch(pokemon)
     if egg_hatch > 0:
-        facts.append("Did you know " + pokemon + " can be hatch out of a " + str(egg_hatch) + "km egg?")
+        facts.append("Did you know " + pokemon + " hatch out of a " + str(egg_hatch) + "km egg?")
     if pokemon in SHINY_POKEMON:
         facts.append("Did you know " + pokemon + " can be shiny?")
     if pokemon in REGIONAL_POKEMON:
@@ -135,6 +137,7 @@ def find_pokemon_fact(pokemon):
 
     return facts
 
+
 def get_default_options(curr_trainer):
     default_options = ["caught", "reg"]
     if curr_trainer.team == "":
@@ -142,6 +145,7 @@ def get_default_options(curr_trainer):
     if curr_trainer.favorite_pokemon == "":
         default_options.append("fav")
     return default_options
+
 
 def find_egg_hatch(pokemon):
     if pokemon in HATCHES_2K:
