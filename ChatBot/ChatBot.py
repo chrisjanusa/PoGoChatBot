@@ -119,6 +119,7 @@ def get_default_options(curr_trainer):
     # return default_options
     return ["team"]
 
+
 def get_default_reply(curr_trainer):
     default_options = get_default_options(curr_trainer)
     topic = random.choice(default_options)

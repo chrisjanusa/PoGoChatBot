@@ -41,10 +41,10 @@ def find_name(sent):
 
     tags = nlp(sent)
 
-    # Find all entities present and choose first one not referring to ourselves
-    for entity in tags.ents:
-        if str(entity) != "Pogo":
-            return str(entity)
+    for tag in tags:
+        if tag.text != "Pogo" and tags[0].pos_ == "PROPN":
+            logger.info("NNP %s has been found", tag)
+            return str(tag)
 
     return None
 
