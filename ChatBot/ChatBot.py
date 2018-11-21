@@ -145,6 +145,7 @@ def get_reply(user_statement, curr_trainer, rep_type):
 
     return get_default_reply(curr_trainer)
 
+
 def get_fact_reply(term):
     if term == "Berry":
         return random.choice(BERRY), ""
@@ -167,6 +168,7 @@ def get_fact_reply(term):
     if term == "Type":
         return random.choice(TYPE), ""
 
+
 def get_default_options(curr_trainer):
     default_options = ["caught", "reg"]
     if curr_trainer.team == "":
@@ -174,7 +176,6 @@ def get_default_options(curr_trainer):
     if curr_trainer.favorite_pokemon == "":
         default_options.append("fav")
     return default_options
-
 
 
 def get_default_reply(curr_trainer):
