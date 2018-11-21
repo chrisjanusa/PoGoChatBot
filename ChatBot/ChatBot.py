@@ -131,7 +131,7 @@ def get_reply(user_statement, curr_trainer, rep_type):
             pokemon = find_pokemon(user_statement)
             if pokemon:
                 curr_trainer.caught_pokemon.append(pokemon)
-                facts = find_pokemon_fact(random.choice(pokemon[0]))
+                facts = find_pokemon_fact(random.choice(pokemon))
                 return random.choice(facts), ""
             else:
                 return "Oh I've never heard of that one before..", ""
@@ -171,7 +171,7 @@ def get_default_options(curr_trainer):
     default_options = ["caught", "reg"]
     if curr_trainer.team == "":
         default_options.append("team")
-    if curr_trainer.favorite_pokemon == "":
+    if curr_trainer.fav == "":
         default_options.append("fav")
     return default_options
 
