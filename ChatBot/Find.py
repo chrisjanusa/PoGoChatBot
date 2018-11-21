@@ -3,6 +3,7 @@ import logging
 import Levenshtein
 from Info.Pokemon import TEAMS
 from Info.Pokemon import POKEMON_AVAIL
+from Info.Pokemon import POKEMON_NOT_AVAIL
 from Info.Pokemon import SHINY_POKEMON
 from Info.Pokemon import REGIONAL_POKEMON
 from Info.Pokemon import ALOLA_POKEMON
@@ -13,6 +14,7 @@ from Info.EggHatches import HATCHES_7K
 from Info.EggHatches import HATCHES_10K
 
 from Info.PokemonResponses import *
+
 from SentanceParsed import Parsed
 
 import random
@@ -109,6 +111,11 @@ def find_pokemon(sent):
         closest = ""
         close_dist = 3
         for pokemon in POKEMON_AVAIL:
+            dist = Levenshtein.distance(token.text.lower(), pokemon.lower())
+            if dist < close_dist:
+                closest = pokemon
+                close_dist = dist
+        for pokemon in POKEMON_NOT_AVAIL:
             dist = Levenshtein.distance(token.text.lower(), pokemon.lower())
             if dist < close_dist:
                 closest = pokemon

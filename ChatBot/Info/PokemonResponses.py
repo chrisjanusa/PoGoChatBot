@@ -24,3 +24,4 @@ TYPE_RESPONSES = [
     "{type} types like {pokemon} are so cool!",
     "I love {type} types!"
 ]
+
