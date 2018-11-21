@@ -1,8 +1,10 @@
 import spacy
 import logging
+import Levenshtein
+from Info.Pokemon import TEAMS
 
 nlp = spacy.load('en_core_web_sm')
-logging.basicConfig()
+logging.basicConfig(filename='log_file.log')
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
@@ -39,10 +41,10 @@ def find_name(sent):
 
     tags = nlp(sent)
 
-    # Find all entities present and choose first one not referring to ourselves
-    for entity in tags.ents:
-        if str(entity) != "Pogo":
-            return str(entity)
+    for tag in tags:
+        if tag.text != "Pogo" and tags[0].pos_ == "PROPN":
+            logger.info("NNP %s has been found", tag)
+            return str(tag)
 
     return None
 
@@ -71,6 +73,18 @@ def find_adjective(sent):
             break
     return adj
 
+
 def find_pokemon(sent):
     """Given a sentence, find if a user mentioned a pokemon."""
     pokemon = None
+
+
+def find_team(sent):
+    tokens = nlp(sent.lower())
+    for token in tokens:
+        for team in TEAMS:
+            dist = Levenshtein.distance(token.text, team.lower())
+            logger.info("Token %s has distance %d from %s", token, dist, team)
+            if dist < 3:
+                return team
+    return ""
