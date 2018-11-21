@@ -6,13 +6,13 @@ import logging
 import os
 from textblob import TextBlob
 import spacy
-from collections import Counter
 from pathlib import Path
 import pickle
 
 from SentanceProccessing import starts_with_vowel
 
 from Find import find_name
+from Find import find_team
 
 from Info.GenericResponses import INRODUCTION
 from Info.GenericResponses import NO_NAME_SASSY
@@ -21,7 +21,6 @@ from Info.GenericResponses import RETURN_TRAINER
 from Info.GenericResponses import NO_NAME
 from Info.GenericResponses import CONVO_CARRIER_CAUGHT
 from Info.GenericResponses import CONVO_CARRIER_FAV
-from Info.GenericResponses import CONVO_CARRIER_LEVEL
 from Info.GenericResponses import CONVO_CARRIER_REG
 from Info.GenericResponses import CONVO_CARRIER_TEAM
 from Info.GenericResponses import BYE
@@ -30,7 +29,7 @@ from Trainer import Trainer
 
 nlp = spacy.load('en_core_web_sm')
 os.environ['NLTK_DATA'] = os.getcwd() + '/nltk_data'
-logging.basicConfig()
+logging.basicConfig(filename='log_file.log')
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
@@ -102,8 +101,12 @@ def construct_response(pronoun, noun, verb):
 
 
 def get_reply(user_statement, curr_trainer, rep_type):
-    tf = Counter([token.text for token in nlp(user_statement.lower())])
-    print(tf)
+    if rep_type != "" and rep_type != "reg":
+        if rep_type == "team":
+            team = find_team(user_statement)
+            if team != "":
+                curr_trainer.team = team
+                return "NO WAY!!!! ... I am team " + team + " too!!!", ""
     return get_default_reply(curr_trainer)
 
 
@@ -113,9 +116,8 @@ def get_default_options(curr_trainer):
         default_options.append("team")
     if curr_trainer.favorite_pokemon == "":
         default_options.append("fav")
-    if curr_trainer.level == -1:
-        default_options.append("level")
-    return default_options
+    # return default_options
+    return ["team"]
 
 
 
@@ -126,8 +128,6 @@ def get_default_reply(curr_trainer):
         return random.choice(CONVO_CARRIER_TEAM), topic
     if topic == "fav":
         return random.choice(CONVO_CARRIER_FAV), topic
-    if topic == "level":
-        return random.choice(CONVO_CARRIER_LEVEL), topic
     if topic == "caught":
         return random.choice(CONVO_CARRIER_CAUGHT), topic
     else:
