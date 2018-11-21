@@ -9,8 +9,6 @@ import spacy
 from pathlib import Path
 import pickle
 
-from SentanceProccessing import starts_with_vowel
-
 from Find import find_name
 from Find import find_team
 from Find import find_pokemon
@@ -62,8 +60,8 @@ def main():
 
     pickle_path = Path("dict.pickle")
     if pickle_path.is_file():
-        pickle_in = open(str(pickle_path), "rb")
-        trainers = pickle.load(pickle_in)
+        with open(str(pickle_path), "rb") as pickle_file:
+            trainers = pickle.load(pickle_file)
     else:
         trainers = {}
 
@@ -83,35 +81,8 @@ def main():
         user_statement = input(reply + "\n>")
 
     print(random.choice(BYE))
-    pickle.dump(trainers, open(str(pickle_path), "wb"))
-
-
-def construct_response(pronoun, noun, verb):
-    """No special cases matched, so we're going to try to construct a full sentence that uses as much
-    of the user's input as possible"""
-    resp = []
-
-    if pronoun:
-        resp.append(pronoun)
-
-    # We always respond in the present tense, and the pronoun will always either be a passthrough
-    # from the user, or 'you' or 'I', in which case we might need to change the tense for some
-    # irregular verbs.
-    if verb:
-        verb_word = verb[0]
-        if verb_word in ('be', 'am', 'is', "'m"):  # This would be an excellent place to use lemmas!
-            if pronoun.lower() == 'you':
-                # The bot will always tell the person they aren't whatever they said they were
-                resp.append("aren't really")
-            else:
-                resp.append(verb_word)
-    if noun:
-        pronoun = "an" if starts_with_vowel(noun) else "a"
-        resp.append(pronoun + " " + noun)
-
-    resp.append(random.choice(("tho", "bro", "lol", "bruh", "smh", "")))
-
-    return " ".join(resp)
+    with open(str(pickle_path), "wb") as pickle_file:
+        pickle.dump(trainers, pickle_file, protocol=pickle.HIGHEST_PROTOCOL)
 
 
 def get_reply(user_statement, curr_trainer, rep_type):
@@ -123,7 +94,7 @@ def get_reply(user_statement, curr_trainer, rep_type):
                 return "NO WAY!!!! ... I am team " + team + " too!!!", ""
         if rep_type == "fav":
             pokemon = find_pokemon(user_statement)
-            if pokemon != []:
+            if pokemon:
                 curr_trainer.fav = pokemon[0]
                 facts = find_pokemon_fact(pokemon[0])
                 return random.choice(facts), ""
@@ -131,19 +102,22 @@ def get_reply(user_statement, curr_trainer, rep_type):
                 return "Oh I've never heard of that one before..", ""
         if rep_type == "caught":
             pokemon = find_pokemon(user_statement)
-            if pokemon != []:
-                curr_trainer.fav = pokemon[0]
-                facts = find_pokemon_fact(pokemon[0])
+            if pokemon:
+                if curr_trainer.caught_pokemon != "":
+                    curr_trainer.caught_pokemon += ","
+                curr_trainer.caught_pokemon += ",".join(pokemon)
+                facts = find_pokemon_fact(random.choice(pokemon))
                 return random.choice(facts), ""
             else:
                 return "Oh I've never heard of that one before..", ""
     else:
         imp_terms = find_imp_term(user_statement)
-        if imp_terms !=[]:
+        if imp_terms:
             term = imp_terms[0]
             return get_fact_reply(term)
 
     return get_default_reply(curr_trainer)
+
 
 def get_fact_reply(term):
     if term == "Berry":
@@ -167,15 +141,14 @@ def get_fact_reply(term):
     if term == "Type":
         return random.choice(TYPE), ""
 
+
 def get_default_options(curr_trainer):
     default_options = ["caught", "reg"]
     if curr_trainer.team == "":
         default_options.append("team")
-    if curr_trainer.favorite_pokemon == "":
+    if curr_trainer.fav == "":
         default_options.append("fav")
     return default_options
-
-
 
 
 def get_default_reply(curr_trainer):
