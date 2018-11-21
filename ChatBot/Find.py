@@ -2,6 +2,7 @@ import spacy
 import logging
 import Levenshtein
 from Info.Pokemon import TEAMS
+from Info.Pokemon import POKEMON_AVAIL
 
 nlp = spacy.load('en_core_web_sm')
 logging.basicConfig(filename='log_file.log')
@@ -76,7 +77,15 @@ def find_adjective(sent):
 
 def find_pokemon(sent):
     """Given a sentence, find if a user mentioned a pokemon."""
-    pokemon = None
+    pokemons = []
+    tokens = nlp(sent.lower())
+    for token in tokens:
+        for pokemon in POKEMON_AVAIL:
+            dist = Levenshtein.distance(token.text, pokemon.lower())
+            #logger.info("Token %s has distance %d from %s", token, dist, pokemon)
+            if dist < 2:
+                pokemons.append(pokemon)
+    return pokemons
 
 
 def find_team(sent):
