@@ -669,3 +669,24 @@ TEAMS = {
     "Valor",
     "Rocket"
 }
+
+TYPES = {
+    "ground",
+    "psychic",
+    "fire",
+    "ice",
+    "flying",
+    "steel",
+    "fight",
+    "bug",
+    "dark",
+    "normal",
+    "water",
+    "fairy",
+    "poison",
+    "dragon",
+    "ghost",
+    "electric",
+    "rock",
+    "grass"
+}

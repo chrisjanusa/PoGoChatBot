@@ -1,17 +1,9 @@
 import spacy
 import logging
 import Levenshtein
-from Info.Pokemon import TEAMS
-from Info.Pokemon import POKEMON_AVAIL
-from Info.Pokemon import POKEMON_NOT_AVAIL
-from Info.Pokemon import SHINY_POKEMON
-from Info.Pokemon import REGIONAL_POKEMON
-from Info.Pokemon import ALOLA_POKEMON
+from Info.Pokemon import *
 from Info.Facts import IMP_TERMS
-from Info.EggHatches import HATCHES_2K
-from Info.EggHatches import HATCHES_5K
-from Info.EggHatches import HATCHES_7K
-from Info.EggHatches import HATCHES_10K
+from Info.EggHatches import *
 
 from Info.PokemonResponses import *
 
@@ -165,9 +157,26 @@ def find_pokemon_fact(pokemon):
     with open("./Info/pokedex.pickle", "rb") as pokedex_file:
         pokedex = pickle.load(pokedex_file)
         pok_type = pokedex[pokemon]["type1"]
+        strong_against = ""
+        weak_against = ""
+        # if pokedex[pokemon] != "":
         if isinstance(pokedex[pokemon]["type2"], str) :
             pok_type += "/" + pokedex[pokemon]["type2"]
         facts.append(random.choice(TYPE_RESPONSES).format(**{'pokemon': pokemon, 'type':pok_type}))
+
+        for against_type in TYPES:
+            if against_type != pokedex[pokemon]["type1"] and against_type != pokedex[pokemon]["type2"]:
+                if pokedex[pokemon][against_type] < 1:
+                    if strong_against == "":
+                        strong_against = against_type
+                    else:
+                        strong_against += ", " + against_type
+                if pokedex[pokemon][against_type] > 1:
+                    if weak_against == "":
+                        weak_against = against_type
+                    else:
+                        weak_against += ", " + against_type
+        facts.append(random.choice(AGAINST_TYPE_RESPONSES).format(**{'pokemon': pokemon, 'strong_type':strong_against, 'weak_type':weak_against}))
 
     return facts
 

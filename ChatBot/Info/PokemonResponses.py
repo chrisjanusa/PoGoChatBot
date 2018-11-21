@@ -25,3 +25,8 @@ TYPE_RESPONSES = [
     "I love {type} types!"
 ]
 
+AGAINST_TYPE_RESPONSES = [
+    "Did you know {pokemon} is strong against {strong_type} type(s)?",
+    "Did you know {pokemon} is weak against {weak_type} type(s)?"
+]
+
