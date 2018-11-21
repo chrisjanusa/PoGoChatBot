@@ -18,40 +18,45 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 
+def proccess_sentance(sent):
+    nlp(sent)
+    pronoun = find_pronoun(sent)
+
+
 def find_pronoun(sent):
     """Given a sentence, find a preferred pronoun to respond with. Returns None if no candidate
     pronoun is found in the input"""
-    pronoun = None
-
-    for word, part_of_speech in sent.pos_tags:
+    for word in sent:
         # Disambiguate pronouns
-        if part_of_speech == 'PRP' and word.lower() == 'you':
-            pronoun = 'I'
-        elif part_of_speech == 'PRP' and word == 'I':
-            # If the user mentioned themselves, then they will definitely be the pronoun
-            pronoun = 'You'
-    return pronoun
+        if word.pos_ == 'PRP' and word.text.lower() == 'you':
+            logger.info("Found pronoun: I")
+            return 'I'
+        elif word.pos_ == 'PRP' and word.text == 'I':
+            logger.info("Found pronoun: You")
+            return 'You'
+    return ""
 
 
 def find_verb(sent):
     """Pick a candidate verb for the sentence."""
-    verb = None
-    pos = None
-    for word, part_of_speech in sent.pos_tags:
-        if part_of_speech.startswith('VB'):  # This is a verb
-            verb = word
-            pos = part_of_speech
-            break
-    return verb, pos
+    for word in sent:
+        if word.pos_.startswith('VB'):  # This is a verb
+            logger.info("Found verb: %s", word.text)
+            return word.text
+    return ""
 
 
 def find_name(sent):
     # Given a sentence, find the best candidate Name. Uses Spacy ER
-
     tags = nlp(sent)
 
+    for entity in tags.ents:
+        if entity.text != "Pogo":
+            logger.info("Entity %s has been found", entity)
+            return str(entity)
+
     for tag in tags:
-        if tag.text != "Pogo" and tags[0].pos_ == "PROPN":
+        if tag.text != "Pogo" and tag.pos_ == "PROPN":
             logger.info("NNP %s has been found", tag)
             return str(tag)
 
@@ -60,27 +65,20 @@ def find_name(sent):
 
 def find_noun(sent):
     """Given a sentence, find the best candidate noun."""
-    noun = None
-
-    if not noun:
-        for w, p in sent.pos_tags:
-            if p == 'NN':  # This is a noun
-                noun = w
-                break
-    if noun:
-        logger.info("Found noun: %s", noun)
-
-    return noun
+    for word in sent:
+            if word.pos_ == 'NN':  # This is a noun
+                logger.info("Found noun: %s", word.text)
+                return word.text
+    return ""
 
 
 def find_adjective(sent):
     """Given a sentence, find the best candidate adjective."""
-    adj = None
-    for w, p in sent.pos_tags:
-        if p == 'JJ':  # This is an adjective
-            adj = w
-            break
-    return adj
+    for word in sent:
+        if word.pos_ == 'JJ':  # This is an adjective
+            logger.info("Found adjective: %s", word.text)
+            return word.text
+    return ""
 
 
 def find_pokemon(sent):
@@ -90,7 +88,7 @@ def find_pokemon(sent):
     for token in tokens:
         for pokemon in POKEMON_AVAIL:
             dist = Levenshtein.distance(token.text, pokemon.lower())
-            #logger.info("Token %s has distance %d from %s", token, dist, pokemon)
+            # logger.info("Token %s has distance %d from %s", token, dist, pokemon)
             if dist < 2:
                 pokemons.append(pokemon)
     return pokemons
@@ -132,19 +130,10 @@ def find_pokemon_fact(pokemon):
         facts.append("Did you know " + pokemon + " is a regional?")
     if pokemon in ALOLA_POKEMON:
         facts.append("Did you know " + pokemon + " can be alolan as well?")
-    if facts == []:
+    if facts:
         facts.append("Oh that's interesting..")
 
     return facts
-
-
-def get_default_options(curr_trainer):
-    default_options = ["caught", "reg"]
-    if curr_trainer.team == "":
-        default_options.append("team")
-    if curr_trainer.favorite_pokemon == "":
-        default_options.append("fav")
-    return default_options
 
 
 def find_egg_hatch(pokemon):

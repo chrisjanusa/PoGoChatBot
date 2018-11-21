@@ -9,8 +9,6 @@ import spacy
 from pathlib import Path
 import pickle
 
-from SentanceProccessing import starts_with_vowel
-
 from Find import find_name
 from Find import find_team
 from Find import find_pokemon
