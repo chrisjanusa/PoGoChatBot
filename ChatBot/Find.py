@@ -13,10 +13,10 @@ from Info.EggHatches import HATCHES_7K
 from Info.EggHatches import HATCHES_10K
 
 from Info.PokemonResponses import *
+from ParsedSentance import Parsed
 
 import random
 import pickle
-import math
 
 nlp = spacy.load('en_core_web_sm')
 logging.basicConfig(filename='log_file.log')
@@ -24,9 +24,25 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 
+def isFarewell(sent):
+    for token in sent:
+        if "bye" in str(token):
+            return True
+    return False
+
 def proccess_sentance(sent):
-    nlp(sent)
-    pronoun = find_pronoun(sent)
+    nlp_sent = nlp(sent)
+    parse = Parsed()
+    parse.pronoun = find_pronoun(nlp_sent)
+    parse.adj = find_adjective(nlp_sent)
+    parse.noun = find_noun(nlp_sent)
+    parse.verb = find_verb(nlp_sent)
+    parse.name = find_name(nlp_sent)
+    parse.pokemon = find_pokemon(nlp_sent)
+    parse.imp_terms = find_imp_term(nlp_sent)
+    parse.team = find_team(nlp_sent)
+    parse.isFarewell = isFarewell(nlp_sent)
+    return parse
 
 
 def find_pronoun(sent):
@@ -54,14 +70,12 @@ def find_verb(sent):
 
 def find_name(sent):
     # Given a sentence, find the best candidate Name. Uses Spacy ER
-    tags = nlp(sent)
-
-    for entity in tags.ents:
+    for entity in sent.ents:
         if entity.text != "Pogo":
             logger.info("Entity %s has been found", entity)
             return str(entity)
 
-    for tag in tags:
+    for tag in sent:
         if tag.text != "Pogo" and tag.pos_ == "PROPN":
             logger.info("NNP %s has been found", tag)
             return str(tag)
@@ -90,8 +104,7 @@ def find_adjective(sent):
 def find_pokemon(sent):
     """Given a sentence, find if a user mentioned a pokemon."""
     pokemons = []
-    tokens = nlp(sent.lower())
-    for token in tokens:
+    for token in sent:
         closest = ""
         close_dist = 3
         for pokemon in POKEMON_AVAIL:
@@ -109,8 +122,7 @@ def find_pokemon(sent):
 def find_imp_term(sent):
     """Given a sentence, find if a user mentioned a important term."""
     imp_terms = []
-    tokens = nlp(sent.lower())
-    for token in tokens:
+    for token in sent:
         for term in IMP_TERMS:
             dist = Levenshtein.distance(token.lemma_, nlp(term.lower())[0].lemma_)
             logger.info("Token %s has distance %d from %s", token.lemma_, dist, nlp(term.lower())[0].lemma_)
@@ -120,10 +132,9 @@ def find_imp_term(sent):
 
 
 def find_team(sent):
-    tokens = nlp(sent.lower())
-    for token in tokens:
+    for token in sent:
         for team in TEAMS:
-            dist = Levenshtein.distance(token.text, team.lower())
+            dist = Levenshtein.distance(token.text.lower(), team.lower())
             logger.info("Token %s has distance %d from %s", token, dist, team)
             if dist < 3:
                 return team
