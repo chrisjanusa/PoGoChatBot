@@ -2,9 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e1952e9e-332e-42ad-a811-a9394ca6f848" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/ExternalFiles/Config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HelperFunctions/PokeInfo.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ChatBot.py" beforeDir="false" afterPath="$PROJECT_DIR$/ChatBot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Find.py" beforeDir="false" afterPath="$PROJECT_DIR$/Find.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Exceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/Exceptions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Find.py" beforeDir="false" afterPath="$PROJECT_DIR$/HelperFunctions/Find.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SentanceProccessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/HelperFunctions/SentanceProccessing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/Trainer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dict.pickle" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -52,26 +58,27 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="log" value="3" />
-          <entry key="py" value="46" />
+          <entry key="log_file" value="1" />
+          <entry key="py" value="50" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="PLAIN_TEXT" value="3" />
-          <entry key="Python" value="46" />
+          <entry key="PLAIN_TEXT" value="4" />
+          <entry key="Python" value="50" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="19" />
-          <entry key="py" value="7709" />
-          <entry key="txt" value="525" />
+          <entry key="py" value="8093" />
+          <entry key="txt" value="538" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="544" />
-          <entry key="Python" value="7709" />
+          <entry key="PLAIN_TEXT" value="557" />
+          <entry key="Python" value="8093" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages">
@@ -86,7 +93,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GatherInfo/Pokedex.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="101">
+            <state relative-caret-position="135">
               <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
@@ -100,27 +107,60 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ChatBot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="31" column="44" selection-start-line="31" selection-start-column="44" selection-end-line="31" selection-end-column="44" />
+            <state relative-caret-position="266">
+              <caret line="54" column="41" lean-forward="true" selection-start-line="54" selection-start-column="19" selection-end-line="54" selection-end-column="41" />
               <folding>
-                <element signature="e#108#163#0" expanded="true" />
-                <marker date="1542761079000" expanded="true" signature="4384:4533" ph="..." />
-                <marker date="1542761079000" expanded="true" signature="4384:4536" ph="..." />
-                <marker date="1542761079000" expanded="true" signature="4533:4534" ph="..." />
+                <element signature="e#108#121#0" expanded="true" />
+                <marker date="1542763227000" expanded="true" signature="4651:4800" ph="..." />
+                <marker date="1542763227000" expanded="true" signature="4651:4803" ph="..." />
+                <marker date="1542763227000" expanded="true" signature="4800:4801" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/HelperFunctions/PokeInfo.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+              <folding>
+                <marker date="1542763227000" expanded="true" signature="93:98" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SentanceProccessing.py">
+        <entry file="file://$PROJECT_DIR$/GatherInfo/Pokemon_Gather.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" selection-start-line="17" selection-end-line="17" />
+            <state relative-caret-position="630">
+              <caret line="103" column="10" lean-forward="true" selection-start-line="102" selection-end-line="103" selection-end-column="10" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HelperFunctions/SentanceProccessing.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="20" column="44" selection-start-line="20" selection-start-column="44" selection-end-line="20" selection-end-column="44" />
               <folding>
                 <element signature="e#0#51#0" expanded="true" />
-                <marker date="1542754915000" expanded="true" signature="642:643" ph="..." />
+                <marker date="1542762577000" expanded="true" signature="749:750" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ExternalFiles/Config.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" column="52" lean-forward="true" selection-start-line="1" selection-start-column="52" selection-end-line="1" selection-end-column="52" />
             </state>
           </provider>
         </entry>
@@ -144,17 +184,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/log_file.log">
+        <entry file="file://$PROJECT_DIR$/HelperFunctions/Find.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1026" />
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Find.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="3" column="30" selection-start-line="3" selection-start-column="30" selection-end-line="3" selection-end-column="30" />
+            <state relative-caret-position="1455">
+              <caret line="97" selection-start-line="97" selection-end-line="97" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -200,6 +233,7 @@
       <find>nlp</find>
       <find>team</find>
       <find>get</find>
+      <find>dict</find>
     </findStrings>
     <replaceStrings>
       <replace>&quot;, &quot;</replace>
@@ -232,10 +266,14 @@
         <option value="$PROJECT_DIR$/Info/Facts.py" />
         <option value="$PROJECT_DIR$/Trainer.py" />
         <option value="$PROJECT_DIR$/Info/Pokemon.py" />
-        <option value="$PROJECT_DIR$/SentanceProccessing.py" />
         <option value="$PROJECT_DIR$/Info/GenericResponses.py" />
-        <option value="$PROJECT_DIR$/ChatBot.py" />
+        <option value="$PROJECT_DIR$/ExternalFiles/Config.py" />
+        <option value="$PROJECT_DIR$/SentanceProccessing.py" />
         <option value="$PROJECT_DIR$/Find.py" />
+        <option value="$PROJECT_DIR$/HelperFunctions.py" />
+        <option value="$PROJECT_DIR$/HelperFunctions/Find.py" />
+        <option value="$PROJECT_DIR$/ChatBot.py" />
+        <option value="$PROJECT_DIR$/HelperFunctions/PokeInfo.py" />
       </list>
     </option>
   </component>
@@ -297,9 +335,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Classes" />
+      <recent name="$PROJECT_DIR$/HelperFunctions" />
+      <recent name="$PROJECT_DIR$/ExternalFiles" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/Info" />
-      <recent name="$PROJECT_DIR$/GatherInfo" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -595,7 +635,14 @@
       <option name="project" value="LOCAL" />
       <updated>1542760319637</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Redid changes">
+      <created>1542761183765</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1542761183765</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TodoView">
@@ -609,14 +656,15 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="152" y="30" width="1186" height="870" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.29527897" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.29527897" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Messages" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32904884" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49963742" visible="true" weight="0.3277635" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49963742" visible="true" weight="0.11953727" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39974293" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -654,7 +702,8 @@
     <MESSAGE value="Compelete structure rework and init tf work" />
     <MESSAGE value="Pogo can now identify your team after asking you" />
     <MESSAGE value="Switch find name back to old way" />
-    <option name="LAST_COMMIT_MESSAGE" value="Switch find name back to old way" />
+    <MESSAGE value="Redid changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Redid changes" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Research.py" />
@@ -695,39 +744,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GatherInfo/Pokemon_Gather.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1456">
-          <caret line="103" column="10" lean-forward="true" selection-start-line="102" selection-end-line="103" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Exceptions.py">
+    <entry file="file://$PROJECT_DIR$/Classes/Exceptions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="3" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Trainer.py">
+    <entry file="file://$PROJECT_DIR$/Classes/Trainer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GatherInfo/Pokedex.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="101">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-            <marker date="1542679716000" expanded="true" signature="859:860" ph="..." />
-            <marker date="1542679716000" expanded="true" signature="859:862" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -745,7 +772,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/log_file.log">
+    <entry file="file://$PROJECT_DIR$/ExternalFiles/log_file.log">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1026" />
       </provider>
@@ -771,36 +798,81 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ChatBot.py">
+    <entry file="file://$PROJECT_DIR$/ExternalFiles/Config.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="31" column="44" selection-start-line="31" selection-start-column="44" selection-end-line="31" selection-end-column="44" />
-          <folding>
-            <element signature="e#108#163#0" expanded="true" />
-            <marker date="1542761079000" expanded="true" signature="4384:4533" ph="..." />
-            <marker date="1542761079000" expanded="true" signature="4384:4536" ph="..." />
-            <marker date="1542761079000" expanded="true" signature="4533:4534" ph="..." />
-          </folding>
+        <state relative-caret-position="15">
+          <caret line="1" column="52" lean-forward="true" selection-start-line="1" selection-start-column="52" selection-end-line="1" selection-end-column="52" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SentanceProccessing.py">
+    <entry file="file://$PROJECT_DIR$/HelperFunctions/SentanceProccessing.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        <state relative-caret-position="300">
+          <caret line="20" column="44" selection-start-line="20" selection-start-column="44" selection-end-line="20" selection-end-column="44" />
           <folding>
             <element signature="e#0#51#0" expanded="true" />
-            <marker date="1542754915000" expanded="true" signature="642:643" ph="..." />
+            <marker date="1542762577000" expanded="true" signature="749:750" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Find.py">
+    <entry file="file://$PROJECT_DIR$/ExternalFiles/log_file">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HelperFunctions.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HelperFunctions/Find.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="30" selection-start-line="3" selection-start-column="30" selection-end-line="3" selection-end-column="30" />
+        <state relative-caret-position="1455">
+          <caret line="97" selection-start-line="97" selection-end-line="97" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GatherInfo/Pokemon_Gather.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="103" column="10" lean-forward="true" selection-start-line="102" selection-end-line="103" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GatherInfo/Pokedex.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+            <marker date="1542679716000" expanded="true" signature="859:860" ph="..." />
+            <marker date="1542679716000" expanded="true" signature="859:862" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ChatBot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="54" column="41" lean-forward="true" selection-start-line="54" selection-start-column="19" selection-end-line="54" selection-end-column="41" />
+          <folding>
+            <element signature="e#108#121#0" expanded="true" />
+            <marker date="1542763227000" expanded="true" signature="4651:4800" ph="..." />
+            <marker date="1542763227000" expanded="true" signature="4651:4803" ph="..." />
+            <marker date="1542763227000" expanded="true" signature="4800:4801" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HelperFunctions/PokeInfo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+          <folding>
+            <marker date="1542763227000" expanded="true" signature="93:98" ph="..." />
           </folding>
         </state>
       </provider>

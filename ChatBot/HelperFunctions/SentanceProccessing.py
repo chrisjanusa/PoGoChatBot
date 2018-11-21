@@ -4,19 +4,21 @@ from Info.GenericResponses import SELF_VERBS_WITH_NOUN_CAPS_PLURAL
 from Info.GenericResponses import SELF_VERBS_WITH_NOUN_LOWER
 from Info.GenericResponses import SELF_VERBS_WITH_ADJECTIVE
 
-from Find import find_pronoun
-from Find import find_adjective
-from Find import find_noun
-from Find import find_verb
+from HelperFunctions.Find import find_pronoun
+from HelperFunctions.Find import find_adjective
+from HelperFunctions.Find import find_noun
+from HelperFunctions.Find import find_verb
 
 from Info.BadWords import FILTER_WORDS
 
-from Exceptions import UnacceptableUtteranceException
+from Classes.Exceptions import UnacceptableUtteranceException
+
+from ExternalFiles import Config
 
 import random
 import logging
 
-logging.basicConfig(filename='log_file.log')
+logging.basicConfig(filename=Config.LOG_FILE)
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 

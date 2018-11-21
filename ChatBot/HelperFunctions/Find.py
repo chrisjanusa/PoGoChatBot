@@ -3,8 +3,10 @@ import logging
 import Levenshtein
 from Info.Pokemon import TEAMS
 
+from ExternalFiles import Config
+
 nlp = spacy.load('en_core_web_sm')
-logging.basicConfig(filename='log_file.log')
+logging.basicConfig(filename=Config.LOG_FILE)
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
@@ -40,6 +42,11 @@ def find_name(sent):
     # Given a sentence, find the best candidate Name. Uses Spacy ER
 
     tags = nlp(sent)
+
+    for entity in tags.ents:
+        if entity.text != "Pogo":
+            logger.info("Entity %s has been found", entity)
+            return str(entity)
 
     for tag in tags:
         if tag.text != "Pogo" and tags[0].pos_ == "PROPN":

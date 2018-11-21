@@ -1,6 +1,5 @@
 # Chris Janusa and Nymisha Jahagirdar
 # Inspired by BroBot available at https://github.com/lizadaly/brobot/
-from __future__ import print_function, unicode_literals
 import random
 import logging
 import os
@@ -9,10 +8,12 @@ import spacy
 from pathlib import Path
 import pickle
 
-from SentanceProccessing import starts_with_vowel
+from HelperFunctions.SentanceProccessing import starts_with_vowel
 
-from Find import find_name
-from Find import find_team
+from HelperFunctions.Find import find_name
+from HelperFunctions.Find import find_team
+
+from HelperFunctions.PokeInfo import pokemon_fact
 
 from Info.GenericResponses import INRODUCTION
 from Info.GenericResponses import NO_NAME_SASSY
@@ -25,11 +26,13 @@ from Info.GenericResponses import CONVO_CARRIER_REG
 from Info.GenericResponses import CONVO_CARRIER_TEAM
 from Info.GenericResponses import BYE
 
-from Trainer import Trainer
+from Classes.Trainer import Trainer
+
+from ExternalFiles import Config
 
 nlp = spacy.load('en_core_web_sm')
 os.environ['NLTK_DATA'] = os.getcwd() + '/nltk_data'
-logging.basicConfig(filename='log_file.log')
+logging.basicConfig(filename=Config.LOG_FILE)
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
@@ -46,7 +49,7 @@ def main():
             user_statement = input(random.choice(NO_NAME) + "\n> ")
         name = find_name(user_statement)
 
-    pickle_path = Path("dict.pickle")
+    pickle_path = Path(Config.TRAINER_DICT)
     if pickle_path.is_file():
         pickle_in = open(str(pickle_path), "rb")
         trainers = pickle.load(pickle_in)
@@ -107,6 +110,10 @@ def get_reply(user_statement, curr_trainer, rep_type):
             if team != "":
                 curr_trainer.team = team
                 return "NO WAY!!!! ... I am team " + team + " too!!!", ""
+        if rep_type == "caught":
+            pokemon_caught = find_pokemon(user_statement)
+            if len(pokemon_caught) > 0:
+                return pokemon_fact(random.choice(pokemon_caught))
     return get_default_reply(curr_trainer)
 
 
@@ -116,9 +123,7 @@ def get_default_options(curr_trainer):
         default_options.append("team")
     if curr_trainer.favorite_pokemon == "":
         default_options.append("fav")
-    # return default_options
-    return ["team"]
-
+    return default_options
 
 
 def get_default_reply(curr_trainer):
