@@ -18,11 +18,24 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 
-def isFarewell(sent):
+def is_farewell(sent):
     for token in sent:
         if "bye" in str(token):
             return True
     return False
+
+
+def find_egg_num(sent):
+    num = -1
+    is_egg_num = False
+    for word in sent:
+        if is_egg_num and word.lemma_ == "egg":
+            return num, True
+        if word.pos_ == "NUM":
+            num = int(word.text.split("k")[0])
+            if num == 2 or num == 5 or num == 7 or num == 10:
+                is_egg_num = True
+    return num, False
 
 
 def proccess_sentance(sent):
@@ -37,11 +50,14 @@ def proccess_sentance(sent):
     parse.pokemon = find_pokemon(nlp_sent)
     parse.imp_terms = find_imp_term(nlp_sent)
     parse.team = find_team(nlp_sent)
-    parse.isFarewell = isFarewell(nlp_sent)
+    parse.isFarewell = is_farewell(nlp_sent)
+    num, is_egg_num = find_egg_num(nlp_sent)
+    parse.num = num
+    parse.isEgg = is_egg_num
     parse.text = sent
-    logger.info("Dobj: %s Pronouns: %s Adjs: %s Subjs: %s Verbs: %s Names: %s Pokemon: %s Imp Terms: %s Team: %s",
+    logger.info("Dobj: %s Pronouns: %s Adjs: %s Subjs: %s Verbs: %s Names: %s Pokemon: %s Imp Terms: %s Team: %s Num: %d IsEgg: %r",
                 ", ".join(parse.doj), "".join(parse.pronoun), ", ".join(parse.adj), ", ".join(parse.subj), ", ".join(parse.verb),
-                parse.name, ", ".join(parse.pokemon), ", ".join(parse.imp_terms), parse.team)
+                parse.name, ", ".join(parse.pokemon), ", ".join(parse.imp_terms), parse.team, num, is_egg_num)
 
     return parse
 
@@ -120,7 +136,7 @@ def find_pokemon(sent):
     """Given a sentence, find if a user mentioned a pokemon."""
     pokemons = []
     for token in sent:
-        if token.text == 'shiny':
+        if token.text == 'shiny' or token.text == "comes":
             continue
 
         closest = ""

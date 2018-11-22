@@ -10,3 +10,5 @@ class Parsed(object):
     team = ""
     isFarewell = False
     text = ""
+    num = -1
+    isEgg = False

@@ -64,6 +64,17 @@ def main():
         pickle.dump(trainers, pickle_file, protocol=pickle.HIGHEST_PROTOCOL)
 
 
+def hatches_from(num):
+    if num == 2:
+        return random.sample(HATCHES_2K, 6)
+    if num == 5:
+        return random.sample(HATCHES_5K, 6)
+    if num == 7:
+        return random.sample(HATCHES_7K, 6)
+    if num == 10:
+        return random.sample(HATCHES_10K, 6)
+
+
 def get_reply(parse_obj, curr_trainer, rep_type):
     pronoun = parse_obj.pronoun
     subj = parse_obj.subj
@@ -71,6 +82,8 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     doj = parse_obj.doj
     verb = parse_obj.verb
     name = parse_obj.name
+    num = parse_obj.num
+    is_egg = parse_obj.isEgg
     pokemon = parse_obj.pokemon
     imp_terms = parse_obj.imp_terms
     team = parse_obj.team
@@ -83,6 +96,11 @@ def get_reply(parse_obj, curr_trainer, rep_type):
         reply = get_shiny_reply(rep_type, doj, adj, verb)
         if reply != "":
             return reply
+
+    if is_egg and not pokemon:
+        hatch_list = hatches_from(num)
+        last = hatch_list.pop()
+        return "To name a few: " + ", ".join(hatch_list) + " and " + last + " hatch from " + str(num) + "km eggs", str(num) + "km"
 
     if imp_terms and "be" in verb:
         if "Type" in imp_terms and pokemon:
