@@ -532,7 +532,9 @@ REGIONAL_POKEMON = {
     "Illumise",
     "Seviper",
     "Carnivine",
-    "Relicanth"}
+    "Relicanth",
+    "Farfetch'd"
+}
 
 SHINY_POKEMON = {
     "Sableye",

@@ -1,13 +1,8 @@
 # Chris Janusa and Nymisha Jahagirdar
 # Inspired by BroBot available at https://github.com/lizadaly/brobot/
-from __future__ import print_function, unicode_literals
-import random
-import logging
 import os
 from textblob import TextBlob
-import spacy
 from pathlib import Path
-import pickle
 
 from Find import *
 from Info.GenericResponses import *
@@ -45,7 +40,8 @@ def main():
     if name in trainers:
         trainer = trainers[name]
         if trainer.team != "":
-            user_statement = proccess_sentance(input(random.choice(RETURN_TRAINER).format(**{'name': name}) + " btw Go " + trainer.team + "!!!!!!" + "\n> "))
+            user_statement = proccess_sentance(input(
+                random.choice(RETURN_TRAINER).format(**{'name': name}) + " btw Go " + trainer.team + "!!!!!!" + "\n> "))
         else:
             user_statement = proccess_sentance(input(random.choice(RETURN_TRAINER).format(**{'name': name}) + "\n> "))
 
@@ -64,15 +60,30 @@ def main():
         pickle.dump(trainers, pickle_file, protocol=pickle.HIGHEST_PROTOCOL)
 
 
-def hatches_from(num):
+def hatches_from(num, pokemon):
     if num == 2:
-        return random.sample(HATCHES_2K, 6)
+        hatches = HATCHES_2K
     if num == 5:
-        return random.sample(HATCHES_5K, 6)
+        hatches = HATCHES_5K
     if num == 7:
-        return random.sample(HATCHES_7K, 6)
+        hatches = HATCHES_7K
     if num == 10:
-        return random.sample(HATCHES_10K, 6)
+        hatches = HATCHES_10K
+
+    if pokemon in hatches:
+        samp = random.sample(hatches, 5)
+        samp.append("your favorite pokemon " + pokemon)
+        return samp
+    return random.sample(hatches, 6)
+
+
+def get_num_pokemon(num):
+    with open("./Info/pokedex.pickle", "rb") as pokedex_file:
+        pokedex = pickle.load(pokedex_file)
+        for key, value in pokedex.items():
+            if value["pokedex_number"] == num:
+                return value["name"]
+    return ""
 
 
 def get_reply(parse_obj, curr_trainer, rep_type):
@@ -88,48 +99,68 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     imp_terms = parse_obj.imp_terms
     team = parse_obj.team
 
-    if pokemon:
-        reply = get_shiny_reply(pokemon[0], doj, adj, verb)
-        if reply != "":
-            return reply
-    elif rep_type in ALL_POKEMON:
-        reply = get_shiny_reply(rep_type, doj, adj, verb)
-        if reply != "":
-            return reply
+    # Maintains topic so if no pokemon are present assume it is referring to previous topic
+    if not pokemon and rep_type in ALL_POKEMON:
+        pokemon.append(rep_type)
 
+    # Pattern "Does {pokemon} have an Alolan form?"
+    if ("be" in verb  or "have" in verb) and pokemon and "Alolan" in imp_terms:
+        if pokemon[0] in ALOLA_POKEMON:
+            return pokemon[0] + " does have an Alolan form", pokemon[0]
+        else:
+            return "Nope, " + pokemon[0] + " doesn't have an Alolan form", pokemon[0]
+
+    if ("be" in verb  or "have" in verb) and pokemon and "Regional" in imp_terms:
+        if pokemon[0] in REGIONAL_POKEMON:
+            return pokemon[0] + " is a regional pokemon", pokemon[0]
+        else:
+            return "Nope, " + pokemon[0] + " is available all over the world", pokemon[0]
+
+    # Pattern "What pokemon is {num}?
+    if ("be" in verb  or "have" in verb) and num != -1:
+        pokemon = get_num_pokemon(num)
+        if pokemon != "":
+            return "#" + str(num) + " is " + pokemon, pokemon
+
+    # Pattern "Can {pokemon} be shiny?"
+    if pokemon and "Shiny" in imp_terms and ("be" in verb  or "have" in verb):
+        return get_shiny_reply(pokemon[0])
+
+    # Pattern "What hatches from {num} egg?"
     if is_egg and not pokemon:
-        hatch_list = hatches_from(num)
+        hatch_list = hatches_from(num, curr_trainer.fav)
         last = hatch_list.pop()
-        return "To name a few: " + ", ".join(hatch_list) + " and " + last + " hatch from " + str(num) + "km eggs", str(num) + "km"
+        return "To name a few: " + ", ".join(hatch_list) + " and " + last + " hatch from " + str(num) + "km eggs", str(
+            num) + "km"
 
+    # Pattern "What is {imp_term}?" and "What type is {pokemon}?
     if imp_terms and "be" in verb:
         if "Type" in imp_terms and pokemon:
             return pokemon[0] + " is a " + find_type(pokemon[0]) + " type pokemon", pokemon[0]
         else:
             return DEF_IMP_TERM[imp_terms[0]], imp_terms[0]
 
-    if rep_type != "" and rep_type != "reg":
-        if rep_type == "team":
-            if team != "":
-                curr_trainer.team = team
-                return "NO WAY!!!! ... I am team " + team + " too!!!", team
-        if rep_type == "fav":
-            if pokemon:
-                curr_trainer.fav = pokemon[0]
-                facts = find_pokemon_fact(pokemon[0])
-                return random.choice(facts), pokemon[0]
-            else:
-                return "Oh I've never heard of that one before..", ""
-        if rep_type == "caught":
-            if pokemon:
-                if curr_trainer.caught_pokemon != "":
-                    curr_trainer.caught_pokemon += ","
-                curr_trainer.caught_pokemon += ",".join(pokemon)
-                target_pokemon = random.choice(pokemon)
-                facts = find_pokemon_fact(target_pokemon)
-                return random.choice(facts), target_pokemon
-            else:
-                return "Oh I've never heard of that one before..", ""
+    if rep_type == "team":
+        if team != "":
+            curr_trainer.team = team
+            return "NO WAY!!!! ... I am team " + team + " too!!!", team
+    if rep_type == "fav":
+        if pokemon:
+            curr_trainer.fav = pokemon[0]
+            facts = find_pokemon_fact(pokemon[0])
+            return random.choice(facts), pokemon[0]
+        else:
+            return "Oh I've never heard of that one before..", ""
+    if rep_type == "caught":
+        if pokemon:
+            if curr_trainer.caught_pokemon != "":
+                curr_trainer.caught_pokemon += ","
+            curr_trainer.caught_pokemon += ",".join(pokemon)
+            target_pokemon = random.choice(pokemon)
+            facts = find_pokemon_fact(target_pokemon)
+            return random.choice(facts), target_pokemon
+        else:
+            return "Oh I've never heard of that one before..", ""
     if imp_terms:
         term = imp_terms[0]
         return get_fact_reply(term)
@@ -158,6 +189,14 @@ def get_fact_reply(term):
         return random.choice(EVENT), "Event"
     if term == "Type":
         return random.choice(TYPE), "Type"
+    if term == "Pokemon":
+        return DEF_IMP_TERM[term], term
+    if term == "Shiny":
+        return DEF_IMP_TERM[term], term
+    if term == "Alolan":
+        return DEF_IMP_TERM[term], term
+    if term == "Regional":
+        return DEF_IMP_TERM[term], term
 
 
 def get_default_options(curr_trainer):
@@ -182,13 +221,11 @@ def get_default_reply(curr_trainer):
         return random.choice(CONVO_CARRIER_REG), topic
 
 
-def get_shiny_reply(pokemon, doj, adj, verb):
-    if ('shiny' in doj or 'shiny' in adj) and ('have' in verb or 'be' in verb):
-        if pokemon in SHINY_POKEMON:
-            return "Yea " + pokemon + " can be shiny!!!", pokemon
-        else:
-            return "Sadly " + pokemon + " can not be shiny ... Yet!", pokemon
-    return ""
+def get_shiny_reply(pokemon):
+    if pokemon in SHINY_POKEMON:
+        return "Yea " + pokemon + " can be shiny!!!", pokemon
+    else:
+        return "Sadly " + pokemon + " can not be shiny ... Yet!", pokemon
 
 
 if __name__ == "__main__":

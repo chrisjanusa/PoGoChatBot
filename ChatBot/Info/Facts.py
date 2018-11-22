@@ -10,7 +10,11 @@ IMP_TERMS = {
     "Research",
     "Event",
     "Type",
-    "Trade"
+    "Trade",
+    "Pokemon",
+    "Alolan",
+    "Shiny",
+    "Regional"
 }
 
 DEF_IMP_TERM ={
@@ -24,7 +28,11 @@ DEF_IMP_TERM ={
     "Eggs": "Eggs contain Pokémon and can be hatched after walking the associated distance.",
     "Research": "Research are tasks that when completed give rewards",
     "Trade": "Trading is when you and a friend swap pokemon.",
-    "Type": "Every pokemon has one or two types. When battling, certain types have advantages over other types, such as Water having an advantage over Fire."
+    "Type": "Every pokemon has one or two types. When battling, certain types have advantages over other types, such as Water having an advantage over Fire.",
+    "Pokemon": "Pokemon is short for pocket monsters and they are the cute creatures that you collect, battle and trade.",
+    "Alolan": "Alolan pokemon are ones that resemble a pokemon but they have a different typing and a different design",
+    "Shiny": "Shiny pokemon are the exact same as regular ones but they have a different coloring",
+    "Regional": "Regional pokemon are only availible in certain regions of the world such as Tauras the bull pokemon only availible in North America"
 }
 
 BERRY = [
