@@ -39,6 +39,7 @@ def proccess_sentance(sent):
     parse.team = find_team(nlp_sent)
     parse.isFarewell = isFarewell(nlp_sent)
     parse.text = sent
+
     logger.info("Dobj: %s Pronouns: %s Adjs: %s Subjs: %s Verbs: %s Names: %s Pokemon: %s Imp Terms: %s Team: %s",
                 ", ".join(parse.doj), "".join(parse.pronoun), ", ".join(parse.adj), ", ".join(parse.subj), ", ".join(parse.verb),
                 parse.name, ", ".join(parse.pokemon), ", ".join(parse.imp_terms), parse.team)
