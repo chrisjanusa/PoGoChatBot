@@ -4,11 +4,27 @@ IMP_TERMS = {
     "Candy",
     "Gym",
     "Ball",
+    "Pokeball",
     "Stardust",
     "Eggs",
     "Research",
     "Event",
-    "Type"
+    "Type",
+    "Trade"
+}
+
+DEF_IMP_TERM ={
+    "Berry": "Berries are items that can be fed to Pokemon while catching for different bonuses",
+    "Raid": "Raids are when you get together as a group to fight a strong pokémon in a gym for the chance to catch it.",
+    "Candy": "Candy can be used to evolve or power up pokémon.",
+    "Gym": "Gyms are the battling place in the game. You can attack gyms controlled by opposing teams or add your pokemon to ones controlled by your team.",
+    "Ball": "Pokeballs are the item used to catch pokemon with the different types having different catch rates",
+    "Stardust": "Stardust can be used to power up or trade pokémon and can be gained in many ways",
+    "Events": "Pokémon Go often hosts special events with bonuses and increased spawn rates for certain pokémon.",
+    "Eggs": "Eggs contain Pokémon and can be hatched after walking the associated distance.",
+    "Research": "Research are tasks that when completed give rewards",
+    "Trade": "Trading is when you and a friend swap pokemon.",
+    "Type": "Every pokemon has one or two types. When battling, certain types have advantages over other types, such as Water having an advantage over Fire."
 }
 
 BERRY = [
@@ -43,7 +59,7 @@ GYM = [
 
 BALL = [
     "There are three main types of balls: Poké ball, Great ball and Ultra ball.",
-    "Each ball has an incrementally better catch rate, ranking Poké balls as the lowest catch rate and Ultra balls as the highest catch rate.",
+    "Each type ball has an incrementally better catch rate, ranking Poké balls as the lowest catch rate and Ultra balls as the highest catch rate.",
     "When you win a raid, you are given a certain number of Premier balls to catch the defeated pokémon. These disappear after the raid.",
     "Fun fact: You can see which pokéball was used to catch the specific pokémon on it's detail page."
 ]
@@ -82,4 +98,10 @@ TYPE = [
     "When battling, certain types have advantages over other types, such as Water having an advantage over Fire.",
     "After a certain number of pokémon of a type is caught, you get a catch-bonus for those types of pokémons.",
     "Fun fact: Pokémon of certain types are boosted in strength depending on the weather."
+]
+
+TRADING = [
+    "You can trade pokemon with friends and it's stats will be randomized so you can hope to get a better one",
+    "When you trade, you have a chance to get a lucky pokemon which costs half stardust to power up!",
+    "Trading gives you up to 3 candy based on how far apart the catch location of the pokemon being traded is"
 ]

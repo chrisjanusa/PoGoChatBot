@@ -38,6 +38,7 @@ def proccess_sentance(sent):
     parse.imp_terms = find_imp_term(nlp_sent)
     parse.team = find_team(nlp_sent)
     parse.isFarewell = isFarewell(nlp_sent)
+    parse.text = sent
     logger.info("Dobj: %s Pronouns: %s Adjs: %s Subjs: %s Verbs: %s Names: %s Pokemon: %s Imp Terms: %s Team: %s",
                 ", ".join(parse.doj), "".join(parse.pronoun), ", ".join(parse.adj), ", ".join(parse.subj), ", ".join(parse.verb),
                 parse.name, ", ".join(parse.pokemon), ", ".join(parse.imp_terms), parse.team)
@@ -147,7 +148,10 @@ def find_imp_term(sent):
             dist = Levenshtein.distance(token.lemma_, nlp(term.lower())[0].lemma_)
             logger.info("Token %s has distance %d from %s", token.lemma_, dist, nlp(term.lower())[0].lemma_)
             if dist < 2:
-                imp_terms.append(term)
+                if term == "Pokeball":
+                    imp_terms.append("Ball")
+                else:
+                    imp_terms.append(term)
     return imp_terms
 
 
@@ -216,3 +220,13 @@ def find_egg_hatch(pokemon):
         return 10
     logger.info("Pokemon %s does not hatch from an egg", pokemon)
     return 0
+
+
+def find_type(pokemon):
+    with open("./Info/pokedex.pickle", "rb") as pokedex_file:
+        pokedex = pickle.load(pokedex_file)
+        pok_type = pokedex[pokemon]["type1"]
+        if isinstance(pokedex[pokemon]["type2"], str):
+            pok_type += "/" + pokedex[pokemon]["type2"]
+
+        return pok_type

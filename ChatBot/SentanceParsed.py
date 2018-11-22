@@ -9,3 +9,4 @@ class Parsed(object):
     imp_terms = []
     team = ""
     isFarewell = False
+    text = ""
