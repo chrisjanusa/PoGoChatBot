@@ -1,8 +1,9 @@
 class Parsed(object):
     pronoun = []
     adj = []
-    noun = []
-    verb = []
+    subj = ""
+    verb = ""
+    doj = ""
     name = ""
     pokemon = []
     imp_terms = []

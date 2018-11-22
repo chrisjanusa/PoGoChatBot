@@ -10,28 +10,9 @@ from pathlib import Path
 import pickle
 
 from Find import *
-
-from Info.GenericResponses import INRODUCTION
-from Info.GenericResponses import NO_NAME_SASSY
-from Info.GenericResponses import NEW_TRAINER
-from Info.GenericResponses import RETURN_TRAINER
-from Info.GenericResponses import NO_NAME
-from Info.GenericResponses import CONVO_CARRIER_CAUGHT
-from Info.GenericResponses import CONVO_CARRIER_FAV
-from Info.GenericResponses import CONVO_CARRIER_REG
-from Info.GenericResponses import CONVO_CARRIER_TEAM
-from Info.GenericResponses import BYE
-
-from Info.Facts import BERRY
-from Info.Facts import RAID
-from Info.Facts import CANDY
-from Info.Facts import GYM
-from Info.Facts import BALL
-from Info.Facts import STARDUST
-from Info.Facts import EGGS
-from Info.Facts import RESEARCH
-from Info.Facts import EVENT
-from Info.Facts import TYPE
+from Info.GenericResponses import *
+from Info.Facts import *
+from Info.Pokemon import *
 
 from Trainer import Trainer
 
@@ -85,24 +66,34 @@ def main():
 
 def get_reply(parse_obj, curr_trainer, rep_type):
     pronoun = parse_obj.pronoun
+    subj = parse_obj.subj
     adj = parse_obj.adj
-    noun = parse_obj.noun
+    doj = parse_obj.doj
     verb = parse_obj.verb
     name = parse_obj.name
     pokemon = parse_obj.pokemon
     imp_terms = parse_obj.imp_terms
     team = parse_obj.team
 
+    if pokemon:
+        reply = get_shiny_reply(pokemon[0], doj, adj, verb)
+        if reply != "":
+            return reply
+    elif rep_type in ALL_POKEMON:
+        reply = get_shiny_reply(rep_type, doj, adj, verb)
+        if reply != "":
+            return reply
+
     if rep_type != "" and rep_type != "reg":
         if rep_type == "team":
             if team != "":
                 curr_trainer.team = team
-                return "NO WAY!!!! ... I am team " + team + " too!!!", ""
+                return "NO WAY!!!! ... I am team " + team + " too!!!", team
         if rep_type == "fav":
             if pokemon:
                 curr_trainer.fav = pokemon[0]
                 facts = find_pokemon_fact(pokemon[0])
-                return random.choice(facts), ""
+                return random.choice(facts), pokemon[0]
             else:
                 return "Oh I've never heard of that one before..", ""
         if rep_type == "caught":
@@ -110,8 +101,9 @@ def get_reply(parse_obj, curr_trainer, rep_type):
                 if curr_trainer.caught_pokemon != "":
                     curr_trainer.caught_pokemon += ","
                 curr_trainer.caught_pokemon += ",".join(pokemon)
-                facts = find_pokemon_fact(random.choice(pokemon))
-                return random.choice(facts), ""
+                target_pokemon = random.choice(pokemon)
+                facts = find_pokemon_fact(target_pokemon)
+                return random.choice(facts), target_pokemon
             else:
                 return "Oh I've never heard of that one before..", ""
     else:
@@ -124,25 +116,25 @@ def get_reply(parse_obj, curr_trainer, rep_type):
 
 def get_fact_reply(term):
     if term == "Berry":
-        return random.choice(BERRY), ""
+        return random.choice(BERRY), "Berry"
     if term == "Raid":
-        return random.choice(RAID), ""
+        return random.choice(RAID), "Raid"
     if term == "Candy":
-        return random.choice(CANDY), ""
+        return random.choice(CANDY), "Candy"
     if term == "Gym":
-        return random.choice(GYM), ""
+        return random.choice(GYM), "Gym"
     if term == "Ball":
-        return random.choice(BALL), ""
+        return random.choice(BALL), "Ball"
     if term == "Stardust":
-        return random.choice(STARDUST), ""
+        return random.choice(STARDUST), "Stardust"
     if term == "Eggs":
-        return random.choice(EGGS), ""
+        return random.choice(EGGS), "Eggs"
     if term == "Research":
-        return random.choice(RESEARCH), ""
+        return random.choice(RESEARCH), "Research"
     if term == "Event":
-        return random.choice(EVENT), ""
+        return random.choice(EVENT), "Event"
     if term == "Type":
-        return random.choice(TYPE), ""
+        return random.choice(TYPE), "Type"
 
 
 def get_default_options(curr_trainer):
@@ -165,6 +157,15 @@ def get_default_reply(curr_trainer):
         return random.choice(CONVO_CARRIER_CAUGHT), topic
     else:
         return random.choice(CONVO_CARRIER_REG), topic
+
+
+def get_shiny_reply(pokemon, doj, adj, verb):
+    if ('shiny' in doj or 'shiny' in adj) and ('have' in verb or 'be' in verb):
+        if pokemon in SHINY_POKEMON:
+            return "Yea " + pokemon + " can be shiny!!!", pokemon
+        else:
+            return "Sadly " + pokemon + " can not be shiny ... Yet!", pokemon
+    return ""
 
 
 if __name__ == "__main__":
