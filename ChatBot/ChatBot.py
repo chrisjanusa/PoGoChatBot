@@ -99,6 +99,7 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     imp_terms = parse_obj.imp_terms
     team = parse_obj.team
 
+
     # Maintains topic so if no pokemon are present assume it is referring to previous topic
     if not pokemon and rep_type in ALL_POKEMON:
         pokemon.append(rep_type)
@@ -161,6 +162,7 @@ def get_reply(parse_obj, curr_trainer, rep_type):
             return random.choice(facts), target_pokemon
         else:
             return "Oh I've never heard of that one before..", ""
+
     if imp_terms:
         term = imp_terms[0]
         return get_fact_reply(term)

@@ -31,6 +31,7 @@ def find_egg_num(sent):
     for word in sent:
         if is_egg_num and word.lemma_ == "egg":
             return num, True
+
         if word.pos_ == "NUM" and word.shape_.startswith("d"):
             num = int(word.text.split("k")[0])
             if num == 2 or num == 5 or num == 7 or num == 10:
