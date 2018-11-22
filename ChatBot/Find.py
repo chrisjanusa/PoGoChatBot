@@ -31,7 +31,8 @@ def find_egg_num(sent):
     for word in sent:
         if is_egg_num and word.lemma_ == "egg":
             return num, True
-        if word.pos_ == "NUM":
+
+        if word.pos_ == "NUM" and word.shape_.startswith("d"):
             num = int(word.text.split("k")[0])
             if num == 2 or num == 5 or num == 7 or num == 10:
                 is_egg_num = True
@@ -48,6 +49,14 @@ def proccess_sentance(sent):
     parse.doj = find_doj(nlp_sent)
     parse.name = find_name(nlp_sent)
     parse.pokemon = find_pokemon(nlp_sent)
+    if "mr. mime" in sent.lower():
+        parse.pokemon.append("Mr. Mime")
+    if "mr mime" in sent.lower():
+        parse.pokemon.append("Mr. Mime")
+    if "mime jr" in sent.lower():
+        parse.pokemon.append("Mime Jr.")
+    if "ho-oh" in sent.lower():
+        parse.pokemon.append("Ho-Oh")
     parse.imp_terms = find_imp_term(nlp_sent)
     parse.team = find_team(nlp_sent)
     parse.isFarewell = is_farewell(nlp_sent)
@@ -135,6 +144,7 @@ def find_adjective(sent):
 def find_pokemon(sent):
     """Given a sentence, find if a user mentioned a pokemon."""
     pokemons = []
+
     for token in sent:
         if token.text == 'shiny' or token.text == "comes":
             continue
