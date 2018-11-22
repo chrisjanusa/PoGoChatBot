@@ -27,7 +27,7 @@ def main():
     user_statement = proccess_sentance(input(random.choice(INRODUCTION) + "\n> "))
 
     while user_statement.name == "":
-        blob = TextBlob(user_statement)
+        blob = TextBlob(user_statement.text)
         if blob.sentiment.polarity < 0.1:
             user_statement = proccess_sentance(input(random.choice(NO_NAME_SASSY) + "\n> "))
         else:
@@ -84,6 +84,12 @@ def get_reply(parse_obj, curr_trainer, rep_type):
         if reply != "":
             return reply
 
+    if imp_terms and "be" in verb:
+        if "Type" in imp_terms and pokemon:
+            return pokemon[0] + " is a " + find_type(pokemon[0]) + " type pokemon", pokemon[0]
+        else:
+            return DEF_IMP_TERM[imp_terms[0]], imp_terms[0]
+
     if rep_type != "" and rep_type != "reg":
         if rep_type == "team":
             if team != "":
@@ -106,10 +112,9 @@ def get_reply(parse_obj, curr_trainer, rep_type):
                 return random.choice(facts), target_pokemon
             else:
                 return "Oh I've never heard of that one before..", ""
-    else:
-        if imp_terms:
-            term = imp_terms[0]
-            return get_fact_reply(term)
+    if imp_terms:
+        term = imp_terms[0]
+        return get_fact_reply(term)
 
     return get_default_reply(curr_trainer)
 

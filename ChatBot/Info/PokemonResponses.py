@@ -22,7 +22,7 @@ EGG_RESPONSES = [
 TYPE_RESPONSES = [
     "Did you know {pokemon} is a {type} type?",
     "{type} types like {pokemon} are so cool!",
-    "I love {type} types!"
+    "I love {type} types like {pokemon}!"
 ]
 
 AGAINST_TYPE_RESPONSES = [
