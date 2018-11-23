@@ -201,7 +201,7 @@ def get_reply(parse_obj, curr_trainer, rep_type):
                 curr_trainer.caught_pokemon += ","
             curr_trainer.caught_pokemon += ",".join(pokemon)
             target_pokemon = random.choice(pokemon)
-            facts = find_caught_counters(curr_trainer, pokemon)#find_pokemon_fact(target_pokemon)#
+            facts = find_pokemon_fact(target_pokemon)
             return random.choice(facts), target_pokemon
         else:
             return "Oh I've never heard of that one before..", ""
