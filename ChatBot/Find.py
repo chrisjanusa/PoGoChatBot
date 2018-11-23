@@ -41,7 +41,7 @@ def find_egg_num(sent):
 
 def find_you(sent):
     for word in sent:
-        if word.text.lower() == 'you' or word.text.lower() == 'your':
+        if word.text.lower() == 'you' or word.text.lower() == 'your' or word.text.lower() == 'pogo':
             return True
     return False
 
@@ -79,6 +79,7 @@ def find_verb(sent):
     """Pick a candidate verb for the sentence."""
     verbs = []
     for word in sent:
+        logger.info("Word: %s Pos: %s", word.text, word.tag_)
         if word.tag_.startswith('VB'):  # This is a verb
             logger.info("Found verb: %s Lemma: %s", word.text, word.lemma_)
             verbs.append(str(word.lemma_))
