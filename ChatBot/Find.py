@@ -141,7 +141,7 @@ def find_imp_term(sent):
     for token in sent:
         for term in IMP_TERMS:
             dist = Levenshtein.distance(token.lemma_, nlp(term.lower())[0].lemma_)
-            logger.info("Token %s has distance %d from %s", token.lemma_, dist, nlp(term.lower())[0].lemma_)
+            #logger.info("Token %s has distance %d from %s", token.lemma_, dist, nlp(term.lower())[0].lemma_)
             if dist < 2:
                 if term == "Pokeball":
                     imp_terms.append("Ball")
@@ -154,7 +154,7 @@ def find_team(sent):
     for token in sent:
         for team in TEAMS:
             dist = Levenshtein.distance(token.text.lower(), team.lower())
-            logger.info("Token %s has distance %d from %s", token, dist, team)
+            #logger.info("Token %s has distance %d from %s", token, dist, team)
             if dist < 3:
                 return team
     return ""
@@ -173,15 +173,19 @@ def find_pokemon_fact(pokemon):
     if pokemon in ALOLA_POKEMON:
         facts.append(random.choice(ALOLAN_RESPONSES).format(**{'pokemon': pokemon}))
 
+    pok_type = find_type(pokemon)
+    facts.append(random.choice(TYPE_RESPONSES).format(**{'pokemon': pokemon, 'type':pok_type}))
+
+    strong_against, weak_against = find_against_strength(pokemon)
+    facts.append(random.choice(AGAINST_TYPE_RESPONSES).format(**{'pokemon': pokemon, 'strong_type':strong_against, 'weak_type':weak_against}))
+
+    return facts
+
+def find_against_strength(pokemon):
     with open("./Info/pokedex.pickle", "rb") as pokedex_file:
         pokedex = pickle.load(pokedex_file)
-        pok_type = pokedex[pokemon]["type1"]
         strong_against = ""
         weak_against = ""
-        # if pokedex[pokemon] != "":
-        if isinstance(pokedex[pokemon]["type2"], str):
-            pok_type += "/" + pokedex[pokemon]["type2"]
-        facts.append(random.choice(TYPE_RESPONSES).format(**{'pokemon': pokemon, 'type':pok_type}))
 
         for against_type in TYPES:
             if against_type != pokedex[pokemon]["type1"] and against_type != pokedex[pokemon]["type2"]:
@@ -195,10 +199,29 @@ def find_pokemon_fact(pokemon):
                         weak_against = against_type
                     else:
                         weak_against += ", " + against_type
-        facts.append(random.choice(AGAINST_TYPE_RESPONSES).format(**{'pokemon': pokemon, 'strong_type':strong_against, 'weak_type':weak_against}))
 
-    return facts
+        return strong_against, weak_against
 
+
+
+def find_caught_counters(trainer, target_mon):
+    best_caught_counters = ""
+
+    strong_against, weak_against = find_against_strength(target_mon)
+
+    """if trainer.caught_pokemon == "":
+        return ""
+    with open("./Info/pokedex.pickle", "rb") as pokedex_file:
+        pokedex = pickle.load(pokedex_file)
+        for search_type in weak_against:
+            for pokemon in trainer.caught_pokemon:
+                if search_type == pokedex[pokemon]["type1"] or search_type == pokedex[pokemon]["type2"]:
+                    if best_caught_counters == "":
+                        best_caught_counters = pokemon
+                    else:
+                        best_caught_counters += ", " + pokemon
+"""
+    return "Did you know " + target_mon + " is weak against " + str(weak_against) + "?"
 
 def find_egg_hatch(pokemon):
     if pokemon in HATCHES_2K:

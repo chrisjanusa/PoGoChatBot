@@ -112,7 +112,7 @@ def get_reply(parse_obj, curr_trainer, rep_type):
             return "I would def be a " + find_type(curr_trainer.fav) + " type pokemon just like your favorite", ""
         else:
             return "That's a tough question but if I had to choose right now I would say I'm a " + \
-                   random.choice(TYPES) + " type!", ""
+                   random.choice(POKEMON_TYPES) + " type!", ""
 
     # Pattern "What team are you"/"Are you Mystic"
     if you and "be" in verb and ("Team" in imp_terms or team != ""):
@@ -201,7 +201,7 @@ def get_reply(parse_obj, curr_trainer, rep_type):
                 curr_trainer.caught_pokemon += ","
             curr_trainer.caught_pokemon += ",".join(pokemon)
             target_pokemon = random.choice(pokemon)
-            facts = find_pokemon_fact(target_pokemon)
+            facts = find_caught_counters(curr_trainer, pokemon)#find_pokemon_fact(target_pokemon)#
             return random.choice(facts), target_pokemon
         else:
             return "Oh I've never heard of that one before..", ""
