@@ -15,7 +15,8 @@ IMP_TERMS = {
     "Alolan",
     "Shiny",
     "Regional",
-    "Team"
+    "Team",
+    "Generation"
 }
 
 DEF_IMP_TERM ={
@@ -39,7 +40,8 @@ DEF_IMP_TERM ={
     "Regional": "Regional pokemon are only availible in certain regions of the world such as Tauras the bull pokemon "
                 "only availible in North America",
     "Team": "There are three teams, Mystic, Instinct and Valor, only one team can control a gym at one time and the "
-            "other teams must fight the gym to regain control"
+            "other teams must fight the gym to regain control",
+    "Generation": "The pokemon added with each new installment in the main series games are a part of a different generation"
 }
 
 BERRY = [
@@ -123,4 +125,10 @@ TRADING = [
     "You can trade pokemon with friends and it's stats will be randomized so you can hope to get a better one",
     "When you trade, you have a chance to get a lucky pokemon which costs half stardust to power up!",
     "Trading gives you up to 3 candy based on how far apart the catch location of the pokemon being traded is"
+]
+
+GENERATION = [
+    "Generations are released into pokemon go about once a year",
+    "When a new generation is released into the game it usually released slowly with a few pokemon at at time to keep up excitment",
+    'There are currently 4 generations in pokemon go'
 ]
