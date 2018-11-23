@@ -40,17 +40,19 @@ def main():
     if name in trainers:
         trainer = trainers[name]
         if trainer.team != "":
-            user_statement = proccess_sentance(input(
-                random.choice(RETURN_TRAINER).format(**{'name': name}) + " btw Go " + trainer.team + "!!!!!!" + "\n> "))
+            print(random.choice(RETURN_TRAINER).format(**{'name': name}) + " btw Go " + trainer.team + "!!!!!!")
         else:
-            user_statement = proccess_sentance(input(random.choice(RETURN_TRAINER).format(**{'name': name}) + "\n> "))
+            print(random.choice(RETURN_TRAINER).format(**{'name': name}))
 
     else:
         trainer = Trainer(name)
         trainers[name] = trainer
-        user_statement = proccess_sentance(input(random.choice(NEW_TRAINER).format(**{'name': name}) + "\n> "))
+        print(random.choice(NEW_TRAINER).format(**{'name': name}))
 
-    rep_type = ""
+    user_statement = proccess_sentance(input("I can answer questions about parts of the game and about specific pokemon."
+                                             "\nEx. \"Can Pichu be shiny?\" or \"What is stardust?\" for a full list say"
+                                             " \"show all\"" + "\n>"))
+    rep_type = "ask"
     while not user_statement.isFarewell:
         reply, rep_type = get_reply(user_statement, trainer, rep_type)
         user_statement = proccess_sentance(input(reply + "\n>"))
@@ -99,21 +101,49 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     if not pokemon and rep_type in ALL_POKEMON:
         pokemon.append(rep_type)
 
+    # Pattern "What team are you"/"Are you Mystic"
+    if you and "be" in verb and ("Team" in imp_terms or team != ""):
+        if curr_trainer.team == "":
+            return "I feel like this is a trap... You tell me your team first!", "team"
+        if team != "":
+            if curr_trainer.team == team:
+                return "You know I am team " + team + " till the day I die!!!!", ""
+            else:
+                return "How dare you even think I would associate with those " + team + " scum", ""
+        else:
+            return "I am a part of the best team in the world... Team " + curr_trainer.team + "!!!!!!!", ""
+
+    # Pattern "Show all"
+    if rep_type == "ask" and "show" in verb:
+        if curr_trainer.fav == "":
+            pokemon = "Pikachu"
+        else:
+            pokemon = curr_trainer.fav
+        imp_term = "Stardust"
+        return "Can {pokemon} be shiny?\nWhat is {Imp_term} used for?\nWhat can hatch from a 2km egg?" \
+               "\nWhat pokemon is #35?\nDoes {pokemon} have an alolan form?\nIs {pokemon} a regional?" \
+               "\nWhat type is {pokemon}?".format(**{'pokemon': pokemon, 'Imp_term': imp_term}), 'ask'
+
+    # Pattern "What can I ask you?"
+    if you and "ask" in verb:
+        return "I can answer questions about parts of the game and about specific pokemon.\nEx. \"Can Pichu be shiny\" " \
+               "or \"What is stardust\" for a full list say \"show all\"", "ask"
+
     # Pattern "Does {pokemon} have an Alolan form?"
-    if ("be" in verb  or "have" in verb) and pokemon and "Alolan" in imp_terms:
+    if ("be" in verb or "have" in verb) and pokemon and "Alolan" in imp_terms:
         if pokemon[0] in ALOLA_POKEMON:
             return pokemon[0] + " does have an Alolan form", pokemon[0]
         else:
             return "Nope, " + pokemon[0] + " doesn't have an Alolan form", pokemon[0]
 
-    if ("be" in verb  or "have" in verb) and pokemon and "Regional" in imp_terms:
+    if ("be" in verb or "have" in verb) and pokemon and "Regional" in imp_terms:
         if pokemon[0] in REGIONAL_POKEMON:
             return pokemon[0] + " is a regional pokemon", pokemon[0]
         else:
             return "Nope, " + pokemon[0] + " is available all over the world", pokemon[0]
 
     # Pattern "What pokemon is {num}?
-    if ("be" in verb  or "have" in verb) and num != -1:
+    if ("be" in verb or "have" in verb) and num != -1:
         pokemon = get_num_pokemon(num)
         if pokemon != "":
             return "#" + str(num) + " is " + pokemon, pokemon
@@ -193,6 +223,8 @@ def get_fact_reply(term):
     if term == "Alolan":
         return DEF_IMP_TERM[term], term
     if term == "Regional":
+        return DEF_IMP_TERM[term], term
+    if term == "Team":
         return DEF_IMP_TERM[term], term
 
 

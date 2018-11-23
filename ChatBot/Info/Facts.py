@@ -14,29 +14,37 @@ IMP_TERMS = {
     "Pokemon",
     "Alolan",
     "Shiny",
-    "Regional"
+    "Regional",
+    "Team"
 }
 
 DEF_IMP_TERM ={
     "Berry": "Berries are items that can be fed to Pokemon while catching for different bonuses",
     "Raid": "Raids are when you get together as a group to fight a strong pokémon in a gym for the chance to catch it.",
     "Candy": "Candy can be used to evolve or power up pokémon.",
-    "Gym": "Gyms are the battling place in the game. You can attack gyms controlled by opposing teams or add your pokemon to ones controlled by your team.",
+    "Gym": "Gyms are the battling place in the game. You can attack gyms controlled by opposing teams or "
+           "add your pokemon to ones controlled by your team.",
     "Ball": "Pokeballs are the item used to catch pokemon with the different types having different catch rates",
     "Stardust": "Stardust can be used to power up or trade pokémon and can be gained in many ways",
     "Events": "Pokémon Go often hosts special events with bonuses and increased spawn rates for certain pokémon.",
     "Eggs": "Eggs contain Pokémon and can be hatched after walking the associated distance.",
     "Research": "Research are tasks that when completed give rewards",
     "Trade": "Trading is when you and a friend swap pokemon.",
-    "Type": "Every pokemon has one or two types. When battling, certain types have advantages over other types, such as Water having an advantage over Fire.",
-    "Pokemon": "Pokemon is short for pocket monsters and they are the cute creatures that you collect, battle and trade.",
+    "Type": "Every pokemon has one or two types. When battling, certain types have advantages over other types, "
+            "such as Water having an advantage over Fire.",
+    "Pokemon": "Pokemon is short for pocket monsters and they are the cute creatures that you "
+               "collect, battle and trade.",
     "Alolan": "Alolan pokemon are ones that resemble a pokemon but they have a different typing and a different design",
     "Shiny": "Shiny pokemon are the exact same as regular ones but they have a different coloring",
-    "Regional": "Regional pokemon are only availible in certain regions of the world such as Tauras the bull pokemon only availible in North America"
+    "Regional": "Regional pokemon are only availible in certain regions of the world such as Tauras the bull pokemon "
+                "only availible in North America",
+    "Team": "There are three teams, Mystic, Instinct and Valor, only one team can control a gym at one time and the "
+            "other teams must fight the gym to regain control"
 }
 
 BERRY = [
-    "There are currently 5 different types of berries: Razz Berry, Nanab Berry, Pinap Berry, Golden Razz Berry and Silver Pinap Berry.",
+    "There are currently 5 different types of berries: Razz Berry, Nanab Berry, Pinap Berry, "
+    "Golden Razz Berry and Silver Pinap Berry.",
     "The berries are named after real fruits, namely the rasberry, banana and pineapple.",
     "The Razz Berry increases a pokémon's catch rate.",
     "The Nanab Berry makes a pokémon less erratic.",
@@ -55,7 +63,8 @@ RAID = [
 CANDY = [
     "Candy can be used to evolve pokémon.",
     "Candy is obtained every time a pokémon is caught, hatched, transferred or traded.",
-    "The amount of candy you get in a trade is based on the distance between the catch locations of the two traded pokémon."
+    "The amount of candy you get in a trade is based on the distance between the catch locations of "
+    "the two traded pokémon."
 ]
 
 GYM = [
@@ -67,8 +76,10 @@ GYM = [
 
 BALL = [
     "There are three main types of balls: Poké ball, Great ball and Ultra ball.",
-    "Each type ball has an incrementally better catch rate, ranking Poké balls as the lowest catch rate and Ultra balls as the highest catch rate.",
-    "When you win a raid, you are given a certain number of Premier balls to catch the defeated pokémon. These disappear after the raid.",
+    "Each type ball has an incrementally better catch rate, ranking Poké balls as the lowest catch rate and "
+    "Ultra balls as the highest catch rate.",
+    "When you win a raid, you are given a certain number of Premier balls to catch the defeated pokémon. "
+    "These disappear after the raid.",
     "Fun fact: You can see which pokéball was used to catch the specific pokémon on it's detail page."
 ]
 
