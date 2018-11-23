@@ -96,10 +96,23 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     pokemon = parse_obj.pokemon
     imp_terms = parse_obj.imp_terms
     team = parse_obj.team
+    wp = parse_obj.wp
 
     # Maintains topic so if no pokemon are present assume it is referring to previous topic
     if not pokemon and rep_type in ALL_POKEMON:
         pokemon.append(rep_type)
+
+    # Pattern "What are you"/"Who are you"
+    if wp != "" and you and not pokemon and not imp_terms and num == -1:
+        return random.choice(SELF_REFLECTIVE).format(**{"word": wp}), ""
+
+    # Pattern "What type of pokemon are you?"
+    if you and "Pokemon" in imp_terms and "Type" in imp_terms and "be" in verb:
+        if curr_trainer.fav != "":
+            return "I would def be a " + find_type(curr_trainer.fav) + " type pokemon just like your favorite", ""
+        else:
+            return "That's a tough question but if I had to choose right now I would say I'm a " + \
+                   random.choice(TYPES) + " type!", ""
 
     # Pattern "What team are you"/"Are you Mystic"
     if you and "be" in verb and ("Team" in imp_terms or team != ""):
@@ -119,10 +132,15 @@ def get_reply(parse_obj, curr_trainer, rep_type):
             pokemon = "Pikachu"
         else:
             pokemon = curr_trainer.fav
+        if curr_trainer.team == "":
+            team = "Mystic"
+        else:
+            team = curr_trainer.team
         imp_term = "Stardust"
         return "Can {pokemon} be shiny?\nWhat is {Imp_term} used for?\nWhat can hatch from a 2km egg?" \
                "\nWhat pokemon is #35?\nDoes {pokemon} have an alolan form?\nIs {pokemon} a regional?" \
-               "\nWhat type is {pokemon}?".format(**{'pokemon': pokemon, 'Imp_term': imp_term}), 'ask'
+               "\nWhat type is {pokemon}?\nWhat team are you?\nPogo are you {team}?" \
+               "\nWhat type of pokemon are you?".format(**{'pokemon': pokemon, 'Imp_term': imp_term, "team": team}), 'ask'
 
     # Pattern "What can I ask you?"
     if you and "ask" in verb:

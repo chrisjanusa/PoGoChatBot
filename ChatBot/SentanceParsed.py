@@ -8,3 +8,4 @@ class Parsed(object):
     text = ""
     num = -1
     isEgg = False
+    wp = ""
