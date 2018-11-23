@@ -86,3 +86,12 @@ SELF_VERBS_WITH_ADJECTIVE = [
     "I'm personally building the {adjective} Economy",
     "I consider myself to be a {adjective}preneur"
 ]
+
+SELF_REFLECTIVE = [
+    "Aren\'t we all just trying to find {word} we really are?",
+    "I am Pogo",
+    "I am the the very best. Like no one ever was",
+    "I honestly don't know {word} I am",
+    "Pika pika",
+    "{word} are you?",
+]

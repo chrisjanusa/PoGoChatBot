@@ -64,13 +64,14 @@ def proccess_sentance(sent):
     parse.imp_terms = find_imp_term(nlp_sent)
     parse.team = find_team(nlp_sent)
     parse.isFarewell = is_farewell(nlp_sent)
+    parse.wp = find_wp(nlp_sent)
     num, is_egg_num = find_egg_num(nlp_sent)
     parse.num = num
     parse.isEgg = is_egg_num
     parse.text = sent
-    logger.info("Verbs: %s Names: %s Pokemon: %s Imp Terms: %s Team: %s Num: %d IsEgg: %r HasYou: %r",
+    logger.info("Verbs: %s Names: %s Pokemon: %s Imp Terms: %s Team: %s Num: %d IsEgg: %r HasYou: %r WP: %s",
                 ", ".join(parse.verb), parse.name, ", ".join(parse.pokemon), ", ".join(parse.imp_terms),
-                parse.team, num, is_egg_num, parse.you)
+                parse.team, num, is_egg_num, parse.you, parse.wp)
 
     return parse
 
@@ -84,6 +85,14 @@ def find_verb(sent):
             logger.info("Found verb: %s Lemma: %s", word.text, word.lemma_)
             verbs.append(str(word.lemma_))
     return verbs
+
+
+def find_wp(sent):
+    """Pick a candidate verb for the sentence."""
+    for word in sent:
+        if word.tag_ == "WP":  # This is a verb
+            return str(word)
+    return ""
 
 
 def find_name(sent):
