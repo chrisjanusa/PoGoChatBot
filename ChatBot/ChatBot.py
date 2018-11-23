@@ -330,6 +330,6 @@ def get_generation_reply(pokemon):
         pokedex = pickle.load(pokedex_file)
         return pokemon + " is a part of generation " + str(pokedex[pokemon]["generation"])
 
-
+      
 if __name__ == "__main__":
     main()
