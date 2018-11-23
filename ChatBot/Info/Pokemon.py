@@ -1188,4 +1188,26 @@ ALL_POKEMON = {
     "Cherrim",
     "Bronzor",
     "Kecleon",
-    "Mime Jr."}
+    "Mime Jr."
+}
+
+TYPES = [
+    "electric",
+    "psychic",
+    "water",
+    "grass",
+    "rock",
+    "dragon",
+    "fighting",
+    "steel",
+    "dark",
+    "ghost",
+    "bug",
+    "ice",
+    "fairy",
+    "flying",
+    "fire",
+    "ground",
+    "normal",
+    "poison",
+]
