@@ -9,3 +9,4 @@ class Parsed(object):
     num = -1
     isEgg = False
     wp = ""
+    adj = []

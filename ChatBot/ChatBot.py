@@ -97,6 +97,7 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     imp_terms = parse_obj.imp_terms
     team = parse_obj.team
     wp = parse_obj.wp
+    adj = parse_obj.adj
 
     # Maintains topic so if no pokemon are present assume it is referring to previous topic
     if not pokemon and rep_type in ALL_POKEMON:
@@ -106,13 +107,20 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     if wp != "" and you and not pokemon and not imp_terms and num == -1:
         return random.choice(SELF_REFLECTIVE).format(**{"word": wp}), ""
 
+    # Pattern "What is your favorite pokemon?"
+    if you and ("fav" in adj or "favorite" in adj) and "Pokemon" in imp_terms:
+        if curr_trainer.fav == "":
+            return "My " + adj[0] + " Pokemon is Chimchar", "Chimchar"
+        else:
+            return "My " + adj[0] + " Pokemon is Chimchar but your " + adj[0] + curr_trainer.fav + " is really cool", "Chimchar"
+
     # Pattern "What type of pokemon are you?"
     if you and "Pokemon" in imp_terms and "Type" in imp_terms and "be" in verb:
         if curr_trainer.fav != "":
             return "I would def be a " + find_type(curr_trainer.fav) + " type pokemon just like your favorite", ""
         else:
             return "That's a tough question but if I had to choose right now I would say I'm a " + \
-                   random.choice(TYPES) + " type!", ""
+                   random.choice(POKEMON_TYPES) + " type!", ""
 
     # Pattern "What team are you"/"Are you Mystic"
     if you and "be" in verb and ("Team" in imp_terms or team != ""):

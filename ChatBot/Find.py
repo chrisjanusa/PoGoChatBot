@@ -69,8 +69,9 @@ def proccess_sentance(sent):
     parse.num = num
     parse.isEgg = is_egg_num
     parse.text = sent
-    logger.info("Verbs: %s Names: %s Pokemon: %s Imp Terms: %s Team: %s Num: %d IsEgg: %r HasYou: %r WP: %s",
-                ", ".join(parse.verb), parse.name, ", ".join(parse.pokemon), ", ".join(parse.imp_terms),
+    parse.adj = find_adjective(nlp_sent)
+    logger.info("Adjectives: %s Verbs: %s Names: %s Pokemon: %s Imp Terms: %s Team: %s Num: %d IsEgg: %r HasYou: %r WP: %s",
+                ", ".join(parse.adj), ", ".join(parse.verb), parse.name, ", ".join(parse.pokemon), ", ".join(parse.imp_terms),
                 parse.team, num, is_egg_num, parse.you, parse.wp)
 
     return parse
@@ -82,8 +83,11 @@ def find_verb(sent):
     for word in sent:
         logger.info("Word: %s Pos: %s", word.text, word.tag_)
         if word.tag_.startswith('VB'):  # This is a verb
-            logger.info("Found verb: %s Lemma: %s", word.text, word.lemma_)
-            verbs.append(str(word.lemma_))
+            #logger.info("Found verb: %s Lemma: %s", word.text, word.lemma_)
+            if word.text == "'s":
+                verbs.append("be")
+            else:
+                verbs.append(str(word.lemma_))
     return verbs
 
 
@@ -141,8 +145,11 @@ def find_imp_term(sent):
     for token in sent:
         for term in IMP_TERMS:
             dist = Levenshtein.distance(token.lemma_, nlp(term.lower())[0].lemma_)
-            logger.info("Token %s has distance %d from %s", token.lemma_, dist, nlp(term.lower())[0].lemma_)
-            if dist < 2:
+            # logger.info("Token %s has distance %d from %s", token.lemma_, dist, nlp(term.lower())[0].lemma_)
+            if len(token.text) < 5:
+                if dist == 0:
+                    imp_terms.append(term)
+            elif dist < 2:
                 if term == "Pokeball":
                     imp_terms.append("Ball")
                 else:
@@ -154,7 +161,7 @@ def find_team(sent):
     for token in sent:
         for team in TEAMS:
             dist = Levenshtein.distance(token.text.lower(), team.lower())
-            logger.info("Token %s has distance %d from %s", token, dist, team)
+            # logger.info("Token %s has distance %d from %s", token, dist, team)
             if dist < 3:
                 return team
     return ""

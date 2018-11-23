@@ -1191,7 +1191,7 @@ ALL_POKEMON = {
     "Mime Jr."
 }
 
-TYPES = [
+POKEMON_TYPES = [
     "electric",
     "psychic",
     "water",
