@@ -152,6 +152,9 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     if pokemon and "Shiny" in imp_terms and ("be" in verb or "have" in verb or "hatch" in verb):
         return get_shiny_reply(pokemon[0])
 
+    if pokemon and "Generation" in imp_terms and "be" in verb:
+        return get_generation_reply(pokemon[0]), pokemon[0]
+
     # Pattern "What hatches from {num} egg?"
     if is_num_egg and not pokemon:
         hatch_list = hatches_from(num, curr_trainer.fav)
@@ -223,6 +226,8 @@ def get_fact_reply(term):
         return random.choice(EVENT), "Event"
     if term == "Type":
         return random.choice(TYPE), "Type"
+    if term == "Generation":
+        return random.choice(TYPE), "Generation"
     if term == "Pokemon":
         return DEF_IMP_TERM[term], term
     if term == "Shiny":
@@ -320,5 +325,11 @@ def get_num_pokemon(num):
     return ""
 
 
+def get_generation_reply(pokemon):
+    with open("./Info/pokedex.pickle", "rb") as pokedex_file:
+        pokedex = pickle.load(pokedex_file)
+        return pokemon + " is a part of generation " + str(pokedex[pokemon]["generation"])
+
+      
 if __name__ == "__main__":
     main()

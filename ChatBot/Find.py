@@ -149,6 +149,8 @@ def find_imp_term(sent):
             if len(token.text) < 5:
                 if dist == 0:
                     imp_terms.append(term)
+                if token.text.lower() == "gen":
+                    imp_terms.append("Generation")
             elif dist < 2:
                 if term == "Pokeball":
                     imp_terms.append("Ball")
