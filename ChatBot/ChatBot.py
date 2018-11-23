@@ -62,41 +62,16 @@ def main():
         pickle.dump(trainers, pickle_file, protocol=pickle.HIGHEST_PROTOCOL)
 
 
-def hatches_from(num, pokemon):
-    if num == 2:
-        hatches = HATCHES_2K
-    if num == 5:
-        hatches = HATCHES_5K
-    if num == 7:
-        hatches = HATCHES_7K
-    if num == 10:
-        hatches = HATCHES_10K
-
-    if pokemon in hatches:
-        samp = random.sample(hatches, 5)
-        samp.append("your favorite pokemon " + pokemon)
-        return samp
-    return random.sample(hatches, 6)
-
-
-def get_num_pokemon(num):
-    with open("./Info/pokedex.pickle", "rb") as pokedex_file:
-        pokedex = pickle.load(pokedex_file)
-        for key, value in pokedex.items():
-            if value["pokedex_number"] == num:
-                return value["name"]
-    return ""
-
-
 def get_reply(parse_obj, curr_trainer, rep_type):
     you = parse_obj.you
     verb = parse_obj.verb
     num = parse_obj.num
-    is_egg = parse_obj.isEgg
+    is_num_egg = parse_obj.isEgg
     pokemon = parse_obj.pokemon
     imp_terms = parse_obj.imp_terms
     team = parse_obj.team
     wp = parse_obj.wp
+    adj = parse_obj.adj
 
     # Maintains topic so if no pokemon are present assume it is referring to previous topic
     if not pokemon and rep_type in ALL_POKEMON:
@@ -105,6 +80,13 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     # Pattern "What are you"/"Who are you"
     if wp != "" and you and not pokemon and not imp_terms and num == -1:
         return random.choice(SELF_REFLECTIVE).format(**{"word": wp}), ""
+
+    # Pattern "What is your favorite pokemon?"
+    if you and ("fav" in adj or "favorite" in adj) and "Pokemon" in imp_terms:
+        if curr_trainer.fav == "":
+            return "My " + adj[0] + " Pokemon is Chimchar", "Chimchar"
+        else:
+            return "My " + adj[0] + " Pokemon is Chimchar but your " + adj[0] + curr_trainer.fav + " is really cool", "Chimchar"
 
     # Pattern "What type of pokemon are you?"
     if you and "Pokemon" in imp_terms and "Type" in imp_terms and "be" in verb:
@@ -170,12 +152,22 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     if pokemon and "Shiny" in imp_terms and ("be" in verb or "have" in verb or "hatch" in verb):
         return get_shiny_reply(pokemon[0])
 
+    if pokemon and "Generation" in imp_terms and "be" in verb:
+        return get_generation_reply(pokemon[0]), pokemon[0]
+
     # Pattern "What hatches from {num} egg?"
-    if is_egg and not pokemon:
+    if is_num_egg and not pokemon:
         hatch_list = hatches_from(num, curr_trainer.fav)
         last = hatch_list.pop()
         return "To name a few: " + ", ".join(hatch_list) + " and " + last + " hatch from " + str(num) + "km eggs", str(
             num) + "km"
+
+    # Pattern "What egg does {pokemon} hatch from?" / "Does {pokemon} hatch from {num} egg
+    if "Eggs" in imp_terms and pokemon:
+        if not is_num_egg:
+            return get_egg_hatch_reply(pokemon[0]), pokemon[0]
+        else:
+            return get_hatches_from_reply(num, pokemon[0]), pokemon[0]
 
     # Pattern "What is {imp_term}?" and "What type is {pokemon}?
     if imp_terms and "be" in verb:
@@ -234,6 +226,8 @@ def get_fact_reply(term):
         return random.choice(EVENT), "Event"
     if term == "Type":
         return random.choice(TYPE), "Type"
+    if term == "Generation":
+        return random.choice(TYPE), "Generation"
     if term == "Pokemon":
         return DEF_IMP_TERM[term], term
     if term == "Shiny":
@@ -275,5 +269,67 @@ def get_shiny_reply(pokemon):
         return "Sadly " + pokemon + " can not be shiny ... Yet!", pokemon
 
 
+def hatches_from(num, pokemon):
+    if num == 2:
+        hatches = HATCHES_2K
+    if num == 5:
+        hatches = HATCHES_5K
+    if num == 7:
+        hatches = HATCHES_7K
+    if num == 10:
+        hatches = HATCHES_10K
+
+    if pokemon in hatches:
+        samp = random.sample(hatches, 5)
+        samp.append("your favorite pokemon " + pokemon)
+        return samp
+    return random.sample(hatches, 6)
+
+
+def get_hatches_from_reply(num, pokemon):
+    if num == 2:
+        hatches = HATCHES_2K
+    elif num == 5:
+        hatches = HATCHES_5K
+    elif num == 7:
+        hatches = HATCHES_7K
+    else:
+        hatches = HATCHES_10K
+
+    if pokemon in hatches:
+        return "Yes " + pokemon + " does hatch from " + str(num) + "km eggs!!!"
+    elif find_egg_hatch(pokemon) != 0:
+        return "No " + pokemon + " does not hatch from " + str(num) + "km eggs but it does hatch from " + str(find_egg_hatch(pokemon)) + "km eggs!"
+    else:
+        return "No " + pokemon + " does not hatch from eggs"
+
+
+def get_egg_hatch_reply(pokemon):
+    if pokemon in HATCHES_2K:
+        return pokemon + " hatches from 2km eggs"
+    elif pokemon in HATCHES_5K:
+        return pokemon + " hatches from 5km eggs"
+    elif pokemon in HATCHES_7K:
+        return pokemon + " hatches from 7km eggs"
+    elif pokemon in HATCHES_10K:
+        return pokemon + " hatches from 10km eggs"
+    return pokemon + " does not hatch from any eggs sadly"
+
+
+def get_num_pokemon(num):
+    with open("./Info/pokedex.pickle", "rb") as pokedex_file:
+        pokedex = pickle.load(pokedex_file)
+        for key, value in pokedex.items():
+            if value["pokedex_number"] == num:
+                return value["name"]
+    return ""
+
+
+def get_generation_reply(pokemon):
+    with open("./Info/pokedex.pickle", "rb") as pokedex_file:
+        pokedex = pickle.load(pokedex_file)
+        return pokemon + " is a part of generation " + str(pokedex[pokemon]["generation"])
+
+      
 if __name__ == "__main__":
     main()
