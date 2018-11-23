@@ -1,9 +1,5 @@
 class Parsed(object):
-    pronoun = []
-    adj = []
-    subj = ""
-    verb = ""
-    doj = ""
+    you = False
     name = ""
     pokemon = []
     imp_terms = []

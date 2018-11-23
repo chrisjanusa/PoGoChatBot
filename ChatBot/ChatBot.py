@@ -87,18 +87,13 @@ def get_num_pokemon(num):
 
 
 def get_reply(parse_obj, curr_trainer, rep_type):
-    pronoun = parse_obj.pronoun
-    subj = parse_obj.subj
-    adj = parse_obj.adj
-    doj = parse_obj.doj
+    you = parse_obj.you
     verb = parse_obj.verb
-    name = parse_obj.name
     num = parse_obj.num
     is_egg = parse_obj.isEgg
     pokemon = parse_obj.pokemon
     imp_terms = parse_obj.imp_terms
     team = parse_obj.team
-
 
     # Maintains topic so if no pokemon are present assume it is referring to previous topic
     if not pokemon and rep_type in ALL_POKEMON:
@@ -124,7 +119,7 @@ def get_reply(parse_obj, curr_trainer, rep_type):
             return "#" + str(num) + " is " + pokemon, pokemon
 
     # Pattern "Can {pokemon} be shiny?"
-    if pokemon and "Shiny" in imp_terms and ("be" in verb  or "have" in verb):
+    if pokemon and "Shiny" in imp_terms and ("be" in verb or "have" in verb or "hatch" in verb):
         return get_shiny_reply(pokemon[0])
 
     # Pattern "What hatches from {num} egg?"

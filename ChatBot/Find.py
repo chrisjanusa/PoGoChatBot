@@ -39,14 +39,18 @@ def find_egg_num(sent):
     return num, False
 
 
+def find_you(sent):
+    for word in sent:
+        if word.text.lower() == 'you' or word.text.lower() == 'your':
+            return True
+    return False
+
+
 def proccess_sentance(sent):
     nlp_sent = nlp(sent)
     parse = Parsed()
-    parse.pronoun = find_pronoun(nlp_sent)
-    parse.adj = find_adjective(nlp_sent)
-    parse.subj = find_subj(nlp_sent)
+    parse.you = find_you(nlp_sent)
     parse.verb = find_verb(nlp_sent)
-    parse.doj = find_doj(nlp_sent)
     parse.name = find_name(nlp_sent)
     parse.pokemon = find_pokemon(nlp_sent)
     if "mr. mime" in sent.lower():
@@ -64,26 +68,11 @@ def proccess_sentance(sent):
     parse.num = num
     parse.isEgg = is_egg_num
     parse.text = sent
-    logger.info("Dobj: %s Pronouns: %s Adjs: %s Subjs: %s Verbs: %s Names: %s Pokemon: %s Imp Terms: %s Team: %s Num: %d IsEgg: %r",
-                ", ".join(parse.doj), "".join(parse.pronoun), ", ".join(parse.adj), ", ".join(parse.subj), ", ".join(parse.verb),
-                parse.name, ", ".join(parse.pokemon), ", ".join(parse.imp_terms), parse.team, num, is_egg_num)
+    logger.info("Verbs: %s Names: %s Pokemon: %s Imp Terms: %s Team: %s Num: %d IsEgg: %r HasYou: %r",
+                ", ".join(parse.verb), parse.name, ", ".join(parse.pokemon), ", ".join(parse.imp_terms),
+                parse.team, num, is_egg_num, parse.you)
 
     return parse
-
-
-def find_pronoun(sent):
-    """Given a sentence, find a preferred pronoun to respond with. Returns None if no candidate
-    pronoun is found in the input"""
-    pronouns = []
-    for word in sent:
-        # Disambiguate pronouns
-        if word.tag_ == 'PRP' and word.text.lower() == 'you':
-            logger.info("Found pronoun: I")
-            pronouns.append('I')
-        elif word.tag_ == 'PRP' and word.text == 'I':
-            logger.info("Found pronoun: You")
-            pronouns.append('You')
-    return ""
 
 
 def find_verb(sent):
@@ -109,36 +98,6 @@ def find_name(sent):
             return str(tag)
 
     return ""
-
-
-def find_subj(sent):
-    """Given a sentence, find the best candidate noun."""
-    subjs = []
-    for word in sent:
-        if word.dep_ == 'subj':  # This is a noun
-            logger.info("Found subject: %s Lemma: %s", word.text, word.lemma_)
-            subjs.append(str(word.lemma_))
-    return subjs
-
-
-def find_doj(sent):
-    """Given a sentence, find the best candidate noun."""
-    dobjs = []
-    for word in sent:
-        if word.dep_ == 'dobj':  # This is a noun
-            logger.info("Found dobj: %s Lemma: %s", word.text, word.lemma_)
-            dobjs.append(str(word.lemma_))
-    return dobjs
-
-
-def find_adjective(sent):
-    """Given a sentence, find the best candidate adjective."""
-    adjs = []
-    for word in sent:
-        if word.tag_ == 'JJ':  # This is an adjective
-            logger.info("Found adj: %s Lemma: %s", word.text, word.lemma_)
-            adjs.append(word.lemma_)
-    return adjs
 
 
 def find_pokemon(sent):
@@ -256,3 +215,48 @@ def find_type(pokemon):
             pok_type += "/" + pokedex[pokemon]["type2"]
 
         return pok_type
+
+
+def find_pronoun(sent):
+    """Given a sentence, find a preferred pronoun to respond with. Returns None if no candidate
+    pronoun is found in the input"""
+    pronouns = []
+    for word in sent:
+        # Disambiguate pronouns
+        if word.tag_ == 'PRP' and (word.text.lower() == 'you' or word.text.lower() == 'your'):
+            logger.info("Found pronoun: I")
+            pronouns.append('I')
+        elif word.tag_ == 'PRP' and word.text == 'I':
+            logger.info("Found pronoun: You")
+            pronouns.append('You')
+    return ""
+
+
+def find_subj(sent):
+    """Given a sentence, find the best candidate noun."""
+    subjs = []
+    for word in sent:
+        if word.dep_ == 'subj':  # This is a noun
+            logger.info("Found subject: %s Lemma: %s", word.text, word.lemma_)
+            subjs.append(str(word.lemma_))
+    return subjs
+
+
+def find_doj(sent):
+    """Given a sentence, find the best candidate noun."""
+    dobjs = []
+    for word in sent:
+        if word.dep_ == 'dobj':  # This is a noun
+            logger.info("Found dobj: %s Lemma: %s", word.text, word.lemma_)
+            dobjs.append(str(word.lemma_))
+    return dobjs
+
+
+def find_adjective(sent):
+    """Given a sentence, find the best candidate adjective."""
+    adjs = []
+    for word in sent:
+        if word.tag_ == 'JJ':  # This is an adjective
+            logger.info("Found adj: %s Lemma: %s", word.text, word.lemma_)
+            adjs.append(word.lemma_)
+    return adjs
