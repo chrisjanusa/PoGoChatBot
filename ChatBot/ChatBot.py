@@ -65,12 +65,13 @@ def main():
 def hatches_from(num, pokemon):
     if num == 2:
         hatches = HATCHES_2K
-    if num == 5:
+    elif num == 5:
         hatches = HATCHES_5K
-    if num == 7:
+    elif num == 7:
         hatches = HATCHES_7K
-    if num == 10:
+    elif num == 10:
         hatches = HATCHES_10K
+
 
     if pokemon in hatches:
         samp = random.sample(hatches, 5)
@@ -97,6 +98,12 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     imp_terms = parse_obj.imp_terms
     team = parse_obj.team
     wp = parse_obj.wp
+    against = parse_obj.against
+    sent = parse_obj.text
+    good = parse_obj.good
+    bad = parse_obj.bad
+    caught = parse_obj.caught
+    about_eggs = parse_obj.about_eggs
 
     # Maintains topic so if no pokemon are present assume it is referring to previous topic
     if not pokemon and rep_type in ALL_POKEMON:
@@ -105,6 +112,8 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     # Pattern "What are you"/"Who are you"
     if wp != "" and you and not pokemon and not imp_terms and num == -1:
         return random.choice(SELF_REFLECTIVE).format(**{"word": wp}), ""
+
+    # Pattern "What is your favorite pokemon?"
 
     # Pattern "What type of pokemon are you?"
     if you and "Pokemon" in imp_terms and "Type" in imp_terms and "be" in verb:
@@ -177,12 +186,63 @@ def get_reply(parse_obj, curr_trainer, rep_type):
         return "To name a few: " + ", ".join(hatch_list) + " and " + last + " hatch from " + str(num) + "km eggs", str(
             num) + "km"
 
+    # Pattern "can a {pokemon} hatch from an egg"
+    if about_eggs and pokemon:
+        egg = find_egg_hatch(pokemon[0])
+        if egg == 0:
+            return "No, they do not hatch from eggs.", pokemon[0]
+        else:
+            if num > 0 and num != egg:
+                return "No, " + pokemon[0] + " does not hatch from " + str(num) + "km eggs but it does hatch from " + str(egg) + "km eggs!", pokemon[0]
+            return pokemon[0] + " can hatch from " + str(egg) + "km eggs.", pokemon[0]
+
+    # Pattern "What is strong against {pokemon}?"
+    if against:
+        if bad:
+            if pokemon:
+                return find_counters(curr_trainer, pokemon[0], 0), pokemon[0]
+            elif "Type" in imp_terms:
+                return "idk how to do that yet sry", imp_terms[0]
+        else:
+            if pokemon:
+                return find_counters(curr_trainer, pokemon[0], 1), pokemon[0]
+            elif "Type" in imp_terms:
+                return "idk how to do that yet sry", imp_terms[0]
+
+    if "caught" in sent and you:
+        if pokemon:
+            target_pokemon = random.choice(pokemon)
+            return random.choice(["Yes, I have caught them!", "No, I have not caught a " + target_pokemon+ " yet.."]), target_pokemon
+        else:
+            return "Oh I've never heard of that one before..", ""
+    # Pattern "I caught a {pokemon}"
+    if caught:
+        if pokemon:
+            if "I" or "i" in sent:
+                if curr_trainer.caught_pokemon != "":
+                    curr_trainer.caught_pokemon += ","
+                curr_trainer.caught_pokemon += ",".join(pokemon)
+                target_pokemon = random.choice(pokemon)
+                facts = find_pokemon_fact(target_pokemon)
+                return random.choice(facts), target_pokemon
+        else:
+            return "Oh I've never heard of that one before..", ""
+
+
+
+
+    # weather
+
+
+
     # Pattern "What is {imp_term}?" and "What type is {pokemon}?
     if imp_terms and "be" in verb:
         if "Type" in imp_terms and pokemon:
             return pokemon[0] + " is a " + find_type(pokemon[0]) + " type pokemon", pokemon[0]
         else:
             return DEF_IMP_TERM[imp_terms[0]], imp_terms[0]
+
+
 
     if rep_type == "team":
         if team != "":

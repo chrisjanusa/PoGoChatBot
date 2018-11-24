@@ -24,7 +24,13 @@ def proccess_sentance(sent):
     parse.you = find_you(nlp_sent)
     parse.verb = find_verb(nlp_sent)
     parse.name = find_name(nlp_sent)
+    parse.against = is_against(nlp_sent)
+    parse.good = is_good(nlp_sent)
+    parse.bad = is_bad(nlp_sent)
+    parse.about_eggs = find_about_eggs(nlp_sent)
+    parse.caught = find_caught(nlp_sent)
     parse.pokemon = find_pokemon(nlp_sent)
+
     if "mr. mime" in sent.lower():
         parse.pokemon.append("Mr. Mime")
     if "mr mime" in sent.lower():
@@ -117,6 +123,20 @@ def find_you(sent):
             return True
     return False
 
+def find_good(sent):
+    sent = sent.split(" ")
+    for word in sent:
+        if word.lower() == 'good' or word.lower() == 'best' or word.lower() == 'strong':
+            return True
+    return False
+
+def find_bad(sent):
+    sent = sent.split(" ")
+    for word in sent:
+        if word.lower() == 'bad' or word.lower() == 'weak' or word.lower() == 'worst':
+            return True
+    return False
+
 def find_name(sent):
     # Given a sentence, find the best candidate Name. Uses Spacy ER
     for entity in sent.ents:
@@ -134,6 +154,12 @@ def find_name(sent):
 def is_farewell(sent):
     for token in sent:
         if "bye" in str(token):
+            return True
+    return False
+
+def is_against(sent):
+    for word in sent:
+        if word.lemma_ == "against" or word.lemma_ == "counter":
             return True
     return False
 
@@ -173,6 +199,29 @@ def find_egg_num(sent):
                 is_egg_num = True
     return num, False
 
+def find_about_eggs(sent):
+    for word in sent:
+        if word.lemma_ == "egg" or word.lemma_ == "hatch":
+            return True
+    return False
+
+def is_good(sent):
+    for word in sent:
+        if word.lemma_ == "good" or word.lemma_ == "strong":
+            return True
+    return False
+
+def is_bad(sent):
+    for word in sent:
+        if word.lemma_ == "bad" or word.lemma_ == "weak":
+            return True
+    return False
+
+def find_caught(sent):
+    for word in sent:
+        if word.lemma_ == "catch":
+            return True
+    return False
 
 def find_egg_hatch(pokemon):
     if pokemon in HATCHES_2K:
@@ -261,16 +310,16 @@ def find_against_strength(pokemon):
 
         return strong_against, weak_against
 
-def find_caught_counters(trainer, target_mon):
+def find_caught_counters(trainer, against_types):
     caught_counters = []
 
-    strong_against, weak_against = find_against_strength(target_mon)
+    #strong_against, weak_against = find_against_strength(target_mon)
     caught_pokemons = trainer.caught_pokemon.split(",")
     if trainer.caught_pokemon == "":
         return ""
     with open("./Info/pokedex.pickle", "rb") as pokedex_file:
         pokedex = pickle.load(pokedex_file)
-        for search_type in weak_against:
+        for search_type in against_types:
             for pokemon in caught_pokemons:
                 if (search_type == pokedex[pokemon]["type1"] or search_type == pokedex[pokemon]["type2"]) and pokemon not in caught_counters:
                     caught_counters.append(pokemon)
@@ -283,7 +332,27 @@ def find_caught_counters(trainer, target_mon):
         return caught_counters[0]
     else: return ""
 
+def find_counters(trainer, pokemon, good_or_bad):
+    strong_against, weak_against = find_against_strength(pokemon)
 
+    if good_or_bad == 1:
+        caught_counters = find_caught_counters(trainer, weak_against)
+        weak_last = weak_against.pop()
+        weak_string = ", ".join(weak_against) + ", and " + weak_last
+        reply = pokemon + " is weakest against " + weak_string + " types."
+    else:
+        caught_counters = find_caught_counters(trainer, strong_against)
+        strong_last = strong_against.pop()
+        strong_string = ", ".join(strong_against) + ", and " + strong_last
+        reply = pokemon + " is strongest against " + strong_string + " types."
+    if caught_counters != "":
+        if good_or_bad == 1:
+            reply += "\nYou could use the "
+        else:
+            reply += "\nYou should avoid the "
+        reply += caught_counters + " pokemon that you caught earlier to fight it!"
+
+    return reply
 
 
 
