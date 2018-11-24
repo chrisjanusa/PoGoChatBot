@@ -185,15 +185,17 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     # Pattern "What is strong against {pokemon}?"
     if against:
         if bad:
-            if pokemon:
+            if "Type" in imp_terms:
+                return find_type_counters("Fire", 0), imp_term[0]
+            elif pokemon:
                 return find_counters(curr_trainer, pokemon[0], 0), pokemon[0]
-            elif "Type" in imp_terms:
-                return "idk how to do that yet sry", imp_terms[0]
+
         else:
-            if pokemon:
+            if "Type" in imp_terms:
+                return find_type_counters("Fire", 1), ""
+            elif pokemon:
                 return find_counters(curr_trainer, pokemon[0], 1), pokemon[0]
-            elif "Type" in imp_terms:
-                return "idk how to do that yet sry", imp_terms[0]
+
 
     if "caught" in sent and you:
         if pokemon:
