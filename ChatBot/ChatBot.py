@@ -49,9 +49,10 @@ def main():
         trainers[name] = trainer
         print(random.choice(NEW_TRAINER).format(**{'name': name}))
 
-    user_statement = proccess_sentance(input("I can answer questions about parts of the game and about specific pokemon."
-                                             "\nEx. \"Can Pichu be shiny?\" or \"What is stardust?\" for a full list say"
-                                             " \"show all\"" + "\n>"))
+    user_statement = proccess_sentance(
+        input("I can answer questions about parts of the game and about specific pokemon."
+              "\nEx. \"Can Pichu be shiny?\" or \"What is stardust?\" for a full list say"
+              " \"show all\"" + "\n>"))
     rep_type = "ask"
     while not user_statement.isFarewell:
         reply, rep_type = get_reply(user_statement, trainer, rep_type)
@@ -71,6 +72,12 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     imp_terms = parse_obj.imp_terms
     team = parse_obj.team
     wp = parse_obj.wp
+    against = parse_obj.against
+    sent = parse_obj.text
+    good = parse_obj.good
+    bad = parse_obj.bad
+    caught = parse_obj.caught
+    about_eggs = parse_obj.about_eggs
     adj = parse_obj.adj
 
     # Maintains topic so if no pokemon are present assume it is referring to previous topic
@@ -86,7 +93,8 @@ def get_reply(parse_obj, curr_trainer, rep_type):
         if curr_trainer.fav == "":
             return "My " + adj[0] + " Pokemon is Chimchar", "Chimchar"
         else:
-            return "My " + adj[0] + " Pokemon is Chimchar but your " + adj[0] + curr_trainer.fav + " is really cool", "Chimchar"
+            return "My " + adj[0] + " Pokemon is Chimchar but your " + adj[
+                0] + curr_trainer.fav + " is really cool too", "Chimchar"
 
     # Pattern "What type of pokemon are you?"
     if you and "Pokemon" in imp_terms and "Type" in imp_terms and "be" in verb:
@@ -122,7 +130,8 @@ def get_reply(parse_obj, curr_trainer, rep_type):
         return "Can {pokemon} be shiny?\nWhat is {Imp_term} used for?\nWhat can hatch from a 2km egg?" \
                "\nWhat pokemon is #35?\nDoes {pokemon} have an alolan form?\nIs {pokemon} a regional?" \
                "\nWhat type is {pokemon}?\nWhat team are you?\nPogo are you {team}?" \
-               "\nWhat type of pokemon are you?".format(**{'pokemon': pokemon, 'Imp_term': imp_term, "team": team}), 'ask'
+               "\nWhat type of pokemon are you?".format(
+            **{'pokemon': pokemon, 'Imp_term': imp_term, "team": team}), 'ask'
 
     # Pattern "What can I ask you?"
     if you and "ask" in verb:
@@ -161,6 +170,50 @@ def get_reply(parse_obj, curr_trainer, rep_type):
         last = hatch_list.pop()
         return "To name a few: " + ", ".join(hatch_list) + " and " + last + " hatch from " + str(num) + "km eggs", str(
             num) + "km"
+
+    # Pattern "can a {pokemon} hatch from an egg"
+    if about_eggs and pokemon:
+        egg = find_egg_hatch(pokemon[0])
+        if egg == 0:
+            return "No, they do not hatch from eggs.", pokemon[0]
+        else:
+            if num > 0 and num != egg:
+                return "No, " + pokemon[0] + " does not hatch from " + str(
+                    num) + "km eggs but it does hatch from " + str(egg) + "km eggs!", pokemon[0]
+            return pokemon[0] + " can hatch from " + str(egg) + "km eggs.", pokemon[0]
+
+    # Pattern "What is strong against {pokemon}?"
+    if against:
+        if bad:
+            if pokemon:
+                return find_counters(curr_trainer, pokemon[0], 0), pokemon[0]
+            elif "Type" in imp_terms:
+                return "idk how to do that yet sry", imp_terms[0]
+        else:
+            if pokemon:
+                return find_counters(curr_trainer, pokemon[0], 1), pokemon[0]
+            elif "Type" in imp_terms:
+                return "idk how to do that yet sry", imp_terms[0]
+
+    if "caught" in sent and you:
+        if pokemon:
+            target_pokemon = random.choice(pokemon)
+            return random.choice(
+                ["Yes, I have caught them!", "No, I have not caught a " + target_pokemon + " yet.."]), target_pokemon
+        else:
+            return "Oh I've never heard of that one before..", ""
+    # Pattern "I caught a {pokemon}"
+    if caught:
+        if pokemon:
+            if "I" or "i" in sent:
+                if curr_trainer.caught_pokemon != "":
+                    curr_trainer.caught_pokemon += ","
+                curr_trainer.caught_pokemon += ",".join(pokemon)
+                target_pokemon = random.choice(pokemon)
+                facts = find_pokemon_fact(target_pokemon)
+                return random.choice(facts), target_pokemon
+        else:
+            return "Oh I've never heard of that one before..", ""
 
     # Pattern "What egg does {pokemon} hatch from?" / "Does {pokemon} hatch from {num} egg
     if "Eggs" in imp_terms and pokemon:
@@ -299,7 +352,8 @@ def get_hatches_from_reply(num, pokemon):
     if pokemon in hatches:
         return "Yes " + pokemon + " does hatch from " + str(num) + "km eggs!!!"
     elif find_egg_hatch(pokemon) != 0:
-        return "No " + pokemon + " does not hatch from " + str(num) + "km eggs but it does hatch from " + str(find_egg_hatch(pokemon)) + "km eggs!"
+        return "No " + pokemon + " does not hatch from " + str(num) + "km eggs but it does hatch from " + str(
+            find_egg_hatch(pokemon)) + "km eggs!"
     else:
         return "No " + pokemon + " does not hatch from eggs"
 
@@ -330,6 +384,6 @@ def get_generation_reply(pokemon):
         pokedex = pickle.load(pokedex_file)
         return pokemon + " is a part of generation " + str(pokedex[pokemon]["generation"])
 
-      
+
 if __name__ == "__main__":
     main()
