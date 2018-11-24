@@ -4,7 +4,6 @@ import Levenshtein
 from Info.Pokemon import *
 from Info.Facts import IMP_TERMS
 from Info.EggHatches import *
-
 from Info.PokemonResponses import *
 
 from SentanceParsed import Parsed
@@ -127,19 +126,6 @@ def find_you(sent):
             return True
     return False
 
-def find_good(sent):
-    sent = sent.split(" ")
-    for word in sent:
-        if word.lower() == 'good' or word.lower() == 'best' or word.lower() == 'strong':
-            return True
-    return False
-
-def find_bad(sent):
-    sent = sent.split(" ")
-    for word in sent:
-        if word.lower() == 'bad' or word.lower() == 'weak' or word.lower() == 'worst':
-            return True
-    return False
 
 def find_name(sent):
     # Given a sentence, find the best candidate Name. Uses Spacy ER
@@ -323,6 +309,18 @@ def find_against_strength(pokemon):
 
         return strong_against, weak_against
 
+def find_type_counters(type, good_or_bad):
+    if good_or_bad == 1:
+        counters_file = open("./Info/weaktypecounters.pickle", "rb")
+        reply = type + " is weakest against the following types: "
+    else:
+        counters_file = open("./Info/strongtypecounters.pickle", "rb")
+        reply = type + " is strongest against the following types: "
+    counters = pickle.load(counters_file)
+    reply += counters
+
+    return reply
+
 def find_caught_counters(trainer, against_types):
     caught_counters = []
 
@@ -350,13 +348,19 @@ def find_counters(trainer, pokemon, good_or_bad):
 
     if good_or_bad == 1:
         caught_counters = find_caught_counters(trainer, weak_against)
-        weak_last = weak_against.pop()
-        weak_string = ", ".join(weak_against) + ", and " + weak_last
+        if len(weak_against) > 1:
+            weak_last = weak_against.pop()
+            weak_string = ", ".join(weak_against) + ", and " + weak_last
+        else:
+            weak_string = weak_against[0]
         reply = pokemon + " is weakest against " + weak_string + " types."
     else:
         caught_counters = find_caught_counters(trainer, strong_against)
-        strong_last = strong_against.pop()
-        strong_string = ", ".join(strong_against) + ", and " + strong_last
+        if len(strong_against) > 1:
+            strong_last = strong_against.pop()
+            strong_string = ", ".join(strong_against) + ", and " + strong_last
+        else:
+            strong_string = strong_against[0]
         reply = pokemon + " is strongest against " + strong_string + " types."
     if caught_counters != "":
         if good_or_bad == 1:
