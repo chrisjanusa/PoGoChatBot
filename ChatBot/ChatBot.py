@@ -62,31 +62,6 @@ def main():
         pickle.dump(trainers, pickle_file, protocol=pickle.HIGHEST_PROTOCOL)
 
 
-def hatches_from(num, pokemon):
-    if num == 2:
-        hatches = HATCHES_2K
-    elif num == 5:
-        hatches = HATCHES_5K
-    elif num == 7:
-        hatches = HATCHES_7K
-    elif num == 10:
-        hatches = HATCHES_10K
-
-
-    if pokemon in hatches:
-        samp = random.sample(hatches, 5)
-        samp.append("your favorite pokemon " + pokemon)
-        return samp
-    return random.sample(hatches, 6)
-
-
-def get_num_pokemon(num):
-    with open("./Info/pokedex.pickle", "rb") as pokedex_file:
-        pokedex = pickle.load(pokedex_file)
-        for key, value in pokedex.items():
-            if value["pokedex_number"] == num:
-                return value["name"]
-    return ""
 
 
 def get_reply(parse_obj, curr_trainer, rep_type):
@@ -333,6 +308,33 @@ def get_shiny_reply(pokemon):
         return "Yea " + pokemon + " can be shiny!!!", pokemon
     else:
         return "Sadly " + pokemon + " can not be shiny ... Yet!", pokemon
+
+def hatches_from(num, pokemon):
+    if num == 2:
+        hatches = HATCHES_2K
+    elif num == 5:
+        hatches = HATCHES_5K
+    elif num == 7:
+        hatches = HATCHES_7K
+    elif num == 10:
+        hatches = HATCHES_10K
+
+
+    if pokemon in hatches:
+        samp = random.sample(hatches, 5)
+        samp.append("your favorite pokemon " + pokemon)
+        return samp
+    return random.sample(hatches, 6)
+
+
+def get_num_pokemon(num):
+    with open("./Info/pokedex.pickle", "rb") as pokedex_file:
+        pokedex = pickle.load(pokedex_file)
+        for key, value in pokedex.items():
+            if value["pokedex_number"] == num:
+                return value["name"]
+    return ""
+
 
 
 if __name__ == "__main__":
