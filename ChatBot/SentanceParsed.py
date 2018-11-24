@@ -15,3 +15,4 @@ class Parsed(object):
     about_hatch = False
     caught = False
     adj = []
+    type = []

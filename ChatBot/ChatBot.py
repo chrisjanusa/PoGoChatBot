@@ -79,6 +79,7 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     caught = parse_obj.caught
     about_eggs = parse_obj.about_eggs
     adj = parse_obj.adj
+    type = parse_obj.type
 
     # Maintains topic so if no pokemon are present assume it is referring to previous topic
     if not pokemon and rep_type in ALL_POKEMON:
@@ -186,13 +187,13 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     if against:
         if bad:
             if "Type" in imp_terms:
-                return find_type_counters("Fire", 0), imp_term[0]
+                return find_type_counters(type[0], 0), ""
             elif pokemon:
                 return find_counters(curr_trainer, pokemon[0], 0), pokemon[0]
 
         else:
             if "Type" in imp_terms:
-                return find_type_counters("Fire", 1), ""
+                return find_type_counters(type[0] , 1), ""
             elif pokemon:
                 return find_counters(curr_trainer, pokemon[0], 1), pokemon[0]
 
