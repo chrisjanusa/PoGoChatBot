@@ -39,7 +39,7 @@ def main():
 
 
     pickle.dump(strong_against, open("../Info/strongtypecounters.pickle", "wb"))
-    pickle.dump(weak_counters, open("../Info/weaktypecounters.pickle", "wb"))
+    pickle.dump(weak_against, open("../Info/weaktypecounters.pickle", "wb"))
 
 if __name__ == "__main__":
     main()

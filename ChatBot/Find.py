@@ -28,6 +28,7 @@ def proccess_sentance(sent):
     parse.bad = is_bad(nlp_sent)
     parse.about_eggs = find_about_eggs(nlp_sent)
     parse.caught = find_caught(nlp_sent)
+    parse.type = find_mentioned_type(nlp_sent)
     parse.pokemon = find_pokemon(nlp_sent)
 
     if "mr. mime" in sent.lower():
@@ -243,7 +244,7 @@ def find_pokemon(sent):
     pokemons = []
 
     for token in sent:
-        if token.text == 'shiny' or token.text == "comes":
+        if token.text.lower() == 'shiny' or token.text.lower() == "comes" or token.text.lower() == "counter":
             continue
 
         closest = ""
@@ -260,6 +261,26 @@ def find_pokemon(sent):
             logger.info("Found pokemon: %s", closest)
             pokemons.append(closest)
     return pokemons
+
+def find_mentioned_type(sent):
+    """Given a sentence, find if a user mentioned a pokemon."""
+    types = []
+
+    for token in sent:
+        closest = ""
+        close_dist = 2
+        if len(token.text) < 5:
+            closest = ""
+            close_dist = 1
+        for type in POKEMON_TYPES:
+            dist = Levenshtein.distance(token.text.lower(), type.lower())
+            if dist < close_dist:
+                closest = type
+                close_dist = dist
+        if closest != "":
+            logger.info("Found type: %s", closest)
+            types.append(closest.capitalize())
+    return types
 
 def find_type(pokemon):
     with open("./Info/pokedex.pickle", "rb") as pokedex_file:
@@ -311,13 +332,14 @@ def find_against_strength(pokemon):
 
 def find_type_counters(type, good_or_bad):
     if good_or_bad == 1:
-        counters_file = open("./Info/weaktypecounters.pickle", "rb")
+        file_name = "./Info/weaktypecounters.pickle"
         reply = type + " is weakest against the following types: "
     else:
-        counters_file = open("./Info/strongtypecounters.pickle", "rb")
+        file_name = "./Info/strongtypecounters.pickle"
         reply = type + " is strongest against the following types: "
-    counters = pickle.load(counters_file)
-    reply += counters
+    with open(file_name, "rb") as counters_file:
+        counters = pickle.load(counters_file)
+        reply += counters[type.upper()]
 
     return reply
 
