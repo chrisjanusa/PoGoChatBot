@@ -175,14 +175,16 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     if against:
         if bad:
             if "Type" in imp_terms:
-                return find_type_counters(type[0], 0), ""
-            elif pokemon:
+                if type:
+                    return find_type_counters(type[0], 0), ""
+            if pokemon:
                 return find_counters(curr_trainer, pokemon[0], 0), pokemon[0]
 
         else:
             if "Type" in imp_terms:
-                return find_type_counters(type[0] , 1), ""
-            elif pokemon:
+                if type:
+                    return find_type_counters(type[0] , 1), ""
+            if pokemon:
                 return find_counters(curr_trainer, pokemon[0], 1), pokemon[0]
 
     if "caught" in sent and you:
