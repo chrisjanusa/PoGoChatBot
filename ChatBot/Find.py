@@ -217,20 +217,22 @@ def is_bad(sent):
             return True
     return False
 
+
 def find_caught(sent):
     for word in sent:
         if word.lemma_ == "catch":
             return True
     return False
 
-def find_egg_hatch(pokemon):
+
+def find_egg_hatch(pokemon, isAlolan):
     if pokemon in HATCHES_2K:
         logger.info("Pokemon %s hatches from 2k egg", pokemon)
         return 2
     elif pokemon in HATCHES_5K:
         logger.info("Pokemon %s hatches from 5k egg", pokemon)
         return 5
-    elif pokemon in HATCHES_7K:
+    elif pokemon in HATCHES_7K or isAlolan:
         logger.info("Pokemon %s hatches from 7k egg", pokemon)
         return 7
     elif pokemon in HATCHES_10K:
@@ -291,9 +293,10 @@ def find_type(pokemon):
 
         return pok_type
 
+
 def find_pokemon_fact(pokemon):
     facts = []
-    egg_hatch = find_egg_hatch(pokemon)
+    egg_hatch = find_egg_hatch(pokemon, False)
     if egg_hatch > 0:
         facts.append(random.choice(EGG_RESPONSES).format(**{'pokemon': pokemon, 'egg_dist': egg_hatch}))
     if pokemon in SHINY_POKEMON:
@@ -324,11 +327,18 @@ def find_against_strength(pokemon):
         for against_type in TYPES:
             if against_type != pokedex[pokemon]["type1"] and against_type != pokedex[pokemon]["type2"]:
                 if pokedex[pokemon][against_type] < 1:
-                        strong_against.append(against_type)
+                        if against_type == "fight":
+                            strong_against.append("fighting")
+                        else:
+                            strong_against.append(against_type)
                 if pokedex[pokemon][against_type] > 1:
+                    if against_type == "fight":
+                        weak_against.append("fighting")
+                    else:
                         weak_against.append(against_type)
 
         return strong_against, weak_against
+
 
 def find_type_counters(type, good_or_bad):
     if good_or_bad == 1:
@@ -342,6 +352,7 @@ def find_type_counters(type, good_or_bad):
         reply += counters[type.upper()]
 
     return reply
+
 
 def find_caught_counters(trainer, against_types):
     caught_counters = []
