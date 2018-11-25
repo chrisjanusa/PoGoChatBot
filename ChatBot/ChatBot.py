@@ -74,7 +74,6 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     wp = parse_obj.wp
     against = parse_obj.against
     sent = parse_obj.text
-    good = parse_obj.good
     bad = parse_obj.bad
     caught = parse_obj.caught
     about_eggs = parse_obj.about_eggs
