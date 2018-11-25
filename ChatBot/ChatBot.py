@@ -173,7 +173,7 @@ def get_reply(parse_obj, curr_trainer, rep_type):
             num) + "km"
 
     # Pattern "can a {pokemon} hatch from an egg"
-    if about_eggs and pokemon:
+    if about_eggs and pokemon and not is_num_egg:
         isAlolan = "Alolan" in imp_terms and pokemon[0] in ALOLA_POKEMON
         egg = find_egg_hatch(pokemon[0], isAlolan)
         if isAlolan:
@@ -181,9 +181,6 @@ def get_reply(parse_obj, curr_trainer, rep_type):
         elif egg == 0:
             return "No, they do not hatch from eggs.", pokemon[0]
         else:
-            if num > 0 and num != egg:
-                return "No, " + pokemon[0] + " does not hatch from " + str(
-                    num) + "km eggs but it does hatch from " + str(egg) + "km eggs!", pokemon[0]
             return pokemon[0] + " can hatch from " + str(egg) + "km eggs.", pokemon[0]
 
     # Pattern "What is strong against {pokemon}?"
