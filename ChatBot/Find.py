@@ -24,7 +24,6 @@ def proccess_sentance(sent):
     parse.verb = find_verb(nlp_sent)
     parse.name = find_name(nlp_sent)
     parse.against = is_against(nlp_sent)
-    parse.good = is_good(nlp_sent)
     parse.bad = is_bad(nlp_sent)
     parse.about_eggs = find_about_eggs(nlp_sent)
     parse.caught = find_caught(nlp_sent)
@@ -205,11 +204,6 @@ def find_about_eggs(sent):
             return True
     return False
 
-def is_good(sent):
-    for word in sent:
-        if word.lemma_ == "good" or word.lemma_ == "strong":
-            return True
-    return False
 
 def is_bad(sent):
     for word in sent:

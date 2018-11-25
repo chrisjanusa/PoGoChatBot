@@ -74,7 +74,6 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     wp = parse_obj.wp
     against = parse_obj.against
     sent = parse_obj.text
-    good = parse_obj.good
     bad = parse_obj.bad
     caught = parse_obj.caught
     about_eggs = parse_obj.about_eggs
@@ -176,14 +175,16 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     if against:
         if bad:
             if "Type" in imp_terms:
-                return find_type_counters(type[0], 0), ""
-            elif pokemon:
+                if type:
+                    return find_type_counters(type[0], 0), ""
+            if pokemon:
                 return find_counters(curr_trainer, pokemon[0], 0), pokemon[0]
 
         else:
             if "Type" in imp_terms:
-                return find_type_counters(type[0] , 1), ""
-            elif pokemon:
+                if type:
+                    return find_type_counters(type[0] , 1), ""
+            if pokemon:
                 return find_counters(curr_trainer, pokemon[0], 1), pokemon[0]
 
     if "caught" in sent and you:
