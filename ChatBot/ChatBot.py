@@ -131,8 +131,7 @@ def get_reply(parse_obj, curr_trainer, rep_type):
         return "Can {pokemon} be shiny?\nWhat is {Imp_term} used for?\nWhat can hatch from a 2km egg?" \
                "\nWhat pokemon is #35?\nDoes {pokemon} have an alolan form?\nIs {pokemon} a regional?" \
                "\nWhat type is {pokemon}?\nWhat team are you?\nPogo are you {team}?" \
-               "\nWhat type of pokemon are you?".format(
-            **{'pokemon': pokemon, 'Imp_term': imp_term, "team": team}), 'ask'
+               "\nWhat type of pokemon are you?".format(**{'pokemon': pokemon, 'Imp_term': imp_term, "team": team}), 'ask'
 
     # Pattern "What can I ask you?"
     if you and "ask" in verb:
@@ -140,7 +139,7 @@ def get_reply(parse_obj, curr_trainer, rep_type):
                "or \"What is stardust\" for a full list say \"show all\"", "ask"
 
     # Pattern "Does {pokemon} have an Alolan form?"
-    if ("be" in verb or "have" in verb) and pokemon and "Alolan" in imp_terms:
+    if ("be" in verb or "have" in verb) and pokemon and "Alolan" in imp_terms and "Eggs" not in imp_terms:
         if pokemon[0] in ALOLA_POKEMON:
             return pokemon[0] + " does have an Alolan form", pokemon[0]
         else:
@@ -174,8 +173,11 @@ def get_reply(parse_obj, curr_trainer, rep_type):
 
     # Pattern "can a {pokemon} hatch from an egg"
     if about_eggs and pokemon:
-        egg = find_egg_hatch(pokemon[0])
-        if egg == 0:
+        isAlolan = "Alolan" in imp_terms and pokemon[0] in ALOLA_POKEMON
+        egg = find_egg_hatch(pokemon[0], isAlolan)
+        if isAlolan:
+            return "Alolan " + pokemon[0] + " can hatch from " + str(egg) + "km eggs.", pokemon[0]
+        elif egg == 0:
             return "No, they do not hatch from eggs.", pokemon[0]
         else:
             if num > 0 and num != egg:
@@ -197,7 +199,6 @@ def get_reply(parse_obj, curr_trainer, rep_type):
             elif pokemon:
                 return find_counters(curr_trainer, pokemon[0], 1), pokemon[0]
 
-
     if "caught" in sent and you:
         if pokemon:
             target_pokemon = random.choice(pokemon)
@@ -205,6 +206,7 @@ def get_reply(parse_obj, curr_trainer, rep_type):
                 ["Yes, I have caught them!", "No, I have not caught a " + target_pokemon + " yet.."]), target_pokemon
         else:
             return "Oh I've never heard of that one before..", ""
+
     # Pattern "I caught a {pokemon}"
     if caught:
         if pokemon:
@@ -221,9 +223,9 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     # Pattern "What egg does {pokemon} hatch from?" / "Does {pokemon} hatch from {num} egg
     if "Eggs" in imp_terms and pokemon:
         if not is_num_egg:
-            return get_egg_hatch_reply(pokemon[0]), pokemon[0]
+            return get_egg_hatch_reply(pokemon[0], "Alolan" in imp_terms and pokemon[0] in ALOLA_POKEMON), pokemon[0]
         else:
-            return get_hatches_from_reply(num, pokemon[0]), pokemon[0]
+            return get_hatches_from_reply(num, pokemon[0], "Alolan" in imp_terms and pokemon[0] in ALOLA_POKEMON), pokemon[0]
 
     # Pattern "What is {imp_term}?" and "What type is {pokemon}?
     if imp_terms and "be" in verb:
@@ -342,32 +344,36 @@ def hatches_from(num, pokemon):
     return random.sample(hatches, 6)
 
 
-def get_hatches_from_reply(num, pokemon):
+def get_hatches_from_reply(num, pokemon, isAlolan):
     if num == 2:
         hatches = HATCHES_2K
     elif num == 5:
         hatches = HATCHES_5K
     elif num == 7:
+        if isAlolan:
+            return "Yes Alolan " + pokemon + " does hatch from " + str(num) + "km eggs!!!"
         hatches = HATCHES_7K
     else:
         hatches = HATCHES_10K
 
     if pokemon in hatches:
         return "Yes " + pokemon + " does hatch from " + str(num) + "km eggs!!!"
-    elif find_egg_hatch(pokemon) != 0:
+    elif find_egg_hatch(pokemon, isAlolan) != 0:
         return "No " + pokemon + " does not hatch from " + str(num) + "km eggs but it does hatch from " + str(
-            find_egg_hatch(pokemon)) + "km eggs!"
+            find_egg_hatch(pokemon, isAlolan)) + "km eggs!"
     else:
         return "No " + pokemon + " does not hatch from eggs"
 
 
-def get_egg_hatch_reply(pokemon):
+def get_egg_hatch_reply(pokemon, isAlolan):
     if pokemon in HATCHES_2K:
         return pokemon + " hatches from 2km eggs"
     elif pokemon in HATCHES_5K:
         return pokemon + " hatches from 5km eggs"
     elif pokemon in HATCHES_7K:
         return pokemon + " hatches from 7km eggs"
+    elif isAlolan:
+        return "Alolan " + pokemon + " hatches from 7km eggs"
     elif pokemon in HATCHES_10K:
         return pokemon + " hatches from 10km eggs"
     return pokemon + " does not hatch from any eggs sadly"
