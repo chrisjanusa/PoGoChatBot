@@ -172,17 +172,6 @@ def get_reply(parse_obj, curr_trainer, rep_type):
         return "To name a few: " + ", ".join(hatch_list) + " and " + last + " hatch from " + str(num) + "km eggs", str(
             num) + "km"
 
-    # Pattern "can a {pokemon} hatch from an egg"
-    if about_eggs and pokemon and not is_num_egg:
-        isAlolan = "Alolan" in imp_terms and pokemon[0] in ALOLA_POKEMON
-        egg = find_egg_hatch(pokemon[0], isAlolan)
-        if isAlolan:
-            return "Alolan " + pokemon[0] + " can hatch from " + str(egg) + "km eggs.", pokemon[0]
-        elif egg == 0:
-            return "No, they do not hatch from eggs.", pokemon[0]
-        else:
-            return pokemon[0] + " can hatch from " + str(egg) + "km eggs.", pokemon[0]
-
     # Pattern "What is strong against {pokemon}?"
     if against:
         if bad:
@@ -219,7 +208,7 @@ def get_reply(parse_obj, curr_trainer, rep_type):
             return "Oh I've never heard of that one before..", ""
 
     # Pattern "What egg does {pokemon} hatch from?" / "Does {pokemon} hatch from {num} egg
-    if "Eggs" in imp_terms and pokemon:
+    if about_eggs and pokemon:
         if not is_num_egg:
             return get_egg_hatch_reply(pokemon[0], "Alolan" in imp_terms and pokemon[0] in ALOLA_POKEMON), pokemon[0]
         else:
