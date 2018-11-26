@@ -19,8 +19,10 @@ logger.setLevel(logging.DEBUG)
 
 
 def main():
+    # Introduce ourself
     user_statement = proccess_sentance(input(random.choice(INRODUCTION) + "\n> "))
 
+    # Obtain users name
     while user_statement.name == "":
         blob = TextBlob(user_statement.text)
         if blob.sentiment.polarity < 0.1:
@@ -30,6 +32,7 @@ def main():
 
     name = user_statement.name
 
+    # obtain current user models stored
     pickle_path = Path("dict.pickle")
     if pickle_path.is_file():
         with open(str(pickle_path), "rb") as pickle_file:
@@ -37,33 +40,42 @@ def main():
     else:
         trainers = {}
 
+    # Check if this user is stored yet and get their profile if they are or create new profile for them
     if name in trainers:
         trainer = trainers[name]
+        # If we know their team, give them an indication that we remember
         if trainer.team != "":
             print(random.choice(RETURN_TRAINER).format(**{'name': name}) + " btw Go " + trainer.team + "!!!!!!")
         else:
             print(random.choice(RETURN_TRAINER).format(**{'name': name}))
-
     else:
         trainer = Trainer(name)
         trainers[name] = trainer
         print(random.choice(NEW_TRAINER).format(**{'name': name}))
 
+    # Intro sentence
     user_statement = proccess_sentance(
         input("I can answer questions about parts of the game and about specific pokemon."
               "\nEx. \"Can Pichu be shiny?\" or \"What is stardust?\" for a full list say"
               " \"show all\"" + "\n>"))
-    rep_type = "ask"
+
+    # reply type used to maintain topic, allows for "Can it be shiny" to refer to pokemon mentioned in above message
+    rep_type = ""
+
+    # While the user has not told us bye, we continue dialog
     while not user_statement.isFarewell:
         reply, rep_type = get_reply(user_statement, trainer, rep_type)
+        # proccess_sentance return object containing info about the sentence
         user_statement = proccess_sentance(input(reply + "\n>"))
 
+    # When user says bye we give final message and save the updated user profile to the pickle
     print(random.choice(BYE))
     with open(str(pickle_path), "wb") as pickle_file:
         pickle.dump(trainers, pickle_file, protocol=pickle.HIGHEST_PROTOCOL)
 
 
 def get_reply(parse_obj, curr_trainer, rep_type):
+    # get info out of the parsed sentence object
     you = parse_obj.you
     verb = parse_obj.verb
     num = parse_obj.num
@@ -161,6 +173,7 @@ def get_reply(parse_obj, curr_trainer, rep_type):
     if pokemon and "Shiny" in imp_terms and ("be" in verb or "have" in verb or "hatch" in verb):
         return get_shiny_reply(pokemon[0])
 
+    # Pattern "Can {pokemon} be Generation?"
     if pokemon and "Generation" in imp_terms and "be" in verb:
         return get_generation_reply(pokemon[0]), pokemon[0]
 
@@ -222,10 +235,13 @@ def get_reply(parse_obj, curr_trainer, rep_type):
         else:
             return DEF_IMP_TERM[imp_terms[0]], imp_terms[0]
 
+    # If we asked what team they are, get that info and store it
     if rep_type == "team":
         if team != "":
             curr_trainer.team = team
             return "NO WAY!!!! ... I am team " + team + " too!!!", team
+
+    # If we asked what their fav pokemon is, get that info and store it
     if rep_type == "fav":
         if pokemon:
             curr_trainer.fav = pokemon[0]
@@ -233,6 +249,8 @@ def get_reply(parse_obj, curr_trainer, rep_type):
             return random.choice(facts), pokemon[0]
         else:
             return "Oh I've never heard of that one before..", ""
+
+    # If we asked what pokemon they have caught, get that info and store it
     if rep_type == "caught":
         if pokemon:
             if curr_trainer.caught_pokemon != "":
@@ -244,14 +262,17 @@ def get_reply(parse_obj, curr_trainer, rep_type):
         else:
             return "Oh I've never heard of that one before..", ""
 
+    # Last resort just return a fact about an important term they said
     if imp_terms:
         term = imp_terms[0]
         return get_fact_reply(term)
 
+    # Last last resort ask them a question
     return get_default_reply(curr_trainer)
 
 
 def get_fact_reply(term):
+    # return fact based on term
     if term == "Berry":
         return random.choice(BERRY), "Berry"
     if term == "Raid":
@@ -287,6 +308,7 @@ def get_fact_reply(term):
 
 
 def get_default_options(curr_trainer):
+    # Get the topics we do not already know about the user
     default_options = ["caught", "reg"]
     if curr_trainer.team == "":
         default_options.append("team")
@@ -296,6 +318,7 @@ def get_default_options(curr_trainer):
 
 
 def get_default_reply(curr_trainer):
+    # Return a statemnt based on facts we do not know about the user
     default_options = get_default_options(curr_trainer)
     topic = random.choice(default_options)
     if topic == "team":
@@ -309,6 +332,7 @@ def get_default_reply(curr_trainer):
 
 
 def get_shiny_reply(pokemon):
+    # Return reply based on if pokemon passed is shiny
     if pokemon in SHINY_POKEMON:
         return "Yea " + pokemon + " can be shiny!!!", pokemon
     else:
@@ -316,6 +340,7 @@ def get_shiny_reply(pokemon):
 
 
 def hatches_from(num, pokemon):
+    # Return 6 pokemon that hatch from the num km eggs
     if num == 2:
         hatches = HATCHES_2K
     if num == 5:
@@ -325,6 +350,7 @@ def hatches_from(num, pokemon):
     if num == 10:
         hatches = HATCHES_10K
 
+    # If the users favorite pokemon hatches from this egg, use that one and 5 others
     if pokemon in hatches:
         samp = random.sample(hatches, 5)
         samp.append("your favorite pokemon " + pokemon)
@@ -333,11 +359,13 @@ def hatches_from(num, pokemon):
 
 
 def get_hatches_from_reply(num, pokemon, isAlolan):
+    # Return whether a given pokemon hatches from num km eggs
     if num == 2:
         hatches = HATCHES_2K
     elif num == 5:
         hatches = HATCHES_5K
     elif num == 7:
+        # Since all alolan hatch from 7km eggs return an affirmative statement
         if isAlolan:
             return "Yes Alolan " + pokemon + " does hatch from " + str(num) + "km eggs!!!"
         hatches = HATCHES_7K
@@ -346,6 +374,7 @@ def get_hatches_from_reply(num, pokemon, isAlolan):
 
     if pokemon in hatches:
         return "Yes " + pokemon + " does hatch from " + str(num) + "km eggs!!!"
+    # If the pokemon hatches from any egg, return the one is hatches from
     elif find_egg_hatch(pokemon, isAlolan) != 0:
         return "No " + pokemon + " does not hatch from " + str(num) + "km eggs but it does hatch from " + str(
             find_egg_hatch(pokemon, isAlolan)) + "km eggs!"
@@ -354,6 +383,7 @@ def get_hatches_from_reply(num, pokemon, isAlolan):
 
 
 def get_egg_hatch_reply(pokemon, isAlolan):
+    # Return what egg a given pokemon hatches from
     if pokemon in HATCHES_2K:
         return pokemon + " hatches from 2km eggs"
     elif pokemon in HATCHES_5K:
@@ -368,6 +398,7 @@ def get_egg_hatch_reply(pokemon, isAlolan):
 
 
 def get_num_pokemon(num):
+    # Convert a pokemon number into it's name
     with open("./Info/pokedex.pickle", "rb") as pokedex_file:
         pokedex = pickle.load(pokedex_file)
         for key, value in pokedex.items():
@@ -377,6 +408,7 @@ def get_num_pokemon(num):
 
 
 def get_generation_reply(pokemon):
+    # get the generation a given pokemon is from
     with open("./Info/pokedex.pickle", "rb") as pokedex_file:
         pokedex = pickle.load(pokedex_file)
         return pokemon + " is a part of generation " + str(pokedex[pokemon]["generation"])
