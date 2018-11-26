@@ -29,6 +29,7 @@ def proccess_sentance(sent):
     parse.bad = is_bad(nlp_sent)
     parse.caught = find_caught(nlp_sent)
     parse.type = find_mentioned_type(nlp_sent)
+    parse.about_eggs = find_about_eggs(nlp_sent)
     parse.pokemon = find_pokemon(nlp_sent)
 
     # exception handling special cases
@@ -376,6 +377,12 @@ def find_caught_counters(trainer, against_types):
     elif caught_counters:
         return caught_counters[0]
     else: return ""
+
+def find_about_eggs(sent):
+    for word in sent:
+        if word.lemma_ == "egg" or word.lemma_ == "hatch":
+            return True
+    return False
 
 def find_counters(trainer, pokemon, good_or_bad):
     #Given the trainer's caught pokemon, the pokemon to find counters for, and whether they want good or bad counters

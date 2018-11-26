@@ -14,3 +14,4 @@ class Parsed(object):
     caught = False
     adj = []
     type = []
+    about_eggs = False
