@@ -2,11 +2,11 @@ import spacy
 import logging
 import Levenshtein
 from Info.Pokemon import *
-from Info.Facts import IMP_TERMS
+from Info.Facts import *
 from Info.EggHatches import *
 from Info.PokemonResponses import *
 
-from SentanceParsed import Parsed
+from Objects.SentanceParsed import Parsed
 
 import random
 import pickle

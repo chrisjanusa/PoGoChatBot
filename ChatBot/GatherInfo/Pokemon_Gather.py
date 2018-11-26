@@ -1,6 +1,7 @@
 import re
 import requests
 from bs4 import BeautifulSoup
+from pathlib import Path
 
 
 def main():
@@ -28,7 +29,11 @@ def main():
                 pokemon_avail.append(pokemon)
     shiny = get_shiny_list()
 
-    with open("../Info/Pokemon.py", "w") as pokemon_file:
+    outfile = Path("../Info/Pokemon.py")
+    if not outfile.is_file():
+        outfile = Path("Info/Pokemon.py")
+
+    with open(outfile, "w") as pokemon_file:
         pokemon_file.write("POKEMON_AVAIL = {\n")
         first = True
         for pokemon in set(pokemon_avail):

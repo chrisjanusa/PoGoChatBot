@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import pickle
+from pathlib import Path
 
 
 def main():
@@ -35,9 +36,15 @@ def main():
             if cur_type =="NORMAL":
                 weak_against[cur_type] = "None"
 
+    strong_outfile = Path("../Info/strongtypecounters.pickle")
+    weak_outfile = Path("../Info/weaktypecounters.pickle")
+    if not strong_outfile.is_file():
+        strong_outfile = Path("Info/strongtypecounters.pickle")
+        weak_outfile = Path("Info/weaktypecounters.pickle")
 
-    pickle.dump(strong_against, open("../Info/strongtypecounters.pickle", "wb"))
-    pickle.dump(weak_against, open("../Info/weaktypecounters.pickle", "wb"))
+    pickle.dump(strong_against, open(strong_outfile, "wb"))
+    pickle.dump(weak_against, open(weak_outfile, "wb"))
+
 
 if __name__ == "__main__":
     main()
