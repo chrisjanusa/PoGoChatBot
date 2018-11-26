@@ -1,22 +1,18 @@
 # PoGoChatBot
 
 Must pip install following libraries:
-    
-    pandas
-    
-    bs4
-    
-    requests
-    
-    textblob
-    
-    spacy
-    
-    python-Levenshtein
+    - pandas
+    - bs4
+    - requests
+    - textblob
+    - spacy
+    - python-Levenshtein
 
 Must also run:
+
     python -m spacy download en
 Or maybe:
+
     python3 -m spacy download en
 
 In order to run pogo you must first run Gather_All_Info.py in order to scrape the needed information off the internet.
