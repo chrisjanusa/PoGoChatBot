@@ -1,12 +1,12 @@
 # PoGoChatBot
 
 Must pip install following libraries:
-    - pandas
-    - bs4
-    - requests
-    - textblob
-    - spacy
-    - python-Levenshtein
+- pandas
+- bs4
+- requests
+- textblob
+- spacy
+- python-Levenshtein
 
 Must also run:
 
