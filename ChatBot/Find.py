@@ -18,6 +18,8 @@ logger.setLevel(logging.DEBUG)
 
 
 def proccess_sentance(sent):
+    # Preprocess given sentence looking for key terms and postags
+    # output: parsed object
     nlp_sent = nlp(sent)
     parse = Parsed()
     parse.you = find_you(nlp_sent)
@@ -25,11 +27,11 @@ def proccess_sentance(sent):
     parse.name = find_name(nlp_sent)
     parse.against = is_against(nlp_sent)
     parse.bad = is_bad(nlp_sent)
-    parse.about_eggs = find_about_eggs(nlp_sent)
     parse.caught = find_caught(nlp_sent)
     parse.type = find_mentioned_type(nlp_sent)
     parse.pokemon = find_pokemon(nlp_sent)
 
+    # exception handling special cases
     if "mr. mime" in sent.lower():
         parse.pokemon.append("Mr. Mime")
     if "mr mime" in sent.lower():
@@ -38,6 +40,7 @@ def proccess_sentance(sent):
         parse.pokemon.append("Mime Jr.")
     if "ho-oh" in sent.lower():
         parse.pokemon.append("Ho-Oh")
+
     parse.imp_terms = find_imp_term(nlp_sent)
     parse.team = find_team(nlp_sent)
     parse.isFarewell = is_farewell(nlp_sent)
@@ -47,20 +50,19 @@ def proccess_sentance(sent):
     parse.isEgg = is_egg_num
     parse.text = sent
     parse.adj = find_adjective(nlp_sent)
+
     logger.info("Adjectives: %s Verbs: %s Names: %s Pokemon: %s Imp Terms: %s Team: %s Num: %d IsEgg: %r HasYou: %r WP: %s",
                 ", ".join(parse.adj), ", ".join(parse.verb), parse.name, ", ".join(parse.pokemon), ", ".join(parse.imp_terms),
                 parse.team, num, is_egg_num, parse.you, parse.wp)
 
     return parse
 
-
 def find_verb(sent):
-    """Pick a candidate verb for the sentence."""
+    # Given a sentence, Pick a candidate verb for the sentence.
     verbs = []
     for word in sent:
         logger.info("Word: %s Pos: %s", word.text, word.tag_)
         if word.tag_.startswith('VB'):  # This is a verb
-            #logger.info("Found verb: %s Lemma: %s", word.text, word.lemma_)
             if word.text == "'s":
                 verbs.append("be")
             else:
@@ -69,14 +71,14 @@ def find_verb(sent):
 
 
 def find_wp(sent):
-    """Pick a candidate verb for the sentence."""
+    # Given a sentence, Pick a candidate wh-pronoun for the sentence.
     for word in sent:
-        if word.tag_ == "WP":  # This is a verb
+        if word.tag_ == "WP":  # This is a Wh-pronoun, ex. who/what/where
             return str(word)
     return ""
 
 def find_adjective(sent):
-    """Given a sentence, find the best candidate adjective."""
+    # Given a sentence, find the best candidate adjective.
     adjs = []
     for word in sent:
         if word.tag_ == 'JJ':  # This is an adjective
@@ -84,43 +86,8 @@ def find_adjective(sent):
             adjs.append(word.lemma_)
     return adjs
 
-
-def find_subj(sent):
-    """Given a sentence, find the best candidate noun."""
-    subjs = []
-    for word in sent:
-        if word.dep_ == 'subj':  # This is a noun
-            logger.info("Found subject: %s Lemma: %s", word.text, word.lemma_)
-            subjs.append(str(word.lemma_))
-    return subjs
-
-
-def find_doj(sent):
-    """Given a sentence, find the best candidate noun."""
-    dobjs = []
-    for word in sent:
-        if word.dep_ == 'dobj':  # This is a noun
-            logger.info("Found dobj: %s Lemma: %s", word.text, word.lemma_)
-            dobjs.append(str(word.lemma_))
-    return dobjs
-
-
-def find_pronoun(sent):
-    """Given a sentence, find a preferred pronoun to respond with. Returns None if no candidate
-    pronoun is found in the input"""
-    pronouns = []
-    for word in sent:
-        # Disambiguate pronouns
-        if word.tag_ == 'PRP' and (word.text.lower() == 'you' or word.text.lower() == 'your'):
-            logger.info("Found pronoun: I")
-            pronouns.append('I')
-        elif word.tag_ == 'PRP' and word.text == 'I':
-            logger.info("Found pronoun: You")
-            pronouns.append('You')
-    return ""
-
-
 def find_you(sent):
+    # Given a sentence, find if the user refers to the bot directly
     for word in sent:
         if word.text.lower() == 'you' or word.text.lower() == 'your' or word.text.lower() == 'pogo':
             return True
@@ -142,12 +109,14 @@ def find_name(sent):
     return ""
 
 def is_farewell(sent):
+    # Given a sentence, find "bye", which indicates the user wants to exit
     for token in sent:
         if "bye" in str(token):
             return True
     return False
 
 def is_against(sent):
+    # Given a sentence, find the terms that suggest the user is looking for pokemon counters.
     for word in sent:
         if word.lemma_ == "against" or word.lemma_ == "counter":
             return True
@@ -155,16 +124,15 @@ def is_against(sent):
 
 
 def find_imp_term(sent):
-    """Given a sentence, find if a user mentioned a important term."""
+    # Given a sentence, find if a user mentioned a important term (terms listed in Facts.py)
     imp_terms = []
     for token in sent:
         for term in IMP_TERMS:
             dist = Levenshtein.distance(token.lemma_, nlp(term.lower())[0].lemma_)
-
-            # logger.info("Token %s has distance %d from %s", token.lemma_, dist, nlp(term.lower())[0].lemma_)
             if len(token.text) < 5:
                 if dist == 0:
                     imp_terms.append(term)
+                #special case of abbreviated word
                 if token.text.lower() == "gen":
                     imp_terms.append("Generation")
             elif dist < 2:
@@ -176,16 +144,19 @@ def find_imp_term(sent):
 
 
 def find_team(sent):
+    # Given a sentence, find the best candidate team name.
     for token in sent:
         for team in TEAMS:
             dist = Levenshtein.distance(token.text.lower(), team.lower())
-            # logger.info("Token %s has distance %d from %s", token, dist, team)
-
             if dist < 3:
                 return team
     return ""
 
 def find_egg_num(sent):
+    # Given a sentence, find the if an egg and it's number is mentioned.
+    # num always precedes egg, so if egg is found and num is not found, there is no num
+    # ex. 7k egg, True
+    #     egg, False
     num = -1
     is_egg_num = False
     for word in sent:
@@ -198,14 +169,10 @@ def find_egg_num(sent):
                 is_egg_num = True
     return num, False
 
-def find_about_eggs(sent):
-    for word in sent:
-        if word.lemma_ == "egg" or word.lemma_ == "hatch":
-            return True
-    return False
-
 
 def is_bad(sent):
+    # Given a sentence, find if user mentioned negative words
+    # context: "what's a bad counter", "what's weak against.."
     for word in sent:
         if word.lemma_ == "bad" or word.lemma_ == "weak":
             return True
@@ -213,6 +180,7 @@ def is_bad(sent):
 
 
 def find_caught(sent):
+    # Given a sentence, find if user mentioned catching
     for word in sent:
         if word.lemma_ == "catch":
             return True
@@ -220,6 +188,9 @@ def find_caught(sent):
 
 
 def find_egg_hatch(pokemon, isAlolan):
+    # Check if a pokemon hatches from an egg
+    # input: pokemon name, boolean if it's Alolan or not
+    # output: egg number, 0 if none
     if pokemon in HATCHES_2K:
         logger.info("Pokemon %s hatches from 2k egg", pokemon)
         return 2
@@ -236,10 +207,15 @@ def find_egg_hatch(pokemon, isAlolan):
     return 0
 
 def find_pokemon(sent):
-    """Given a sentence, find if a user mentioned a pokemon."""
+    #Given a sentence, find if a user mentioned a pokemon.
+    # Compare each token to all names in pokemon list
+    # keep track of the closest possible pokemon name until another closer name is found
+    # retun closest possible name to handle misspellings
+
     pokemons = []
 
     for token in sent:
+        #exception handling for special cases
         if token.text.lower() == 'shiny' or token.text.lower() == "comes" or token.text.lower() == "counter":
             continue
 
@@ -259,7 +235,9 @@ def find_pokemon(sent):
     return pokemons
 
 def find_mentioned_type(sent):
-    """Given a sentence, find if a user mentioned a pokemon."""
+    # Given a sentence, find if a user mentioned a pokemon type.
+    # Compare each token to all strings in type list
+    # return closest one
     types = []
 
     for token in sent:
@@ -278,7 +256,10 @@ def find_mentioned_type(sent):
             types.append(closest.capitalize())
     return types
 
+
 def find_type(pokemon):
+    # Given a pokemon, return it's type
+    # open the pokedex pickle and use the hashed map to get it's type1 and type2 values
     with open("./Info/pokedex.pickle", "rb") as pokedex_file:
         pokedex = pickle.load(pokedex_file)
         pok_type = pokedex[pokemon]["type1"]
@@ -289,14 +270,27 @@ def find_type(pokemon):
 
 
 def find_pokemon_fact(pokemon):
+    #Given a pokemon, return a random fact about it
+    #Obtain the facts by check in the respective lists about:
+    # 1. if it can hatch from an egg
+    # 2. if it an be shiny
+    # 3. if it is a regional
+    # 4. if it can an be Alolan
+    # 5. it's types
+    # 6. Pokemon it is strong against
+    # 7. Pokemon it is weak against
     facts = []
+
     egg_hatch = find_egg_hatch(pokemon, False)
     if egg_hatch > 0:
         facts.append(random.choice(EGG_RESPONSES).format(**{'pokemon': pokemon, 'egg_dist': egg_hatch}))
+
     if pokemon in SHINY_POKEMON:
         facts.append(random.choice(SHINY_RESPONSES).format(**{'pokemon': pokemon}))
+
     if pokemon in REGIONAL_POKEMON:
         facts.append(random.choice(REGIONAL_RESPONSES).format(**{'pokemon': pokemon}))
+
     if pokemon in ALOLA_POKEMON:
         facts.append(random.choice(ALOLAN_RESPONSES).format(**{'pokemon': pokemon}))
 
@@ -313,6 +307,14 @@ def find_pokemon_fact(pokemon):
     return facts
 
 def find_against_strength(pokemon):
+    # Given a pokemon, find the pokemon types it is strong and weak against
+
+    # Information is found in the pokedex pickle
+    # For the pokemon each column that is a type will have a value:
+    # Greater than 1 = pokemon is weak against the type,
+    # Less than 1 = is strong against the type,
+    # Equal to 1 = is unaffected by the type
+
     with open("./Info/pokedex.pickle", "rb") as pokedex_file:
         pokedex = pickle.load(pokedex_file)
         strong_against = []
@@ -335,6 +337,10 @@ def find_against_strength(pokemon):
 
 
 def find_type_counters(type, good_or_bad):
+    # Given a type, and whether the user is looking for good or bad counters
+    # return a list of counters
+
+    # Get the list from the respective files and index of dictionary
     if good_or_bad == 1:
         file_name = "./Info/weaktypecounters.pickle"
         reply = type + " is weakest against the following types: "
@@ -349,9 +355,10 @@ def find_type_counters(type, good_or_bad):
 
 
 def find_caught_counters(trainer, against_types):
+    # Given trainer's caught pokemon and a list of types
+    # return a list of the pokemon that match the types we are looking for
     caught_counters = []
 
-    #strong_against, weak_against = find_against_strength(target_mon)
     caught_pokemons = trainer.caught_pokemon.split(",")
     if trainer.caught_pokemon == "":
         return ""
@@ -371,9 +378,14 @@ def find_caught_counters(trainer, against_types):
     else: return ""
 
 def find_counters(trainer, pokemon, good_or_bad):
+    #Given the trainer's caught pokemon, the pokemon to find counters for, and whether they want good or bad counters
+    #return the list of counter types to the pokemon and, if the user has potential counters, return that as well
+
+    #finf the counter types
     strong_against, weak_against = find_against_strength(pokemon)
 
     if good_or_bad == 1:
+        # find potential caught counters
         caught_counters = find_caught_counters(trainer, weak_against)
         if len(weak_against) > 1:
             weak_last = weak_against.pop()
