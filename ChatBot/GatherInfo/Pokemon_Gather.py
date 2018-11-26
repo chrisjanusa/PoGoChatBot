@@ -18,7 +18,12 @@ def main():
         if line.startswith("<a href=\"/pokemongo/pokemon/") and ">- In-Depth" not in line:
             start = len("<a href=\"/pokemongo/pokemon/031.shtml\">")
             end = line.find("</a>", start)
+            if line.find(u"\u2642") != -1:
+                end = line.find(u"\u2642")
+            if line.find(u"\u2640") != -1:
+                end = line.find(u"\u2640")
             pokemon = line[start:end]
+            print(u"\u2642")
             if "<i>Not currently available</i>" in line:
                 pokemon_not_avail.append(pokemon)
             else:
