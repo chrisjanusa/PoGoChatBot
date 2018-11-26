@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+from pathlib import Path
 
 
 def main():
@@ -54,8 +55,12 @@ def main():
             elif cur_egg == 10:
                 eggs_10k.append(pokemon)
 
-    #save lists into data file
-    with open("../Info/EggHatches.py", "w") as pokemon_file:
+    outfile = Path("../Info/EggHatches.py")
+    if not outfile.is_file():
+        outfile = Path("Info/EggHatches.py")
+
+    # save lists into data file
+    with open(outfile, "w") as pokemon_file:
         pokemon_file.write("HATCHES_2K = {\n")
         first = True
         for pokemon in set(eggs_2k):

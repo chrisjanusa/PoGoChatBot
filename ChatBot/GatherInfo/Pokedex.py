@@ -1,5 +1,6 @@
 import pandas as pd
 import pickle
+from pathlib import Path
 
 
 def main():
@@ -8,7 +9,13 @@ def main():
             "against_normal", "against_poison", "against_psychic", "against_rock", "against_steel", "against_water",
             "name", "pokedex_number", "type1", "type2", "generation"]
 
-    df = pd.read_csv('pokemon.csv', skipinitialspace=True, usecols=cols)
+    file = Path('pokemon.csv')
+    outfile = Path("../Info/pokedex.pickle")
+    if not file.is_file():
+        file = Path('GatherInfo/pokemon.csv')
+        outfile = Path("Info/pokedex.pickle")
+
+    df = pd.read_csv(file, skipinitialspace=True, usecols=cols)
     pokedex = {}
     for row in df.itertuples():
         temp = {}
@@ -18,7 +25,7 @@ def main():
             temp[col] = row[i]
         pokedex[row.name] = temp
 
-    pickle.dump(pokedex, open("../Info/pokedex.pickle", "wb"))
+    pickle.dump(pokedex, open(outfile, "wb"))
 
 
 if __name__ == "__main__":

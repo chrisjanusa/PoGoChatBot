@@ -9,7 +9,7 @@ from Info.GenericResponses import *
 from Info.Facts import *
 from Info.Pokemon import *
 
-from Trainer import Trainer
+from Objects.Trainer import Trainer
 
 nlp = spacy.load('en_core_web_sm')
 os.environ['NLTK_DATA'] = os.getcwd() + '/nltk_data'
