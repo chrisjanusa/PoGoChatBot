@@ -25,7 +25,7 @@ def main():
             temp[col] = row[i]
         pokedex[row.name] = temp
 
-    pickle.dump(pokedex, open(outfile, "wb"))
+    pickle.dump(pokedex, open(str(outfile), "wb"))
 
 
 if __name__ == "__main__":

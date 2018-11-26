@@ -23,7 +23,6 @@ def main():
             if line.find(u"\u2640") != -1:
                 end = line.find(u"\u2640")
             pokemon = line[start:end]
-            print(u"\u2642")
             if "<i>Not currently available</i>" in line:
                 pokemon_not_avail.append(pokemon)
             else:
@@ -38,7 +37,7 @@ def main():
     if not outfile.is_file():
         outfile = Path("Info/Pokemon.py")
 
-    with open(outfile, "w") as pokemon_file:
+    with open(str(outfile), "w") as pokemon_file:
         pokemon_file.write("POKEMON_AVAIL = {\n")
         first = True
         for pokemon in set(pokemon_avail):

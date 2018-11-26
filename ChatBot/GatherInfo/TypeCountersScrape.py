@@ -42,8 +42,8 @@ def main():
         strong_outfile = Path("Info/strongtypecounters.pickle")
         weak_outfile = Path("Info/weaktypecounters.pickle")
 
-    pickle.dump(strong_against, open(strong_outfile, "wb"))
-    pickle.dump(weak_against, open(weak_outfile, "wb"))
+    pickle.dump(strong_against, open(str(strong_outfile), "wb"))
+    pickle.dump(weak_against, open(str(weak_outfile), "wb"))
 
 
 if __name__ == "__main__":
