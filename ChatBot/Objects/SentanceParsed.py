@@ -11,7 +11,6 @@ class Parsed(object):
     wp = ""
     against = False
     bad = False
-    about_hatch = False
     caught = False
     adj = []
     type = []
