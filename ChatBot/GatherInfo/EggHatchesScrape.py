@@ -60,7 +60,7 @@ def main():
         outfile = Path("Info/EggHatches.py")
 
     # save lists into data file
-    with open(outfile, "w") as pokemon_file:
+    with open(str(outfile), "w") as pokemon_file:
         pokemon_file.write("HATCHES_2K = {\n")
         first = True
         for pokemon in set(eggs_2k):
