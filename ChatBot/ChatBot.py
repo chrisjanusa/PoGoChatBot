@@ -117,7 +117,7 @@ def get_reply(parse_obj, curr_trainer, rep_type):
             return "I am a part of the best team in the world... Team " + curr_trainer.team + "!!!!!!!", ""
 
     # Pattern "Show all"
-    if rep_type == "ask" and "show" in verb:
+    if "show all" in parse_obj.text.lower():
         if curr_trainer.fav == "":
             pokemon = "Pikachu"
         else:
